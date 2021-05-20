@@ -75,7 +75,6 @@ class Tablero {
 		 * PRE:  No tiene
 		 * POST: Devuelve el valor de casilleros
 		 */
-		unsigned int obtenerAltura();
 		Lista<Casillero>* obtenerCasilleros();
 };
 
