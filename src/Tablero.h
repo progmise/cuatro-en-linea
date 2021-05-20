@@ -14,10 +14,25 @@ class Tablero {
 
 	public:
 
+		/*
+		 * PRE:  No tiene
+		 * POST: Crea un nuevo tablero
+		 */
 		Tablero();
 
+        /*
+         * PRE:  No tiene
+         * POST: El tablero resulta inicializado con una longitud,
+         * 		 profundidad y altura dadas. A partir de dichos valores,
+         * 		 se inicializará la lista de casilleros, agregandole
+         * 		 longitud x profundidad x altura casilleros
+         */
 		Tablero(unsigned int longitud, unsigned int profundidad, unsigned int altura);
 
+		/*
+		 * PRE:  El tablero debe haber sido creado
+		 * POST: Destruye el tablero y todos sus elementos
+		 */
 		~Tablero();
 
 		/*
@@ -56,6 +71,11 @@ class Tablero {
 		 */
 		void asignarAltura(unsigned int altura);
 
+		/*
+		 * PRE:  No tiene
+		 * POST: Devuelve el valor de casilleros
+		 */
+		unsigned int obtenerAltura();
 		Lista<Casillero>* obtenerCasilleros();
 };
 
