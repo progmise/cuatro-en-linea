@@ -5,7 +5,7 @@
 #define NULL 0
 #endif
 
-template <class T>
+template<class T>
 
 class Nodo {
 
@@ -20,37 +20,37 @@ class Nodo {
 		 * POST: El nodo resulta inicializado con el dato dado
 		 *       y el puntero del siguiente nodo
 		 */
-		Nodo(T dato, Nodo<T> *siguiente) {
-			this -> dato = dato;
-			this -> siguiente = siguiente;
+		Nodo(T dato, Nodo<T>* siguiente) {
+			this->dato = dato;
+			this->siguiente = siguiente;
 		}
 
 		/*
 		 * POST: Devuelve el valor del dato
 		 */
 		T obtenerDato() {
-			return this -> dato;
+			return this->dato;
 		}
 
 		/*
 		 * POST: Asigna el valor del dato.
 		 */
 		void asignarDato(T dato) {
-			this -> dato = dato;
+			this->dato = dato;
 		}
 
 		/*
 		 * POST: Devuelve el siguiente nodo
 		 */
 		Nodo<T>* obtenerSiguiente() {
-			return this -> siguiente;
+			return this->siguiente;
 		}
 
 		/*
 		 * POST: Asigna el siguiente nodo
 		 */
 		void asignarSiguiente(Nodo<T>* siguiente) {
-			this -> siguiente = siguiente;
+			this->siguiente = siguiente;
 		}
 };
 
