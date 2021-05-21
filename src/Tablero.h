@@ -12,6 +12,13 @@ class Tablero {
 		unsigned int altura;
 		Lista<Casillero>* casilleros;
 
+		/*
+		 * A fin de poder sobrescribir el operador '<<', se debe declarar
+		 * la función 'friend', de modo que pueda acceder a los atributos
+		 * privados o protegidos, de la clase
+		 */
+		friend std::ostream& operator<<(std::ostream&, const Tablero&);
+
 	public:
 
 		/*
@@ -78,6 +85,11 @@ class Tablero {
 		Lista<Casillero>* obtenerCasilleros();
 };
 
-
+/*
+ * PRE:  No tiene
+ * POST: Devuelve un string, que es una descripción de la instancia,
+ * 		 con los valores actuales de sus atributos
+ */
+std::ostream& operator<<(std::ostream &strm, const Tablero &tablero);
 
 #endif /* TABLERO_H_ */

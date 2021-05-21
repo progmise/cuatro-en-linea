@@ -66,3 +66,12 @@ Lista<Casillero>* Tablero::obtenerCasilleros() {
 
 	return this->casilleros;
 }
+
+std::ostream& operator<<(std::ostream &strm, const Tablero &tablero) {
+
+	return strm << "Tablero(longitud=" << tablero.longitud
+				<< ", profundidad=" << tablero.profundidad
+				<< ", altura=" << tablero.altura
+				<< ", casilleros=" << tablero.casilleros->contarElementos()
+				<< ")";
+}
