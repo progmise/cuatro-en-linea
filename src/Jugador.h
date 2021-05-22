@@ -1,5 +1,6 @@
 #ifndef JUGADOR_H_
 #define JUGADOR_H_
+#include <Carta.h>
 #include <iostream>
 
 class Jugador {
@@ -10,7 +11,7 @@ class Jugador {
 		unsigned int jugadas;
 		char ficha;
 		bool flagGanador;
-		//Lista<Carta>* cartas;
+		Lista<Carta>* cartas;
 
 		/*
 		 * A fin de poder sobrescribir el operador '<<', se debe declarar
@@ -18,6 +19,10 @@ class Jugador {
 		 * privados o protegidos, de la clase
 		 */
 		friend std::ostream& operator<<(std::ostream&, const Jugador&);
+
+		friend bool operator==(const Jugador &lhs, const Jugador &rhs);
+
+		friend bool operator!=(const Jugador &lhs, const Jugador &rhs);
 
 	public:
 
@@ -92,7 +97,17 @@ class Jugador {
 		 * PRE:  No tiene
 		 * POST: Devuelve el valor de cartas
 		 */
-		//Lista<Carta>* obtenerCartas();
+		Lista<Carta>* obtenerCartas();
+
+		/*
+		 * PRE:  La lista de jugadores, no debe estar vacía e
+		 * 		 indiceCarta, debe corresponderse a una posición
+		 * 		 existente, dentro de lista cartas
+		 * POST: Ejecuta la acción correspondiente a una carta,
+		 * 		 sobre la lista de jugadores. Finalizada la ejecución,
+		 * 		 se elimina la carta jugada
+		 */
+		void jugarCarta(Lista<Jugador>* jugadores, unsigned int indiceCarta);
 };
 
 /*
@@ -101,5 +116,18 @@ class Jugador {
  * 		 con los valores actuales de sus atributos
  */
 std::ostream& operator<<(std::ostream &strm, const Jugador &jugador);
+
+/*
+ * PRE:  No tiene
+ * POST: Valida si se trata de la misma instancia, a partir de la
+ * 		 dirección de memoria
+ */
+bool operator==(const Jugador &lhs, const Jugador &rhs);
+/*
+ * PRE:  No tiene
+ * POST: Valida si no se trata de la misma instancia, a partir de la
+ * 		 dirección de memoria
+ */
+bool operator!=(const Jugador &lhs, const Jugador &rhs);
 
 #endif /* JUGADOR_H_ */
