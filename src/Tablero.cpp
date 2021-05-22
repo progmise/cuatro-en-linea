@@ -1,5 +1,7 @@
 #include "Tablero.h"
 
+using namespace std;
+
 Tablero::Tablero() {
     this->longitud = 0;
     this->profundidad = 0;
@@ -69,7 +71,7 @@ Lista<Casillero*>* Tablero::obtenerCasilleros() {
 	return this->casilleros;
 }
 
-std::ostream& operator<<(std::ostream &strm, const Tablero &tablero) {
+ostream& operator<<(ostream &strm, const Tablero &tablero) {
 
 	return strm << "Tablero(longitud=" << tablero.longitud
 				<< ", profundidad=" << tablero.profundidad

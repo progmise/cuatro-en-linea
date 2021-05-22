@@ -1,5 +1,7 @@
 #include "Casillero.h"
 
+using namespace std;
+
 Casillero::Casillero() {
 	this->tipoFicha = CASILLERO_LIBRE;
     this->posicionX = 0;
@@ -59,7 +61,7 @@ bool Casillero::estaOcupado() {
 	return (this->tipoFicha != CASILLERO_LIBRE);
 }
 
-std::ostream& operator<<(std::ostream &strm, const Casillero &casillero) {
+ostream& operator<<(ostream &strm, const Casillero &casillero) {
 
 	return strm << "Casillero(x=" << casillero.posicionX
 				<< ", y=" << casillero.posicionY

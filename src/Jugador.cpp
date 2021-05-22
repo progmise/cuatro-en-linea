@@ -1,5 +1,7 @@
 #include "Jugador.h"
 
+using namespace std;
+
 Jugador::Jugador() {
     this->nombre = "";
     this->jugadas = 0;
@@ -8,7 +10,7 @@ Jugador::Jugador() {
     this->cartas = new Lista<Carta*>();
 }
 
-Jugador::Jugador(std::string nombre, char ficha) {
+Jugador::Jugador(string nombre, char ficha) {
     this->nombre = nombre;
     this->jugadas = 0;
     this->ficha = ficha;
@@ -20,12 +22,12 @@ Jugador::~Jugador() {
 	delete this->cartas;
 }
 
-std::string Jugador::obtenerNombre() {
+string Jugador::obtenerNombre() {
 
 	return this->nombre;
 }
 
-void Jugador::asignarNombre(std::string nombre) {
+void Jugador::asignarNombre(string nombre) {
 
 	this->nombre = nombre;
 }
@@ -90,7 +92,7 @@ void Jugador::jugarCarta(Lista<Jugador*>* jugadores, unsigned int indiceCarta) {
 	this->cartas->remover(indiceCarta);
 }
 
-std::ostream& operator<<(std::ostream &strm, const Jugador &jugador) {
+ostream& operator<<(ostream &strm, const Jugador &jugador) {
 
 	return strm << "Jugador(nombre=" << jugador.nombre
 				<< ", jugadas=" << jugador.jugadas

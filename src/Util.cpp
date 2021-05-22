@@ -1,16 +1,18 @@
 #include "Util.h"
 
+using namespace std;
+
 Util::Util() { }
 
-bool esNumero(std::string entrada) {
+bool esNumero(string entrada) {
 
-    std::string::const_iterator it = entrada.begin();
+    string::const_iterator it = entrada.begin();
 
     /*
      * Se itera sobre cada carácter del string dado, y se evalua
      * si cada uno de ellos, representa a un dígito
      */
-    while (it != entrada.end() && std::isdigit(*it)) {
+    while (it != entrada.end() && isdigit(*it)) {
 
     	++it;
     }
@@ -18,15 +20,15 @@ bool esNumero(std::string entrada) {
     return !entrada.empty() && it == entrada.end();
 }
 
-bool esAlfanumerico(std::string entrada) {
+bool esAlfanumerico(string entrada) {
 
-    std::string::const_iterator it = entrada.begin();
+    string::const_iterator it = entrada.begin();
 
     /*
      * Se itera sobre cada carácter del string dado, y se evalua
      * si cada uno de ellos, es alfanumérico
      */
-    while (it != entrada.end() && std::isalpha(*it)) {
+    while (it != entrada.end() && isalpha(*it)) {
 
     	++it;
     }

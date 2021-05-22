@@ -1,12 +1,14 @@
 #include "Carta.h"
 
+using namespace std;
+
 Carta::Carta() {
 	this->id = 0;
 	this->nombre = "";
 	this->descripcion = "";
 }
 
-Carta::Carta(unsigned int id, std::string nombre, std::string descripcion) {
+Carta::Carta(unsigned int id, string nombre, string descripcion) {
 	this->id = id;
 	this->nombre = nombre;
 	this->descripcion = descripcion;
@@ -22,22 +24,22 @@ void Carta::asignarId(unsigned int id) {
 	this->id = id;
 }
 
-std::string Carta::obtenerNombre() {
+string Carta::obtenerNombre() {
 
 	return this->nombre;
 }
 
-void Carta::asignarNombre(std::string nombre) {
+void Carta::asignarNombre(string nombre) {
 
 	this->nombre = nombre;
 }
 
-std::string Carta::obtenerDescripcion() {
+string Carta::obtenerDescripcion() {
 
 	return this->descripcion;
 }
 
-void Carta::asignarDescripcion(std::string descripcion) {
+void Carta::asignarDescripcion(string descripcion) {
 
 	this->descripcion = descripcion;
 }
@@ -72,7 +74,7 @@ void Carta::jugarDoble(Lista<Jugador*>* jugadores) {
 	}
 }
 
-std::ostream& operator<<(std::ostream &strm, const Carta &carta) {
+ostream& operator<<(ostream &strm, const Carta &carta) {
 
 	return strm << "Carta(id=" << carta.id
 				<< ", nombre=" << carta.nombre
