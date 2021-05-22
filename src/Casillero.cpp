@@ -64,5 +64,6 @@ std::ostream& operator<<(std::ostream &strm, const Casillero &casillero) {
 	return strm << "Casillero(x=" << casillero.posicionX
 				<< ", y=" << casillero.posicionY
 				<< ", z=" << casillero.posicionZ
-				<< ", tipoFicha=" << casillero.tipoFicha << ")";
+				<< ", tipoFicha=" << casillero.tipoFicha
+				<< ")";
 }
