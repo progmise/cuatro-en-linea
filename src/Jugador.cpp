@@ -5,7 +5,7 @@ Jugador::Jugador() {
     this->jugadas = 0;
     this->ficha = '\0';
     this->flagGanador = false;
-    this->cartas = new Lista<Carta>();
+    this->cartas = new Lista<Carta*>();
 }
 
 Jugador::Jugador(std::string nombre, char ficha) {
@@ -13,7 +13,7 @@ Jugador::Jugador(std::string nombre, char ficha) {
     this->jugadas = 0;
     this->ficha = ficha;
     this->flagGanador = false;
-    this->cartas = new Lista<Carta>();
+    this->cartas = new Lista<Carta*>();
 }
 
 Jugador::~Jugador() {
@@ -60,12 +60,12 @@ void Jugador::asignarGanador(bool flagGanador) {
 	this->flagGanador = flagGanador;
 }
 
-Lista<Carta>* Jugador::obtenerCartas() {
+Lista<Carta*>* Jugador::obtenerCartas() {
 
 	return this->cartas;
 }
 
-void Jugador::jugarCarta(Lista<Jugador>* jugadores, unsigned int indiceCarta) {
+void Jugador::jugarCarta(Lista<Jugador*>* jugadores, unsigned int indiceCarta) {
 
 	Carta* carta = this->cartas->obtener(indiceCarta);
 
@@ -102,7 +102,10 @@ std::ostream& operator<<(std::ostream &strm, const Jugador &jugador) {
 
 bool operator==(const Jugador &lhs, const Jugador &rhs) {
 
-	return (lhs == rhs);
+	return (
+		lhs.nombre == rhs.nombre &&
+		lhs.ficha == rhs.ficha
+	);
 }
 
 bool operator!=(const Jugador &lhs, const Jugador &rhs) {

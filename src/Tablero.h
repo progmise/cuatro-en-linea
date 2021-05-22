@@ -10,7 +10,7 @@ class Tablero {
 		unsigned int longitud;
 		unsigned int profundidad;
 		unsigned int altura;
-		Lista<Casillero>* casilleros;
+		Lista<Casillero*>* casilleros;
 
 		/*
 		 * A fin de poder sobrescribir el operador '<<', se debe declarar
@@ -82,7 +82,7 @@ class Tablero {
 		 * PRE:  No tiene
 		 * POST: Devuelve el valor de casilleros
 		 */
-		Lista<Casillero>* obtenerCasilleros();
+		Lista<Casillero*>* obtenerCasilleros();
 };
 
 /*
