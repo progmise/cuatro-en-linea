@@ -11,7 +11,7 @@ class Mazo {
 		static const int MAX_CARTAS_MAZO = 20;
 		static const int MAX_CARTAS_JUGADOR = 3;
 		static const int CANT_TIPOS_CARTAS = 2;
-		Cola<Carta>* cartas;
+		Cola<Carta*>* cartas;
 
 		/*
 		 * A fin de poder sobrescribir el operador '<<', se debe declarar
@@ -38,7 +38,7 @@ class Mazo {
 		 * PRE:  No tiene
 		 * POST: Devuelve el valor de cartas
 		 */
-		Cola<Carta>* obtenerCartas();
+		Cola<Carta*>* obtenerCartas();
 
 		/*
 		 * PRE:  No tiene

@@ -42,24 +42,26 @@ void Carta::asignarDescripcion(std::string descripcion) {
 	this->descripcion = descripcion;
 }
 
-void Carta::bloquearTurno(Lista<Jugador>* jugadores) {
+void Carta::bloquearTurno(Lista<Jugador*>* jugadores) {
 
 	int tamanio = jugadores->contarElementos();
 
 	if (jugadores->obtener(tamanio) == jugadores->obtenerCursor()) {
 
 		jugadores->iniciarCursor();
+		jugadores->avanzarCursor();
 
 	} else {
+
 		jugadores->avanzarCursor();
 	}
 }
 
-void Carta::jugarDoble(Lista<Jugador>* jugadores) {
+void Carta::jugarDoble(Lista<Jugador*>* jugadores) {
 
 	unsigned int tamanio = jugadores->contarElementos();
 
-	for (int i = 1; i < tamanio; i++) {
+	for (unsigned int i = 1; i < tamanio; i++) {
 
 		jugadores->avanzarCursor();
 

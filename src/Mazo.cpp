@@ -1,14 +1,14 @@
 #include "Mazo.h"
 
 Mazo::Mazo() {
-	this->cartas = new Cola<Carta>();
+	this->cartas = new Cola<Carta*>();
 }
 
 Mazo::~Mazo() {
 	delete this->cartas;
 }
 
-Cola<Carta>* Mazo::obtenerCartas() {
+Cola<Carta*>* Mazo::obtenerCartas() {
 
 	return this->cartas;
 }
@@ -21,7 +21,7 @@ void Mazo::llenarMazo() {
 
 		carta = generarAzarmenteCarta();
 
-		this->cartas->acolar(*carta);
+		this->cartas->acolar(carta);
 	}
 }
 
@@ -33,10 +33,10 @@ void Mazo::levantarCartaTope(Jugador* jugador) {
 	if (cantCartas < MAX_CARTAS_JUGADOR) {
 
 		carta = this->cartas->desacolar();
-		jugador->obtenerCartas()->agregar(*carta);
+		jugador->obtenerCartas()->agregar(carta);
 
 		carta = generarAzarmenteCarta();
-		this->cartas->acolar(*carta);
+		this->cartas->acolar(carta);
 	}
 }
 

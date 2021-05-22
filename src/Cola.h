@@ -79,7 +79,7 @@ template<class T> void Cola<T>::acolar(T elemento) {
 
     } else {
 
-        this->fondo->cambiarSiguiente(nuevoFondo);
+        this->fondo->asignarSiguiente(nuevoFondo);
     }
 
     this->fondo = nuevoFondo;
