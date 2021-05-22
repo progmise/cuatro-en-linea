@@ -1,5 +1,7 @@
 #include "Mazo.h"
 
+using namespace std;
+
 Mazo::Mazo() {
 	this->cartas = new Cola<Carta*>();
 }
@@ -74,4 +76,10 @@ Carta* Mazo::generarAzarmenteCarta() {
 	}
 
 	return carta;
+}
+
+ostream& operator<<(ostream &strm, const Mazo &mazo) {
+
+	return strm << "Mazo(cartas=" << mazo.cartas->contarElementos()
+				<< ")";
 }

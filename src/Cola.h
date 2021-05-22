@@ -11,6 +11,7 @@ class Cola {
 
         Nodo<T>* frente;
         Nodo<T>* fondo;
+        unsigned int tamanio;
 
     public:
 
@@ -31,6 +32,12 @@ class Cola {
          * POST: Devuelve si la cola no tiene ningún elemento
          */
         bool estaVacia();
+
+        /*
+         * PRE: No tiene
+         * POST: Devuelve la cantidad de elementos que tiene la cola
+         */
+        unsigned int contarElementos();
 
         /*
          * PRE:  No tiene
@@ -54,6 +61,7 @@ class Cola {
 template<class T> Cola<T>::Cola() {
     this->frente = NULL;
     this->fondo = NULL;
+    this->tamanio = 0;
 }
 
 template<class T> Cola<T>::~Cola() {
@@ -82,7 +90,13 @@ template<class T> void Cola<T>::acolar(T elemento) {
         this->fondo->asignarSiguiente(nuevoFondo);
     }
 
+    this->tamanio++;
     this->fondo = nuevoFondo;
+}
+
+template<class T> unsigned int Cola<T>::contarElementos() {
+
+    return this->tamanio;
 }
 
 template<class T> T Cola<T>::desacolar() {
@@ -104,6 +118,7 @@ template<class T> T Cola<T>::desacolar() {
     /* Devuelve el elemento y libera los recursos asociados */
     T elemento = frenteAnterior->obtenerDato();
     delete frenteAnterior;
+    this->tamanio--;
 
     return elemento;
 }
