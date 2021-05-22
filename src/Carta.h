@@ -4,6 +4,8 @@
 #include "Jugador.h"
 #include <iostream>
 
+class Jugador;
+
 class Carta {
 
 	private:
@@ -74,13 +76,13 @@ class Carta {
 		 * PRE:  La lista de jugadores, no debe estar vacía
 		 * POST: Mueve el cursor de la lista, al siguiente jugador
 		 */
-		void bloquearTurno(Lista<Jugador>* jugadores);
+		void bloquearTurno(Lista<Jugador*>* jugadores);
 
 		/*
 		 * PRE:  La lista de jugadores, no debe estar vacía
 		 * POST: Mueve el cursor de la lista, al anterior jugador
 		 */
-		void jugarDoble(Lista<Jugador>* jugadores);
+		void jugarDoble(Lista<Jugador*>* jugadores);
 };
 
 /*
