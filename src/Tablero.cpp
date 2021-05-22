@@ -13,13 +13,15 @@ Tablero::Tablero(unsigned int longitud, unsigned int profundidad, unsigned int a
     this->altura = altura;
     this->casilleros = new Lista<Casillero>();
 
-    for (unsigned int i = 0; i < longitud; i++) {
+    Casillero* casillero;
 
-        for (unsigned int j = 0; j < profundidad; j++) {
+    for (int i = 0; i < longitud; i++) {
 
-            for (unsigned int k = 0; k < altura; k++) {
+        for (int j = 0; j < profundidad; j++) {
 
-            	Casillero* casillero = new Casillero(i, j, k);
+            for (int k = 0; k < altura; k++) {
+
+            	casillero = new Casillero(i, j, k);
 
             	this->casilleros->agregar(*casillero);
             }

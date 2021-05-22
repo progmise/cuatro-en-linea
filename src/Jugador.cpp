@@ -3,9 +3,9 @@
 Jugador::Jugador() {
     this->nombre = "";
     this->jugadas = 0;
-    this->ficha = '';
+    this->ficha = '\0';
     this->flagGanador = false;
-    //this->cartas = new Lista<Carta>();
+    this->cartas = new Lista<Carta>();
 }
 
 Jugador::Jugador(std::string nombre, char ficha) {
@@ -13,11 +13,11 @@ Jugador::Jugador(std::string nombre, char ficha) {
     this->jugadas = 0;
     this->ficha = ficha;
     this->flagGanador = false;
-    //this->cartas = new Lista<Carta>();
+    this->cartas = new Lista<Carta>();
 }
 
 Jugador::~Jugador() {
-	//delete this->cartas;
+	delete this->cartas;
 }
 
 std::string Jugador::obtenerNombre() {
@@ -60,12 +60,35 @@ void Jugador::asignarGanador(bool flagGanador) {
 	this->flagGanador = flagGanador;
 }
 
-/*
 Lista<Carta>* Jugador::obtenerCartas() {
 
 	return this->cartas;
 }
-*/
+
+void Jugador::jugarCarta(Lista<Jugador>* jugadores, unsigned int indiceCarta) {
+
+	Carta* carta = this->cartas->obtener(indiceCarta);
+
+	switch (indiceCarta) {
+
+		case 1:
+
+			carta->bloquearTurno(jugadores);
+			break;
+
+		case 2:
+
+			carta->jugarDoble(jugadores);
+			break;
+
+		default:
+
+			throw "índice de carta inválido";
+			break;
+	}
+
+	this->cartas->remover(indiceCarta);
+}
 
 std::ostream& operator<<(std::ostream &strm, const Jugador &jugador) {
 
@@ -73,6 +96,16 @@ std::ostream& operator<<(std::ostream &strm, const Jugador &jugador) {
 				<< ", jugadas=" << jugador.jugadas
 				<< ", ficha=" << jugador.ficha
 				<< ", flagGanador=" << jugador.flagGanador
-				//<< ", cartas=" << jugador.cartas->contarElementos()
+				<< ", cartas=" << jugador.cartas->contarElementos()
 				<< ")";
+}
+
+bool operator==(const Jugador &lhs, const Jugador &rhs) {
+
+	return (lhs == rhs);
+}
+
+bool operator!=(const Jugador &lhs, const Jugador &rhs) {
+
+	return !(lhs == rhs);
 }
