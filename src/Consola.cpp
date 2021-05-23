@@ -196,8 +196,9 @@ string Consola::validarNombre(string entrada) {
 
 			} else {
 
-				cout << "\n¡Revisa de no haber ingresado espacios!"
+				cout << "\n¡Revisa de no haber ingresado espacios o caracteres especiales!"
 					 << "\n" << endl;
+
 				entrada = solicitarNombre();
 			}
 
