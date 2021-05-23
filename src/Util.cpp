@@ -28,7 +28,7 @@ bool Util::esAlfanumerico(string entrada) {
      * Se itera sobre cada carácter del string dado, y se evalua
      * si cada uno de ellos, es alfanumérico
      */
-    while (it != entrada.end() && isalpha(*it)) {
+    while (it != entrada.end() && isalnum(*it)) {
 
     	++it;
     }
