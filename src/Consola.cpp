@@ -292,12 +292,14 @@ string Consola::solicitarOpcion(Lista<string*>* opciones) {
 	string entrada = "";
 	unsigned int tamanio = opciones->contarElementos();
 
+	cout << endl << "######## " << "CARTAS" << " ########" << endl;
+
 	for (unsigned int i = 1; i < tamanio + 1; i++) {
 
 		cout << *opciones->obtener(i);
 	}
 
-	cout << "Ingrese una opción: ";
+	cout << endl << "Ingrese una opción: ";
 	cin >> entrada;
 
 	return entrada;
@@ -348,6 +350,8 @@ Lista<string*>* Consola::generarOpcionesCartas(Lista<Carta*>* cartas) {
 		strStream << i << " - " << cartas->obtener(i)->obtenerNombre() << endl;
 
 		opcion = new string(strStream.str());
+
+		strStream.str(string());
 		strStream.clear();
 
 		opciones->agregar(opcion);
@@ -356,6 +360,8 @@ Lista<string*>* Consola::generarOpcionesCartas(Lista<Carta*>* cartas) {
 	strStream << endl << "0" << " - " << "Salir" << endl;
 
 	opcion = new string(strStream.str());
+
+	strStream.str(string());
 	strStream.clear();
 
 	opciones->agregar(opcion);
