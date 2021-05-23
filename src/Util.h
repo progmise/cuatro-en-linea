@@ -24,6 +24,12 @@ class Util {
 	     *	 	 es efectivamente alfanumérica
 	     */
 		static bool esAlfanumerico(std::string entrada);
+	    /*
+	     * PRE:  No tiene
+	     * POST: Devuelve un boolean, que representa si la entrada dada
+	     *	 	 es efectivamente un espacio
+	     */
+		static bool esEspacio(std::string entrada);
 
 		/*
 		 * PRE:  valorMinimo debe ser igual o menor a valorMaximo
