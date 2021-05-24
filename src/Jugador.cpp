@@ -105,7 +105,6 @@ ostream& operator<<(ostream &strm, const Jugador &jugador) {
 bool operator==(const Jugador &lhs, const Jugador &rhs) {
 
 	return (
-		lhs.nombre == rhs.nombre &&
 		lhs.ficha == rhs.ficha
 	);
 }
