@@ -56,3 +56,28 @@ bool Util::validarNumeroAcotado(int numero, int valorMinimo, int valorMaximo) {
 
 	return numero >= valorMinimo && numero <= valorMaximo;
 }
+
+unsigned int Util::obtenerMenorDeTres(unsigned int num1, unsigned int num2,
+									  unsigned int num3) {
+
+	unsigned int menor = 0;
+
+	if (num1 == num2 && num2 == num3) {
+
+		menor = num1;
+
+	} else if (num1 < num2 && num1 < num3) {
+
+		menor = num1;
+
+	} else if (num2 < num3) {
+
+		menor = num2;
+
+	} else {
+
+		menor = num3;
+	}
+
+	return menor;
+}

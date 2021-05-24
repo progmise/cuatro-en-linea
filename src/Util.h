@@ -38,8 +38,13 @@ class Util {
 		 * 		 máximo
 		 */
 		static bool validarNumeroAcotado(int numero, int valorMinimo, int valorMaximo);
+
+		/*
+		 * PRE:  No tiene
+		 * POST: Devuelve el número menor, de 3 números dados
+		 */
+		static unsigned int obtenerMenorDeTres(unsigned int num1, unsigned int num2,
+											   unsigned int num3);
 };
-
-
 
 #endif /* UTIL_H_ */
