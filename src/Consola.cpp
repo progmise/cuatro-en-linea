@@ -13,6 +13,11 @@ void Consola::mostrarBienvenida() {
 	cout << "¡Exitos!" << endl << endl;
 }
 
+void Consola::mostrarLevanteDeCarta(Jugador* jugador) {
+
+	cout << "¡" << jugador->obtenerNombre() << " ha levantado una carta!" << endl;
+}
+
 void Consola::mostrarDatosRonda(Jugador* jugador, unsigned int ronda) {
 
 	cout << "######## RONDA " << ronda << "########" << endl << endl;
