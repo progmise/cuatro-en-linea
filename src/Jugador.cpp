@@ -19,7 +19,19 @@ Jugador::Jugador(string nombre, char ficha) {
 }
 
 Jugador::~Jugador() {
-	delete this->cartas;
+
+	Carta* carta = NULL;
+
+	this->cartas->iniciarCursor();
+
+	while (this->cartas->avanzarCursor()) {
+
+		carta = this->cartas->obtenerCursor();
+
+		delete carta;
+	}
+
+	delete cartas;
 }
 
 string Jugador::obtenerNombre() {
@@ -105,7 +117,6 @@ ostream& operator<<(ostream &strm, const Jugador &jugador) {
 bool operator==(const Jugador &lhs, const Jugador &rhs) {
 
 	return (
-		lhs.nombre == rhs.nombre &&
 		lhs.ficha == rhs.ficha
 	);
 }

@@ -6,10 +6,13 @@
 
 class Mazo {
 
+	public:
+
+		static const int MAX_CARTAS_JUGADOR = 3;
+
 	private:
 
 		static const int MAX_CARTAS_MAZO = 20;
-		static const int MAX_CARTAS_JUGADOR = 3;
 		static const int CANT_TIPOS_CARTAS = 2;
 		Cola<Carta*>* cartas;
 
