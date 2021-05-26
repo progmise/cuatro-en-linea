@@ -1,13 +1,11 @@
 #include "TP2.h"
 
 int main() {
-	/*
-	Consola* consola = new Consola();
-	Juego juego;
+
+	Consola consola = Consola();
+	Juego juego = Juego(10, 10, 10);
 
 	juego.iniciar(consola);
 
-	delete consola;
-	*/
 	return 0;
 }
