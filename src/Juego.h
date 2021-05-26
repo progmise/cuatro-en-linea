@@ -34,7 +34,7 @@ class Juego {
 
 		Lista<Jugador*>* obtenerJugadores();
 
-		void iniciar(Consola* consola);
+		void iniciar(Consola consola);
 
 	private:
 
@@ -43,7 +43,7 @@ class Juego {
 		bool hayCuatroEnLineaEnRecta(Lista<Casillero*>* recta, char ficha);
 
 		bool hayCuatroEnLineaEnDiagonalesDePlano(Lista<Lista<Casillero*>*>* diagonales,
-														char ficha);
+												 char ficha);
 
 		bool hayCuatroEnLineaEnDiagonalesDePlanos(Tablero* tablero, Casillero* coordenadas,
 												  char ficha);
@@ -65,9 +65,9 @@ class Juego {
 		bool sonPosicionesValidas(Tablero* tablero, unsigned int longitud,
 								  unsigned int profundidad);
 
-		void ingresarJugadores(Consola* consola, Lista<Jugador*>* jugadores);
+		void ingresarJugadores(Consola consola, Lista<Jugador*>* jugadores);
 
-		Casillero* ingresarFicha(Consola* consola, Tablero* tablero,
+		Casillero* ingresarFicha(Consola consola, Tablero* tablero,
 							     Jugador* jugador);
 
 		bool hayEmpate(Tablero* tablero);
@@ -75,7 +75,7 @@ class Juego {
 		bool hayGanador(Lista<Jugador*>* jugadores);
 
 		unsigned int jugarCarta(Jugador* jugador, Lista<Jugador*>* jugadores,
-								Consola* consola, unsigned int ronda);
+								Consola consola, unsigned int ronda);
 };
 
 /*

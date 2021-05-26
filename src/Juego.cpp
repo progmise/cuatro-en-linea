@@ -5,10 +5,10 @@ using namespace std;
 Juego::Juego() {
 	this->ronda = 1;
 	this->tablero = new Tablero(MAX_DIMENSION, MAX_DIMENSION, MAX_DIMENSION);
-	this->jugadores = new Lista<Jugador*>;
+	this->jugadores = new Lista<Jugador*>();
 	this->mazo = new Mazo();
 }
-/*
+
 Juego::Juego(unsigned int longitud, unsigned int profundidad, unsigned int altura) {
 	this->ronda = 1;
 
@@ -17,23 +17,15 @@ Juego::Juego(unsigned int longitud, unsigned int profundidad, unsigned int altur
 	altura = validarDimension(altura);
 
 	this->tablero = new Tablero(longitud, profundidad, altura);
-	this->jugadores = new Lista<Jugador*>;
+	this->jugadores = new Lista<Jugador*>();
 	this->mazo = new Mazo();
 }
 
 Juego::~Juego() {
 
-	Casillero* casillero;
-	Jugador* jugador;
+	Jugador* jugador = NULL;
 
-	this->tablero->obtenerCasilleros()->iniciarCursor();
-
-	while (this->tablero->obtenerCasilleros()->avanzarCursor()) {
-
-		casillero = this->tablero->obtenerCasilleros()->obtenerCursor();
-
-		delete casillero;
-	}
+	delete this->tablero;
 
 	this->jugadores->iniciarCursor();
 
@@ -44,7 +36,6 @@ Juego::~Juego() {
 		delete jugador;
 	}
 
-	delete this->tablero;
 	delete this->jugadores;
 	delete this->mazo;
 }
@@ -59,18 +50,18 @@ Lista<Jugador*>* Juego::obtenerJugadores() {
 	return this->jugadores;
 }
 
-void Juego::iniciar(Consola* consola) {
+void Juego::iniciar(Consola consola) {
 
-	Jugador* jugador;
-	Casillero* coordenadas;
+	Jugador* jugador = NULL;
+	Casillero* coordenadas = NULL;
 	unsigned int jugadas = 0;
 	bool existeCuatroEnLinea = false;
 
-	consola->mostrarBienvenida();
+	consola.mostrarBienvenida();
 
 	ingresarJugadores(consola, this->jugadores);
 
-	mazo->llenarMazo();
+	this->mazo->llenarMazo();
 
 	while (!hayGanador(this->jugadores) && !hayEmpate(this->tablero)) {
 
@@ -80,18 +71,18 @@ void Juego::iniciar(Consola* consola) {
 
 			jugador = this->jugadores->obtenerCursor();
 
-			consola->mostrarDatosRonda(jugador, this->ronda);
+			consola.mostrarDatosRonda(jugador, this->ronda);
 
 			if (jugador->obtenerCartas()->contarElementos() < Mazo::MAX_CARTAS_JUGADOR) {
 
-				mazo->levantarCartaTope(jugador);
-				consola->mostrarLevanteDeCarta(jugador);
+				this->mazo->levantarCartaTope(jugador);
+				consola.mostrarLevanteDeCarta(jugador);
 			}
 
 			//Revisar
 			this->ronda = jugarCarta(jugador, this->jugadores, consola, this->ronda);
 
-			coordenadas = ingresarFicha(consola, tablero, jugador);
+			coordenadas = ingresarFicha(consola, this->tablero, jugador);
 
 			existeCuatroEnLinea = hayCuatroEnLinea(this->tablero, coordenadas, jugador);
 
@@ -105,11 +96,11 @@ void Juego::iniciar(Consola* consola) {
 
 	if (hayGanador(this->jugadores)) {
 
-		consola->mostrarGanador(this->jugadores);
+		consola.mostrarGanador(this->jugadores);
 
 	} else {
 
-		consola->mostrarEmpate(this->jugadores);
+		consola.mostrarEmpate(this->jugadores);
 	}
 }
 
@@ -135,7 +126,7 @@ unsigned int Juego::validarDimension(unsigned int dimension) {
 
 bool Juego::hayCuatroEnLineaEnRecta(Lista<Casillero*>* recta, char ficha) {
 
-	Casillero* casillero;
+	Casillero* casillero = NULL;
 	bool existeCuatroEnLinea = false;
 	unsigned int cantFichasAlineadas = 0;
 
@@ -169,7 +160,7 @@ bool Juego::hayCuatroEnLineaEnRecta(Lista<Casillero*>* recta, char ficha) {
 bool Juego::hayCuatroEnLineaEnDiagonalesDePlano(Lista<Lista<Casillero*>*>* diagonales,
 												char ficha) {
 
-	Lista<Casillero*>* diagonal;
+	Lista<Casillero*>* diagonal = NULL;
 	bool existeCuatroEnLinea = false;
 
 	diagonales->iniciarCursor();
@@ -190,7 +181,8 @@ bool Juego::hayCuatroEnLineaEnDiagonalesDePlano(Lista<Lista<Casillero*>*>* diago
 bool Juego::hayCuatroEnLineaEnDiagonalesDePlanos(Tablero* tablero, Casillero* coordenadas,
 		  	  	  	  	  	  	  	  	  	  	 char ficha) {
 
-	Lista<Lista<Casillero*>*>* diagonales;
+	Lista<Lista<Casillero*>*>* diagonales = NULL;
+	Lista<Casillero*>* diagonal = NULL;
 	unsigned int posicionX = coordenadas->obtenerPosicionX();
 	unsigned int posicionY = coordenadas->obtenerPosicionY();
 	unsigned int posicionZ = coordenadas->obtenerPosicionZ();
@@ -204,6 +196,18 @@ bool Juego::hayCuatroEnLineaEnDiagonalesDePlanos(Tablero* tablero, Casillero* co
 
 	} else {
 
+		/* Se eliminan los punteros */
+		diagonales->iniciarCursor();
+
+		while (diagonales->avanzarCursor()) {
+
+			diagonal = diagonales->obtenerCursor();
+
+			delete diagonal;
+		}
+
+		delete diagonales;
+
 		tablero->transponerTablero();
 
 		diagonales = tablero->obtenerDiagonalesPlanoXY(posicionZ, posicionX, posicionY);
@@ -216,6 +220,18 @@ bool Juego::hayCuatroEnLineaEnDiagonalesDePlanos(Tablero* tablero, Casillero* co
 			tablero->transponerTablero();
 
 		} else {
+
+			/* Se eliminan los punteros */
+			diagonales->iniciarCursor();
+
+			while (diagonales->avanzarCursor()) {
+
+				diagonal = diagonales->obtenerCursor();
+
+				delete diagonal;
+			}
+
+			delete diagonales;
 
 			tablero->transponerTablero();
 
@@ -234,14 +250,26 @@ bool Juego::hayCuatroEnLineaEnDiagonalesDePlanos(Tablero* tablero, Casillero* co
 		}
 	}
 
+	/* Se eliminan los punteros */
+	diagonales->iniciarCursor();
+
+	while (diagonales->avanzarCursor()) {
+
+		diagonal = diagonales->obtenerCursor();
+
+		delete diagonal;
+	}
+
+	delete diagonales;
+
 	return existeCuatroEnLinea;
 }
 
 bool Juego::hayCuatroEnLineaEnDiagonales(Tablero* tablero, Casillero* coordenadas,
 		  	  	  	  	  	  	  	  	 char ficha) {
 
-	Lista<Lista<Casillero*>*>* diagonales;
-	Lista<Casillero*>* diagonal;
+	Lista<Lista<Casillero*>*>* diagonales = NULL;
+	Lista<Casillero*>* diagonal = NULL;
 	unsigned int posicionX = coordenadas->obtenerPosicionX();
 	unsigned int posicionY = coordenadas->obtenerPosicionY();
 	unsigned int posicionZ = coordenadas->obtenerPosicionZ();
@@ -261,12 +289,24 @@ bool Juego::hayCuatroEnLineaEnDiagonales(Tablero* tablero, Casillero* coordenada
 		}
 	}
 
+	/* Se eliminan los punteros */
+	diagonales->iniciarCursor();
+
+	while (diagonales->avanzarCursor()) {
+
+		diagonal = diagonales->obtenerCursor();
+
+		delete diagonal;
+	}
+
+	delete diagonales;
+
 	return existeCuatroEnLinea;
 }
 
 bool Juego::hayCuatroEnLineaEnRectas(Tablero* tablero, Casillero* coordenadas, char ficha) {
 
-	Lista<Casillero*>* recta;
+	Lista<Casillero*>* recta = NULL;
 	unsigned int posicionX = coordenadas->obtenerPosicionX();
 	unsigned int posicionY = coordenadas->obtenerPosicionY();
 	unsigned int posicionZ = coordenadas->obtenerPosicionZ();
@@ -280,6 +320,8 @@ bool Juego::hayCuatroEnLineaEnRectas(Tablero* tablero, Casillero* coordenadas, c
 
 	} else {
 
+		delete recta;
+
 		tablero->transponerTablero();
 
 		recta = tablero->obtenerRectaEnX(posicionX, posicionY);
@@ -292,6 +334,8 @@ bool Juego::hayCuatroEnLineaEnRectas(Tablero* tablero, Casillero* coordenadas, c
 			tablero->transponerTablero();
 
 		} else {
+
+			delete recta;
 
 			tablero->transponerTablero();
 
@@ -309,6 +353,8 @@ bool Juego::hayCuatroEnLineaEnRectas(Tablero* tablero, Casillero* coordenadas, c
 			}
 		}
 	}
+
+	delete recta;
 
 	return existeCuatroEnLinea;
 }
@@ -347,19 +393,19 @@ Casillero* Juego::ubicarFichaUltimaPosicionLibre(Tablero* tablero,
 											     unsigned int longitud,
 											     unsigned int profundidad) {
 
-	Casillero* casillero;
-	Lista<Casillero*>* casilleros;
+	Casillero* casillero = NULL;
+	Lista<Casillero*>* recta = NULL;
 	bool estaPosicionado = false;
 	char ficha = jugador->obtenerFicha();
 
 	tablero->transponerTablero();
 
-	casilleros = tablero->obtenerRectaEnX(longitud, profundidad);
-	casilleros->iniciarCursor();
+	recta = tablero->obtenerRectaEnX(longitud, profundidad);
+	recta->iniciarCursor();
 
-	while (casilleros->avanzarCursor() && !estaPosicionado) {
+	while (recta->avanzarCursor() && !estaPosicionado) {
 
-		casillero = casilleros->obtenerCursor();
+		casillero = recta->obtenerCursor();
 
 		if (casillero->obtenerTipoFicha() == Casillero::CASILLERO_LIBRE) {
 
@@ -370,6 +416,8 @@ Casillero* Juego::ubicarFichaUltimaPosicionLibre(Tablero* tablero,
 
 	tablero->transponerTablero();
 	tablero->transponerTablero();
+
+	delete recta;
 
 	return casillero;
 }
@@ -416,18 +464,18 @@ bool Juego::esFichaValida(Lista<Jugador*>* jugadores, char ficha) {
 bool Juego::sonPosicionesValidas(Tablero* tablero, unsigned int longitud,
 							     unsigned int profundidad) {
 
-	Casillero* casillero;
-	Lista<Casillero*>* casilleros;
+	Casillero* casillero = NULL;
+	Lista<Casillero*>* recta = NULL;
 	bool hayEspacioLibre = false;
 
 	tablero->transponerTablero();
 
-	casilleros = tablero->obtenerRectaEnX(longitud, profundidad);
-	casilleros->iniciarCursor();
+	recta = tablero->obtenerRectaEnX(longitud, profundidad);
+	recta->iniciarCursor();
 
-	while (casilleros->avanzarCursor() && !hayEspacioLibre) {
+	while (recta->avanzarCursor() && !hayEspacioLibre) {
 
-		casillero = casilleros->obtenerCursor();
+		casillero = recta->obtenerCursor();
 
 		if (casillero->obtenerTipoFicha() == Casillero::CASILLERO_LIBRE) {
 
@@ -438,28 +486,30 @@ bool Juego::sonPosicionesValidas(Tablero* tablero, unsigned int longitud,
 	tablero->transponerTablero();
 	tablero->transponerTablero();
 
+	delete recta;
+
 	return hayEspacioLibre;
 }
 
-void Juego::ingresarJugadores(Consola* consola, Lista<Jugador*>* jugadores) {
+void Juego::ingresarJugadores(Consola consola, Lista<Jugador*>* jugadores) {
 
 	Jugador* jugador;
 	string nombre = "";
 	char ficha = '\0';
 	unsigned int cantJugadores = CANT_MIN_JUGADORES;
 
-	cantJugadores = consola->ingresarCantidadJugadores(CANT_MIN_JUGADORES, CANT_MAX_JUGADORES);
+	cantJugadores = consola.ingresarCantidadJugadores(CANT_MIN_JUGADORES, CANT_MAX_JUGADORES);
 
 	for (unsigned int i = 0; i < cantJugadores; i++) {
 
 		cout << endl << "######## JUGADOR " << i + 1
 			 << " ########" << std::endl;
 
-		nombre = consola->ingresarNombre();
+		nombre = consola.ingresarNombre();
 
 		do {
 
-			ficha = consola->ingresarFicha();
+			ficha = consola.ingresarFicha();
 
 		} while (!esFichaValida(jugadores, ficha));
 
@@ -469,23 +519,23 @@ void Juego::ingresarJugadores(Consola* consola, Lista<Jugador*>* jugadores) {
 	}
 }
 
-Casillero* Juego::ingresarFicha(Consola* consola, Tablero* tablero,
+Casillero* Juego::ingresarFicha(Consola consola, Tablero* tablero,
 							    Jugador* jugador) {
 
-	Casillero* coordenadas;
+	Casillero* coordenadas = NULL;
 	unsigned int posicionX = 0;
 	unsigned int posicionY = 0;
 	bool hayEspacioLibre = false;
 
 	do {
 
-		posicionX = consola->ingresarPosicion(
+		posicionX = consola.ingresarPosicion(
 			"longitud",
 			COORDENADA_VALOR_MINIMO + 1,
 			tablero->obtenerLongitud()
 		);
 
-		posicionY = consola->ingresarPosicion(
+		posicionY = consola.ingresarPosicion(
 			"profundidad",
 			COORDENADA_VALOR_MINIMO + 1,
 			tablero->obtenerProfundidad()
@@ -509,11 +559,11 @@ Casillero* Juego::ingresarFicha(Consola* consola, Tablero* tablero,
 
 bool Juego::hayEmpate(Tablero* tablero) {
 
-	Casillero* casillero;
-	Lista<Casillero*>* casilleros;
+	Casillero* casillero = NULL;
+	Lista<Casillero*>* casilleros = NULL;
 	bool esEmpate = true;
 
-	//casilleros = tablero->obtenerCasilleros();
+	casilleros = tablero->obtenerCasilleros();
 	casilleros->iniciarCursor();
 
 	while(casilleros->avanzarCursor() && esEmpate) {
@@ -534,7 +584,7 @@ bool Juego::hayGanador(Lista<Jugador*>* jugadores) {
 	bool existeGanador = false;
 	unsigned int contador = 1;
 	unsigned int tamanio = jugadores->contarElementos();
-	Jugador* jugador;
+	Jugador* jugador = NULL;
 
 	while (!existeGanador && contador < tamanio + 1) {
 
@@ -552,16 +602,16 @@ bool Juego::hayGanador(Lista<Jugador*>* jugadores) {
 }
 
 unsigned int Juego::jugarCarta(Jugador* jugador, Lista<Jugador*>* jugadores,
-							   Consola* consola, unsigned int ronda) {
+							   Consola consola, unsigned int ronda) {
 
 	unsigned int opcion = 0;
 	unsigned int tamanio = 0;
 
-	opcion = consola->ingresarCarta(jugador->obtenerCartas());
+	opcion = consola.ingresarCarta(jugador->obtenerCartas());
 
 	if (opcion != 0) {
 
-		Carta* carta;
+		Carta* carta = NULL;
 
 		carta = jugador->obtenerCartas()->obtener(opcion);
 
@@ -578,12 +628,16 @@ unsigned int Juego::jugarCarta(Jugador* jugador, Lista<Jugador*>* jugadores,
 				carta->bloquearTurno(jugadores);
 				jugador->obtenerCartas()->remover(opcion);
 
+				delete carta;
+
 				break;
 
 			case 2:
 
 				carta->jugarDoble(jugadores);
 				jugador->obtenerCartas()->remover(opcion);
+
+				delete carta;
 
 				break;
 
@@ -596,7 +650,7 @@ unsigned int Juego::jugarCarta(Jugador* jugador, Lista<Jugador*>* jugadores,
 
 	return ronda;
 }
-*/
+
 ostream& operator<<(ostream &strm, const Juego &juego) {
 
 	return strm << "Juego(ronda=" << juego.ronda
