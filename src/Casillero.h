@@ -4,9 +4,12 @@
 
 class Casillero {
 
-	private:
+	public:
 
 		static const char CASILLERO_LIBRE = '*';
+
+	private:
+
 		char tipoFicha;
 		unsigned int posicionX;
 		unsigned int posicionY;

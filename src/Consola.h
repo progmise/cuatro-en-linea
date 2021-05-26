@@ -28,6 +28,13 @@ class Consola {
 		void mostrarDatosRonda(Jugador* jugador, unsigned int ronda);
 
 		/*
+		 * PRE:  No tiene
+		 * POST: Imprime por consola el nombre del jugador, que levantó
+		 * 		 una carta
+		 */
+		void mostrarLevanteDeCarta(Jugador* jugador);
+
+		/*
 		 * PRE:  La lista de jugadores, no debe estar vacía
 		 * POST: Imprime por consola, un mensaje con el nombre del jugador
 		 * 		 que ganó el juego
@@ -131,7 +138,7 @@ class Consola {
 		 * POST: Devuelve un string, que representa a una opción
 		 * 		 de un menú, solicitado al usuario
 		 */
-		std::string solicitarOpcion(Lista<std::string*>* opciones);
+		std::string solicitarOpcion(Lista<std::string>* opciones);
 
 		/*
 		 * PRE:  minValor y maxValor, deben ser números mayores o iguales a 0,
@@ -146,7 +153,7 @@ class Consola {
 		 * PRE:  Cartas no debe ser una lista vacía
 		 * POST: Devuelve una lista, con cartas como opciones
 		 */
-		Lista<std::string*>* generarOpcionesCartas(Lista<Carta*>* cartas);
+		Lista<std::string>* generarOpcionesCartas(Lista<Carta*>* cartas);
 };
 
 #endif /* CONSOLA_H_ */
