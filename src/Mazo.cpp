@@ -3,21 +3,21 @@
 using namespace std;
 
 Mazo::Mazo() {
-	this->cartas = new Cola<Carta*>();
+	this->cartas = new Cola<Carta>();
 }
 
 Mazo::~Mazo() {
 	delete this->cartas;
 }
 
-Cola<Carta*>* Mazo::obtenerCartas() {
+Cola<Carta>* Mazo::obtenerCartas() {
 
 	return this->cartas;
 }
 
 void Mazo::llenarMazo() {
 
-	Carta* carta;
+	Carta carta;
 
 	for (int i = 0; i < MAX_CARTAS_MAZO; i++) {
 
@@ -27,25 +27,25 @@ void Mazo::llenarMazo() {
 	}
 }
 
-void Mazo::levantarCartaTope(Jugador* jugador) {
+void Mazo::levantarCartaTope(Jugador jugador) {
 
-	Carta* carta;
-	unsigned int cantCartas = jugador->obtenerCartas()->contarElementos();
+	Carta carta;
+	unsigned int cantCartas = jugador.obtenerCartas()->contarElementos();
 
 	if (cantCartas < MAX_CARTAS_JUGADOR) {
 
 		carta = this->cartas->desacolar();
-		jugador->obtenerCartas()->agregar(carta);
+		jugador.obtenerCartas()->agregar(carta);
 
 		carta = generarAzarmenteCarta();
 		this->cartas->acolar(carta);
 	}
 }
 
-Carta* Mazo::generarAzarmenteCarta() {
+Carta Mazo::generarAzarmenteCarta() {
 
 	int numero = 0;
-	Carta* carta;
+	Carta carta;
 
 	numero = (rand() % CANT_TIPOS_CARTAS) + 1;
 
@@ -53,7 +53,7 @@ Carta* Mazo::generarAzarmenteCarta() {
 
 		case 1:
 
-			carta = new Carta(
+			carta = Carta(
 				numero,
 				"Carta Bloquear Turno",
 				"Hace perder un turno al siguiente jugador"
@@ -62,7 +62,7 @@ Carta* Mazo::generarAzarmenteCarta() {
 
 		case 2:
 
-			carta = new Carta(
+			carta = Carta(
 				numero,
 				"Carta Juega Doble",
 				"Permite al jugador jugar dos fichas, en vez de una"

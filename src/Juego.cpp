@@ -8,7 +8,7 @@ Juego::Juego() {
 	this->jugadores = new Lista<Jugador*>;
 	this->mazo = new Mazo();
 }
-
+/*
 Juego::Juego(unsigned int longitud, unsigned int profundidad, unsigned int altura) {
 	this->ronda = 1;
 
@@ -596,7 +596,7 @@ unsigned int Juego::jugarCarta(Jugador* jugador, Lista<Jugador*>* jugadores,
 
 	return ronda;
 }
-
+*/
 ostream& operator<<(ostream &strm, const Juego &juego) {
 
 	return strm << "Juego(ronda=" << juego.ronda

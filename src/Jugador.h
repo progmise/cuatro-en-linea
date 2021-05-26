@@ -14,7 +14,7 @@ class Jugador {
 		unsigned int jugadas;
 		char ficha;
 		bool flagGanador;
-		Lista<Carta*>* cartas;
+		Lista<Carta>* cartas;
 
 		/*
 		 * A fin de poder sobrescribir el operador '<<', se debe declarar
@@ -100,7 +100,7 @@ class Jugador {
 		 * PRE:  No tiene
 		 * POST: Devuelve el valor de cartas
 		 */
-		Lista<Carta*>* obtenerCartas();
+		Lista<Carta>* obtenerCartas();
 
 		/*
 		 * PRE:  La lista de jugadores, no debe estar vacía e
@@ -110,7 +110,7 @@ class Jugador {
 		 * 		 sobre la lista de jugadores. Finalizada la ejecución,
 		 * 		 se elimina la carta jugada
 		 */
-		void jugarCarta(Lista<Jugador*>* jugadores, unsigned int indiceCarta);
+		void jugarCarta(Lista<Jugador>* jugadores, unsigned int indiceCarta);
 };
 
 /*

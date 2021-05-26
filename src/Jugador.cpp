@@ -7,7 +7,7 @@ Jugador::Jugador() {
     this->jugadas = 0;
     this->ficha = '\0';
     this->flagGanador = false;
-    this->cartas = new Lista<Carta*>();
+    this->cartas = new Lista<Carta>();
 }
 
 Jugador::Jugador(string nombre, char ficha) {
@@ -15,7 +15,7 @@ Jugador::Jugador(string nombre, char ficha) {
     this->jugadas = 0;
     this->ficha = ficha;
     this->flagGanador = false;
-    this->cartas = new Lista<Carta*>();
+    this->cartas = new Lista<Carta>();
 }
 
 Jugador::~Jugador() {
@@ -62,25 +62,25 @@ void Jugador::asignarGanador(bool flagGanador) {
 	this->flagGanador = flagGanador;
 }
 
-Lista<Carta*>* Jugador::obtenerCartas() {
+Lista<Carta>* Jugador::obtenerCartas() {
 
 	return this->cartas;
 }
 
-void Jugador::jugarCarta(Lista<Jugador*>* jugadores, unsigned int indiceCarta) {
+void Jugador::jugarCarta(Lista<Jugador>* jugadores, unsigned int indiceCarta) {
 
-	Carta* carta = this->cartas->obtener(indiceCarta);
+	Carta carta = this->cartas->obtener(indiceCarta);
 
 	switch (indiceCarta) {
 
 		case 1:
 
-			carta->bloquearTurno(jugadores);
+			carta.bloquearTurno(jugadores);
 			break;
 
 		case 2:
 
-			carta->jugarDoble(jugadores);
+			carta.jugarDoble(jugadores);
 			break;
 
 		default:

@@ -25,28 +25,28 @@ class Consola {
 		 * POST: Imprime por consola el número de la ronda y el
 		 * 		 nombre del jugador
 		 */
-		void mostrarDatosRonda(Jugador* jugador, unsigned int ronda);
+		void mostrarDatosRonda(Jugador jugador, unsigned int ronda);
 
 		/*
 		 * PRE:  No tiene
 		 * POST: Imprime por consola el nombre del jugador, que levantó
 		 * 		 una carta
 		 */
-		void mostrarLevanteDeCarta(Jugador* jugador);
+		void mostrarLevanteDeCarta(Jugador jugador);
 
 		/*
 		 * PRE:  La lista de jugadores, no debe estar vacía
 		 * POST: Imprime por consola, un mensaje con el nombre del jugador
 		 * 		 que ganó el juego
 		 */
-		void mostrarGanador(Lista<Jugador*>* jugadores);
+		void mostrarGanador(Lista<Jugador>* jugadores);
 
 		/*
 		 * PRE:  La lista de jugadores, no debe estar vacía
 		 * POST: Imprime por consola, un mensaje informando todos los nombres
 		 * 		 de los jugadores que empataron
 		 */
-		void mostrarEmpate(Lista<Jugador*>* jugadores);
+		void mostrarEmpate(Lista<Jugador>* jugadores);
 
 		/*
 		 * PRE:  minValor y maxValor, deben ser números mayores o iguales a 0,
@@ -87,7 +87,7 @@ class Consola {
 		 * POST: Devuelve la opción ingresada por el usuario, que puede ser el
 		 * 		 índice de alguna carta o la opción salir
 		 */
-		unsigned int ingresarCarta(Lista<Carta*>* cartas);
+		unsigned int ingresarCarta(Lista<Carta>* cartas);
 
 	private:
 
@@ -138,7 +138,7 @@ class Consola {
 		 * POST: Devuelve un string, que representa a una opción
 		 * 		 de un menú, solicitado al usuario
 		 */
-		std::string solicitarOpcion(Lista<std::string*>* opciones);
+		std::string solicitarOpcion(Lista<std::string>* opciones);
 
 		/*
 		 * PRE:  minValor y maxValor, deben ser números mayores o iguales a 0,
@@ -153,7 +153,7 @@ class Consola {
 		 * PRE:  Cartas no debe ser una lista vacía
 		 * POST: Devuelve una lista, con cartas como opciones
 		 */
-		Lista<std::string*>* generarOpcionesCartas(Lista<Carta*>* cartas);
+		Lista<std::string>* generarOpcionesCartas(Lista<Carta>* cartas);
 };
 
 #endif /* CONSOLA_H_ */

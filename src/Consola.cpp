@@ -13,24 +13,24 @@ void Consola::mostrarBienvenida() {
 	cout << "¡Exitos!" << endl << endl;
 }
 
-void Consola::mostrarLevanteDeCarta(Jugador* jugador) {
+void Consola::mostrarLevanteDeCarta(Jugador jugador) {
 
-	cout << endl << "¡" << jugador->obtenerNombre()
+	cout << endl << "¡" << jugador.obtenerNombre()
 		 << " ha levantado una carta!" << endl;
 }
 
-void Consola::mostrarDatosRonda(Jugador* jugador, unsigned int ronda) {
+void Consola::mostrarDatosRonda(Jugador jugador, unsigned int ronda) {
 
 	cout << "######## RONDA " << ronda << " ########" << endl << endl;
-	cout << "Turno del jugador " << jugador->obtenerNombre() << endl;
-	cout << "Ha hecho " << jugador->obtenerJugadas() << " jugadas" << endl;
-	cout << "Tiene un total de " << jugador->obtenerCartas()->contarElementos()
+	cout << "Turno del jugador " << jugador.obtenerNombre() << endl;
+	cout << "Ha hecho " << jugador.obtenerJugadas() << " jugadas" << endl;
+	cout << "Tiene un total de " << jugador.obtenerCartas()->contarElementos()
 		 << " cartas" << endl;
 }
 
-void Consola::mostrarGanador(Lista<Jugador*>* jugadores) {
+void Consola::mostrarGanador(Lista<Jugador>* jugadores) {
 
-	Jugador* jugador;
+	Jugador jugador;
 	bool hayGanador = false;
 
 	jugadores->iniciarCursor();
@@ -40,7 +40,7 @@ void Consola::mostrarGanador(Lista<Jugador*>* jugadores) {
 		jugadores->avanzarCursor();
 		jugador = jugadores->obtenerCursor();
 
-		if (jugador->esGanador()) {
+		if (jugador.esGanador()) {
 
 			hayGanador = true;
 		}
@@ -48,15 +48,15 @@ void Consola::mostrarGanador(Lista<Jugador*>* jugadores) {
 
 	cout << endl;
 	cout << "########## ¡JUEGO TERMINADO! ##########" << endl << endl;
-	cout << "El ganador es el jugador " << jugador->obtenerNombre() << endl;
-	cout << "Ha hecho " << jugador->obtenerJugadas() << " jugadas" << endl;
+	cout << "El ganador es el jugador " << jugador.obtenerNombre() << endl;
+	cout << "Ha hecho " << jugador.obtenerJugadas() << " jugadas" << endl;
 }
 
-void Consola::mostrarEmpate(Lista<Jugador*>* jugadores) {
+void Consola::mostrarEmpate(Lista<Jugador>* jugadores) {
 
 	string mensaje = "";
 	stringstream strStream;
-	Jugador* jugador;
+	Jugador jugador;
 	unsigned int tamanio = jugadores->contarElementos();
 
 	strStream << "\n------> ¡Ninguno ha ganado ";
@@ -67,15 +67,15 @@ void Consola::mostrarEmpate(Lista<Jugador*>* jugadores) {
 
 		if (i < tamanio - 1) {
 
-			strStream << jugador->obtenerNombre() << ", ";
+			strStream << jugador.obtenerNombre() << ", ";
 
 		} else if (i == tamanio - 1) {
 
-			strStream << jugador->obtenerNombre() << " y ";
+			strStream << jugador.obtenerNombre() << " y ";
 
 		} else {
 
-			strStream << jugador->obtenerNombre();
+			strStream << jugador.obtenerNombre();
 		}
 	}
 
@@ -161,11 +161,11 @@ unsigned int Consola::ingresarCantidadJugadores(unsigned int minCantJug,
 	return cantJugadores;
 }
 
-unsigned int Consola::ingresarCarta(Lista<Carta*>* cartas) {
+unsigned int Consola::ingresarCarta(Lista<Carta>* cartas) {
 
 	stringstream strStream;
 	string entrada = "";
-	Lista<string*>* opciones = generarOpcionesCartas(cartas);
+	Lista<string>* opciones = generarOpcionesCartas(cartas);
 	unsigned int opcion = 0;
 	bool flagEsValido = false;
 
@@ -183,6 +183,8 @@ unsigned int Consola::ingresarCarta(Lista<Carta*>* cartas) {
 	strStream << entrada;
 	strStream >> opcion;
 	strStream.clear();
+
+	delete opciones;
 
 	return opcion;
 }
@@ -296,7 +298,7 @@ string Consola::solicitarCantidadJugadores() {
 	return entrada;
 }
 
-string Consola::solicitarOpcion(Lista<string*>* opciones) {
+string Consola::solicitarOpcion(Lista<string>* opciones) {
 
 	string entrada = "";
 
@@ -306,7 +308,7 @@ string Consola::solicitarOpcion(Lista<string*>* opciones) {
 
 	while (opciones->avanzarCursor()) {
 
-		cout << *opciones->obtenerCursor();
+		cout << opciones->obtenerCursor();
 	}
 
 	cout << endl << "Ingrese una opción: ";
@@ -348,18 +350,18 @@ bool Consola::esNumeroValido(std::string entrada, unsigned int minValor,
 	return flagEsValido;
 }
 
-Lista<string*>* Consola::generarOpcionesCartas(Lista<Carta*>* cartas) {
+Lista<string>* Consola::generarOpcionesCartas(Lista<Carta>* cartas) {
 
-	Lista<string*>* opciones = new Lista<string*>();
+	Lista<string>* opciones = new Lista<string>();
 	stringstream strStream;
-	string* opcion;
+	string opcion;
 	unsigned int tamanio = cartas->contarElementos();
 
 	for (unsigned int i = 1; i < tamanio + 1; i++) {
 
-		strStream << i << " - " << cartas->obtener(i)->obtenerNombre() << endl;
+		strStream << i << " - " << cartas->obtener(i).obtenerNombre() << endl;
 
-		opcion = new string(strStream.str());
+		opcion = string(strStream.str());
 
 		strStream.str(string());
 		strStream.clear();
@@ -369,7 +371,7 @@ Lista<string*>* Consola::generarOpcionesCartas(Lista<Carta*>* cartas) {
 
 	strStream << endl << "0" << " - " << "Salir" << endl;
 
-	opcion = new string(strStream.str());
+	opcion = string(strStream.str());
 
 	strStream.str(string());
 	strStream.clear();

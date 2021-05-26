@@ -44,7 +44,7 @@ void Carta::asignarDescripcion(string descripcion) {
 	this->descripcion = descripcion;
 }
 
-void Carta::bloquearTurno(Lista<Jugador*>* jugadores) {
+void Carta::bloquearTurno(Lista<Jugador>* jugadores) {
 
 	int tamanio = jugadores->contarElementos();
 
@@ -59,7 +59,7 @@ void Carta::bloquearTurno(Lista<Jugador*>* jugadores) {
 	}
 }
 
-void Carta::jugarDoble(Lista<Jugador*>* jugadores) {
+void Carta::jugarDoble(Lista<Jugador>* jugadores) {
 
 	unsigned int tamanio = jugadores->contarElementos();
 

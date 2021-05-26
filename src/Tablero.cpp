@@ -6,16 +6,16 @@ Tablero::Tablero() {
     this->longitud = 0;
     this->profundidad = 0;
     this->altura = 0;
-    this->casilleros = new Lista<Casillero*>();
+    this->casilleros = new Lista<Casillero>();
 }
 
 Tablero::Tablero(unsigned int longitud, unsigned int profundidad, unsigned int altura) {
     this->longitud = longitud;
     this->profundidad = profundidad;
     this->altura = altura;
-    this->casilleros = new Lista<Casillero*>();
+    this->casilleros = new Lista<Casillero>();
 
-    Casillero* casillero;
+    Casillero casillero;
 
     for (unsigned int i = 0; i < longitud; i++) {
 
@@ -23,7 +23,7 @@ Tablero::Tablero(unsigned int longitud, unsigned int profundidad, unsigned int a
 
             for (unsigned int k = 0; k < altura; k++) {
 
-            	casillero = new Casillero(i, j, k);
+            	casillero = Casillero(i, j, k);
 
             	this->casilleros->agregar(casillero);
             }
@@ -66,18 +66,18 @@ void Tablero::asignarAltura(unsigned int altura) {
 	this->altura = altura;
 }
 
-Lista<Casillero*>* Tablero::obtenerCasilleros() {
+Lista<Casillero>* Tablero::obtenerCasilleros() {
 
 	return this->casilleros;
 }
 
-Lista<Casillero*>* Tablero::obtenerRectaEnX(unsigned int profundidad,
-								   	   	    unsigned int altura) {
+Lista<Casillero>* Tablero::obtenerRectaEnX(unsigned int profundidad,
+								   	   	   unsigned int altura) {
 
-	Casillero* casillero;
+	Casillero casillero;
 	unsigned int posicionY = 0;
 	unsigned int posicionZ = 0;
-	Lista<Casillero*>* recta = new Lista<Casillero*>();
+	Lista<Casillero>* recta = new Lista<Casillero>();
 
 	this->casilleros->iniciarCursor();
 
@@ -85,8 +85,8 @@ Lista<Casillero*>* Tablero::obtenerRectaEnX(unsigned int profundidad,
 
 		casillero = this->casilleros->obtenerCursor();
 
-		posicionY = casillero->obtenerPosicionY();
-		posicionZ = casillero->obtenerPosicionZ();
+		posicionY = casillero.obtenerPosicionY();
+		posicionZ = casillero.obtenerPosicionZ();
 
 		if (posicionY == profundidad && posicionZ == altura) {
 
@@ -149,13 +149,13 @@ Lista<Casillero*>* Tablero::obtenerRectaEnZ(unsigned int longitud,
 	return recta;
 }
 */
-Lista<Lista<Casillero*>*>* Tablero::obtenerDiagonalesPlanoXY(unsigned int longitud,
-														  	 unsigned int profundidad,
-															 unsigned int altura) {
+Lista<Lista<Casillero>*>* Tablero::obtenerDiagonalesPlanoXY(unsigned int longitud,
+														  	unsigned int profundidad,
+															unsigned int altura) {
 
-	Lista<Casillero*>* diagonal;
-	Lista<Casillero*>* plano;
-	Lista<Lista<Casillero*>*>* diagonales = new Lista<Lista<Casillero*>*>();
+	Lista<Casillero>* diagonal;
+	Lista<Casillero>* plano;
+	Lista<Lista<Casillero>*>* diagonales = new Lista<Lista<Casillero>*>();
 
 	plano = obtenerPlanoXY(altura);
 
@@ -165,15 +165,17 @@ Lista<Lista<Casillero*>*>* Tablero::obtenerDiagonalesPlanoXY(unsigned int longit
 	diagonal = obtenerDiagonalDerechaPlanoXY(plano, longitud, profundidad);
 	diagonales->agregar(diagonal);
 
+	delete plano;
+
 	return diagonales;
 }
 
-Lista<Lista<Casillero*>*>* Tablero::obtenerDiagonales(unsigned int longitud,
-													  unsigned int profundidad,
-													  unsigned int altura) {
+Lista<Lista<Casillero>*>* Tablero::obtenerDiagonales(unsigned int longitud,
+													 unsigned int profundidad,
+													 unsigned int altura) {
 
-	Lista<Casillero*>* diagonal;
-	Lista<Lista<Casillero*>*>* diagonales = new Lista<Lista<Casillero*>*>();
+	Lista<Casillero>* diagonal;
+	Lista<Lista<Casillero>*>* diagonales = new Lista<Lista<Casillero>*>();
 
 	diagonal = obtenerDiagonalIzquierdaTrasera(longitud, profundidad, altura);
 	diagonales->agregar(diagonal);
@@ -192,7 +194,7 @@ Lista<Lista<Casillero*>*>* Tablero::obtenerDiagonales(unsigned int longitud,
 
 void Tablero::transponerTablero() {
 
-	Casillero* casillero;
+	Casillero casillero;
 	unsigned int aux = 0;
 
 	this->casilleros->iniciarCursor();
@@ -201,17 +203,17 @@ void Tablero::transponerTablero() {
 
 		casillero = this->casilleros->obtenerCursor();
 
-		aux = casillero->obtenerPosicionX();
+		aux = casillero.obtenerPosicionX();
 
-		casillero->asignarPosicionX(
-			casillero->obtenerPosicionZ()
+		casillero.asignarPosicionX(
+			casillero.obtenerPosicionZ()
 		);
 
-		casillero->asignarPosicionZ(
-			casillero->obtenerPosicionY()
+		casillero.asignarPosicionZ(
+			casillero.obtenerPosicionY()
 		);
 
-		casillero->asignarPosicionY(
+		casillero.asignarPosicionY(
 			aux
 		);
 	}
@@ -223,11 +225,11 @@ void Tablero::transponerTablero() {
 	this->profundidad = aux;
 }
 
-Lista<Casillero*>* Tablero::obtenerPlanoXY(unsigned int altura) {
+Lista<Casillero>* Tablero::obtenerPlanoXY(unsigned int altura) {
 
-	Casillero* casillero;
+	Casillero casillero;
 	unsigned int posicionZ = 0;
-	Lista<Casillero*>* plano = new Lista<Casillero*>();
+	Lista<Casillero>* plano = new Lista<Casillero>();
 
 	this->casilleros->iniciarCursor();
 
@@ -235,7 +237,7 @@ Lista<Casillero*>* Tablero::obtenerPlanoXY(unsigned int altura) {
 
 		casillero = this->casilleros->obtenerCursor();
 
-		posicionZ = casillero->obtenerPosicionZ();
+		posicionZ = casillero.obtenerPosicionZ();
 
 		if (posicionZ == altura) {
 
@@ -246,15 +248,14 @@ Lista<Casillero*>* Tablero::obtenerPlanoXY(unsigned int altura) {
 	return plano;
 }
 
-Lista<Casillero*>* Tablero::obtenerDiagonalIzquierdaPlanoXY(Lista<Casillero*>* plano,
-														    unsigned int columna,
-															unsigned int fila) {
+Lista<Casillero>* Tablero::obtenerDiagonalIzquierdaPlanoXY(Lista<Casillero>* plano,
+														   unsigned int columna,
+														   unsigned int fila) {
 
-	Casillero* casillero;
+	Casillero casillero;
 	unsigned int posicionX = 0;
 	unsigned int posicionY = 0;
-	//unsigned int dimension = this->longitud;
-	Lista<Casillero*>* diagonal = new Lista<Casillero*>();
+	Lista<Casillero>* diagonal = new Lista<Casillero>();
 
 	if (fila <= columna) {
 
@@ -275,8 +276,8 @@ Lista<Casillero*>* Tablero::obtenerDiagonalIzquierdaPlanoXY(Lista<Casillero*>* p
 
 			casillero = plano->obtenerCursor();
 
-			posicionX = casillero->obtenerPosicionX();
-			posicionY = casillero->obtenerPosicionY();
+			posicionX = casillero.obtenerPosicionX();
+			posicionY = casillero.obtenerPosicionY();
 
 			if (posicionX == columna && posicionY == fila) {
 
@@ -291,15 +292,15 @@ Lista<Casillero*>* Tablero::obtenerDiagonalIzquierdaPlanoXY(Lista<Casillero*>* p
 	return diagonal;
 }
 
-Lista<Casillero*>* Tablero::obtenerDiagonalDerechaPlanoXY(Lista<Casillero*>* plano,
-														    unsigned int columna,
-															unsigned int fila) {
+Lista<Casillero>* Tablero::obtenerDiagonalDerechaPlanoXY(Lista<Casillero>* plano,
+														 unsigned int columna,
+														 unsigned int fila) {
 	
-	Casillero* casillero;
+	Casillero casillero;
 	unsigned int posicionX = 0;
 	unsigned int posicionY = 0;
 	unsigned int profundidad = this->profundidad - 1;
-	Lista<Casillero*>* diagonal = new Lista<Casillero*>();
+	Lista<Casillero>* diagonal = new Lista<Casillero>();
 
 	if (columna + fila < profundidad) {
 
@@ -320,8 +321,8 @@ Lista<Casillero*>* Tablero::obtenerDiagonalDerechaPlanoXY(Lista<Casillero*>* pla
 
 			casillero = plano->obtenerCursor();
 
-			posicionX = casillero->obtenerPosicionX();
-			posicionY = casillero->obtenerPosicionY();
+			posicionX = casillero.obtenerPosicionX();
+			posicionY = casillero.obtenerPosicionY();
 
 			if (posicionX == columna && posicionY == fila) {
 
@@ -337,16 +338,16 @@ Lista<Casillero*>* Tablero::obtenerDiagonalDerechaPlanoXY(Lista<Casillero*>* pla
 }
 
 
-Lista<Casillero*>* Tablero::obtenerDiagonalIzquierdaTrasera(unsigned int longitud,
-												   	   	    unsigned int profundidad,
-															unsigned int altura) {
+Lista<Casillero>* Tablero::obtenerDiagonalIzquierdaTrasera(unsigned int longitud,
+												   	   	   unsigned int profundidad,
+														   unsigned int altura) {
 
-	Casillero* casillero;
+	Casillero casillero;
 	unsigned int posicionX = 0;
 	unsigned int posicionY = 0;
 	unsigned int posicionZ = 0;
 	unsigned int menor = 0;
-	Lista<Casillero*>* diagonal = new Lista<Casillero*>();
+	Lista<Casillero>* diagonal = new Lista<Casillero>();
 
 	menor = Util::obtenerMenorDeTres(longitud, profundidad, altura);
 
@@ -363,9 +364,9 @@ Lista<Casillero*>* Tablero::obtenerDiagonalIzquierdaTrasera(unsigned int longitu
 
 			casillero = this->casilleros->obtenerCursor();
 
-			posicionX = casillero->obtenerPosicionX();
-			posicionY = casillero->obtenerPosicionY();
-			posicionZ = casillero->obtenerPosicionZ();
+			posicionX = casillero.obtenerPosicionX();
+			posicionY = casillero.obtenerPosicionY();
+			posicionZ = casillero.obtenerPosicionZ();
 
 			if (posicionX == longitud && posicionY == profundidad &&
 				posicionZ == altura) {
@@ -382,16 +383,16 @@ Lista<Casillero*>* Tablero::obtenerDiagonalIzquierdaTrasera(unsigned int longitu
 	return diagonal;
 }
 
-Lista<Casillero*>* Tablero::obtenerDiagonalDerechaTrasera(unsigned int longitud,
-														  unsigned int profundidad,
-														  unsigned int altura) {
+Lista<Casillero>* Tablero::obtenerDiagonalDerechaTrasera(unsigned int longitud,
+														 unsigned int profundidad,
+														 unsigned int altura) {
 
-	Casillero* casillero;
+	Casillero casillero;
 	unsigned int posicionX = 0;
 	unsigned int posicionY = 0;
 	unsigned int posicionZ = 0;
 	unsigned int menor = 0;
-	Lista<Casillero*>* diagonal = new Lista<Casillero*>();
+	Lista<Casillero>* diagonal = new Lista<Casillero>();
 
 	menor = Util::obtenerMenorDeTres(longitud, profundidad, altura);
 
@@ -408,9 +409,9 @@ Lista<Casillero*>* Tablero::obtenerDiagonalDerechaTrasera(unsigned int longitud,
 
 			casillero = this->casilleros->obtenerCursor();
 
-			posicionX = casillero->obtenerPosicionX();
-			posicionY = casillero->obtenerPosicionY();
-			posicionZ = casillero->obtenerPosicionZ();
+			posicionX = casillero.obtenerPosicionX();
+			posicionY = casillero.obtenerPosicionY();
+			posicionZ = casillero.obtenerPosicionZ();
 
 			if (posicionX == longitud && posicionY == profundidad &&
 				posicionZ == altura) {
@@ -427,16 +428,16 @@ Lista<Casillero*>* Tablero::obtenerDiagonalDerechaTrasera(unsigned int longitud,
 	return diagonal;
 }
 
-Lista<Casillero*>* Tablero::obtenerDiagonalIzquierdaFrontal(unsigned int longitud,
-													  	    unsigned int profundidad,
-														    unsigned int altura) {
+Lista<Casillero>* Tablero::obtenerDiagonalIzquierdaFrontal(unsigned int longitud,
+													  	   unsigned int profundidad,
+														   unsigned int altura) {
 
-	Casillero* casillero;
+	Casillero casillero;
 	unsigned int posicionX = 0;
 	unsigned int posicionY = 0;
 	unsigned int posicionZ = 0;
 	unsigned int menor = 0;
-	Lista<Casillero*>* diagonal = new Lista<Casillero*>();
+	Lista<Casillero>* diagonal = new Lista<Casillero>();
 
 	menor = Util::obtenerMenorDeTres(longitud, profundidad, altura);
 
@@ -453,9 +454,9 @@ Lista<Casillero*>* Tablero::obtenerDiagonalIzquierdaFrontal(unsigned int longitu
 
 			casillero = this->casilleros->obtenerCursor();
 
-			posicionX = casillero->obtenerPosicionX();
-			posicionY = casillero->obtenerPosicionY();
-			posicionZ = casillero->obtenerPosicionZ();
+			posicionX = casillero.obtenerPosicionX();
+			posicionY = casillero.obtenerPosicionY();
+			posicionZ = casillero.obtenerPosicionZ();
 
 			if (posicionX == longitud && posicionY == profundidad &&
 				posicionZ == altura) {
@@ -472,16 +473,16 @@ Lista<Casillero*>* Tablero::obtenerDiagonalIzquierdaFrontal(unsigned int longitu
 	return diagonal;
 }
 
-Lista<Casillero*>* Tablero::obtenerDiagonalDerechaFrontal(unsigned int longitud,
-													  	  unsigned int profundidad,
-														  unsigned int altura) {
+Lista<Casillero>* Tablero::obtenerDiagonalDerechaFrontal(unsigned int longitud,
+													  	 unsigned int profundidad,
+														 unsigned int altura) {
 
-	Casillero* casillero;
+	Casillero casillero;
 	unsigned int posicionX = 0;
 	unsigned int posicionY = 0;
 	unsigned int posicionZ = 0;
 	unsigned int menor = 0;
-	Lista<Casillero*>* diagonal = new Lista<Casillero*>();
+	Lista<Casillero>* diagonal = new Lista<Casillero>();
 
 	menor = Util::obtenerMenorDeTres(longitud, profundidad, altura);
 
@@ -498,9 +499,9 @@ Lista<Casillero*>* Tablero::obtenerDiagonalDerechaFrontal(unsigned int longitud,
 
 			casillero = this->casilleros->obtenerCursor();
 
-			posicionX = casillero->obtenerPosicionX();
-			posicionY = casillero->obtenerPosicionY();
-			posicionZ = casillero->obtenerPosicionZ();
+			posicionX = casillero.obtenerPosicionX();
+			posicionY = casillero.obtenerPosicionY();
+			posicionZ = casillero.obtenerPosicionZ();
 
 			if (posicionX == longitud && posicionY == profundidad &&
 				posicionZ == altura) {

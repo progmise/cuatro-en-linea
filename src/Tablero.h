@@ -11,7 +11,7 @@ class Tablero {
 		unsigned int longitud;
 		unsigned int profundidad;
 		unsigned int altura;
-		Lista<Casillero*>* casilleros;
+		Lista<Casillero>* casilleros;
 
 		/*
 		 * A fin de poder sobrescribir el operador '<<', se debe declarar
@@ -83,10 +83,10 @@ class Tablero {
 		 * PRE:  No tiene
 		 * POST: Devuelve el valor de casilleros
 		 */
-		Lista<Casillero*>* obtenerCasilleros();
+		Lista<Casillero>* obtenerCasilleros();
 
-		Lista<Casillero*>* obtenerRectaEnX(unsigned int profundidad,
-										   unsigned int altura);
+		Lista<Casillero>* obtenerRectaEnX(unsigned int profundidad,
+										  unsigned int altura);
 		/*
 		Lista<Casillero*>* obtenerRectaEnY(unsigned int longitud,
 										   unsigned int altura);
@@ -94,45 +94,45 @@ class Tablero {
 		Lista<Casillero*>* obtenerRectaEnZ(unsigned int longitud,
 										   unsigned int profundidad);
 		*/
-		Lista<Lista<Casillero*>*>* obtenerDiagonalesPlanoXY(unsigned int longitud,
-														    unsigned int profundidad,
-														    unsigned int altura);
+		Lista<Lista<Casillero>*>* obtenerDiagonalesPlanoXY(unsigned int longitud,
+														   unsigned int profundidad,
+														   unsigned int altura);
 
-		Lista<Lista<Casillero*>*>* obtenerDiagonales(unsigned int longitud,
-													 unsigned int profundidad,
-													 unsigned int altura);
+		Lista<Lista<Casillero>*>* obtenerDiagonales(unsigned int longitud,
+													unsigned int profundidad,
+													unsigned int altura);
 
 		void transponerTablero();
 
 	private:
 
-		Lista<Casillero*>* obtenerPlanoXY(unsigned int altura);
+		Lista<Casillero>* obtenerPlanoXY(unsigned int altura);
 
-		Lista<Casillero*>* obtenerDiagonalIzquierdaPlanoXY(Lista<Casillero*>* plano,
-														   unsigned int columna,
-														   unsigned int fila);
+		Lista<Casillero>* obtenerDiagonalIzquierdaPlanoXY(Lista<Casillero>* plano,
+														  unsigned int columna,
+														  unsigned int fila);
 
-		Lista<Casillero*>* obtenerDiagonalDerechaPlanoXY(Lista<Casillero*>* plano,
-														 unsigned int columna,
-														 unsigned int fila);
+		Lista<Casillero>* obtenerDiagonalDerechaPlanoXY(Lista<Casillero>* plano,
+														unsigned int columna,
+														unsigned int fila);
 
 
 
-		Lista<Casillero*>* obtenerDiagonalIzquierdaTrasera(unsigned int longitud,
-														   unsigned int profundidad,
-														   unsigned int altura);
+		Lista<Casillero>* obtenerDiagonalIzquierdaTrasera(unsigned int longitud,
+														  unsigned int profundidad,
+														  unsigned int altura);
 
-		Lista<Casillero*>* obtenerDiagonalDerechaTrasera(unsigned int longitud,
-														 unsigned int profundidad,
-														 unsigned int altura);
+		Lista<Casillero>* obtenerDiagonalDerechaTrasera(unsigned int longitud,
+														unsigned int profundidad,
+														unsigned int altura);
 
-		Lista<Casillero*>* obtenerDiagonalIzquierdaFrontal(unsigned int longitud,
-														   unsigned int profundidad,
-														   unsigned int altura);
+		Lista<Casillero>* obtenerDiagonalIzquierdaFrontal(unsigned int longitud,
+														  unsigned int profundidad,
+														  unsigned int altura);
 
-		Lista<Casillero*>* obtenerDiagonalDerechaFrontal(unsigned int longitud,
-														 unsigned int profundidad,
-														 unsigned int altura);
+		Lista<Casillero>* obtenerDiagonalDerechaFrontal(unsigned int longitud,
+														unsigned int profundidad,
+														unsigned int altura);
 };
 
 /*
