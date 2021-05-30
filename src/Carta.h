@@ -3,6 +3,7 @@
 #include "Lista.h"
 #include "Jugador.h"
 #include <iostream>
+#include "Consola.h"
 
 class Jugador;
 
@@ -83,6 +84,12 @@ class Carta {
 		 * POST: Mueve el cursor de la lista, al anterior jugador
 		 */
 		void jugarDoble(Lista<Jugador*>* jugadores);
+
+		/*
+		 * PRE: La lista de jugadores no debe estar vacía
+		 * POST: Vacía la lista de cartas del jugador elegido
+		 * */
+		void borrarCartas(Lista<Jugador*>* jugadores);
 };
 
 /*

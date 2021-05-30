@@ -89,6 +89,12 @@ class Consola {
 		 */
 		unsigned int ingresarCarta(Lista<Carta*>* cartas);
 
+		/*
+		 * PRE: Jugadores no debe ser una lista vacía
+		 * POST: Retorna el jugador seleccionado
+		 */
+		Jugador preguntarJugadorParaFatality(Lista<Jugador*>* jugadores);
+
 	private:
 
 		/*

@@ -641,6 +641,14 @@ unsigned int Juego::jugarCarta(Jugador* jugador, Lista<Jugador*>* jugadores,
 
 				break;
 
+		    case 3:
+		        consola.
+		        carta->borrarCartas(jugadores);
+		        jugador->obtenerCartas()->remover(opcion);
+
+		        delete carta;
+
+		        break;
 			default:
 
 				cout << "Opción de carta no válida";

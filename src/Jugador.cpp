@@ -86,7 +86,6 @@ void Jugador::jugarCarta(Lista<Jugador*>* jugadores, unsigned int indiceCarta) {
 	switch (indiceCarta) {
 
 		case 1:
-
 			carta->bloquearTurno(jugadores);
 			break;
 
@@ -94,7 +93,10 @@ void Jugador::jugarCarta(Lista<Jugador*>* jugadores, unsigned int indiceCarta) {
 
 			carta->jugarDoble(jugadores);
 			break;
+	    case 3:
 
+	        carta->borrarCartas(jugadores);
+	        break;
 		default:
 
 			throw "índice de carta inválido";
