@@ -81,24 +81,15 @@ Carta* Mazo::generarAzarmenteCarta() {
 				);
 				break;
 			}
-	    case 3:
-        {
-            carta = new Carta(
-                    numero,
-                    "Carta fatality",
-                    "Permite al jugador eliminar las cartas de otro jugador"
-            );
-            break;
-        }
-	    case 4:
-        {
-            carta = new Carta(
-                    numero,
-                    "Carta usurpadora",
-                    "Permite al jugador transformar una ficha contraria en suya"
-            );
-            break;
-        }
+		case 3:
+		{
+			carta = new Carta(
+					numero,
+					"Carta Fatality",
+					"Permite al jugador borrar las cartas de otro jugador seleccionado"
+			);
+			break;
+		}
 		default:
 
 			throw "Número al azar inválido";

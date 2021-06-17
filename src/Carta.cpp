@@ -74,13 +74,11 @@ void Carta::jugarDoble(Lista<Jugador*>* jugadores) {
 	}
 }
 
-void Carta::borrarCartas(Lista<Jugador *> *jugadores) {
-    Consola consola = new Consola();
-    Jugador jugadorABorrar = consola.preguntarJugadorParaFatality();
-    Lista<Carta*>* listaCartas = jugadorABorrar.obtenerCartas();
-    for (int i = 0; i < listaCartas->contarElementos(); i++) {
-        listaCartas->remover(i);
-    }
+void Carta::borrarCartas(Jugador* jugador) {
+	int tamanio = jugador->obtenerCartas()->contarElementos();
+	for (int i = 0; i < tamanio; i++) {
+		delete jugador->obtenerCartas()->obtener(i);
+	}
 }
 
 ostream& operator<<(ostream &strm, const Carta &carta) {

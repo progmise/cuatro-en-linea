@@ -381,35 +381,39 @@ Lista<string>* Consola::generarOpcionesCartas(Lista<Carta*>* cartas) {
 	return opciones;
 }
 
-Jugador preguntarJugadorParaFatality(Lista<Jugador*>* jugadores) {
-    string nombreParaBorrar;
+Jugador* Consola::preguntarJugadorParaFatality(Lista<Jugador*>* jugadores) {
+	Jugador* jugadorActual = jugadores->obtenerCursor();
+	cout << "Por favor, ingrese el nombre de uno de los siguientes jugadores" << endl;
+	for (int i = 0; i < jugadores->contarElementos(); i++) {
+		Jugador* jugador = jugadores->obtener(i);
+		if (jugador->obtenerCartas()->contarElementos() != 0 && jugador->obtenerNombre() != jugadorActual -> obtenerNombre()) {
+			cout << jugador->obtenerNombre() << endl;
+		}
+	}
 
-    cout << "Ingrese el nombre del jugador al que quiere borrarle las cartas" << endl;
-    Nodo<Jugador> jugador = jugadores->obtenerCursor();
-    while (jugador && jugador.obtenerSiguiente()) {
-        cout << jugador.obtenerDato().obtenerNombre() << endl;
-        jugador = jugador.obtenerSiguiente();
-    }
-    cin >> nombreParaBorrar;
-    bool esValido = false;
-    int contador = 1;
-    Jugador jugadorADevolver;
-    while (!esValido) {
-        while (jugadores->obtener(contador) && !esValido) {
-            if (jugadores->obtener(contador)->obtenerNombre() == nombreParaBorrar) {
-                if (!jugadores->obtener(contador)->obtenerCartas()->estaVacia()) {
-                    esValido = true;
-                    jugadorADevolver = jugadores->obtener(contador);
-                }
-            }
-            contador++;
-        }
-        if (!esValido) {
-            cout << "El nombre ingresado no es parte de la lista, ingresá uno valido" << endl;
-            cin >> nombreParaBorrar;
-        }
-    }
+	string nombreElegido;
+	cin >> nombreElegido;
 
-    return jugadorADevolver;
+	bool esValido = false;
+	Jugador* jugadorDevolver;
+	while (!esValido) {
+		int j = 0;
+		while (!esValido && j < jugadores->contarElementos()) {
+			Jugador* jugador = jugadores->obtener(j);
+			if (nombreElegido == jugador->obtenerNombre() && jugador->obtenerCartas()->contarElementos() != 0) {
+				esValido = true;
+				jugadorDevolver = jugador;
+			}
+		}
+		if (!esValido) {
+			cout << "El nombre ingresado no forma parte de la lista de nombres posibles, intentalo de nuevo" << endl;
+			cin >> nombreElegido;
+		}
+	}
+
+	return jugadorDevolver;
 
 }
+
+
+

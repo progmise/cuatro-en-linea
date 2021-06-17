@@ -89,11 +89,13 @@ class Consola {
 		 */
 		unsigned int ingresarCarta(Lista<Carta*>* cartas);
 
+
 		/*
-		 * PRE: Jugadores no debe ser una lista vacía
-		 * POST: Retorna el jugador seleccionado
+		 * PRE: jugadores no esta vacía
+		 * POST: Devuelve el índice del jugador
 		 */
-		Jugador preguntarJugadorParaFatality(Lista<Jugador*>* jugadores);
+
+		Jugador* preguntarJugadorParaFatality(Lista<Jugador*>* jugadores);
 
 	private:
 
@@ -160,6 +162,8 @@ class Consola {
 		 * POST: Devuelve una lista, con cartas como opciones
 		 */
 		Lista<std::string>* generarOpcionesCartas(Lista<Carta*>* cartas);
+
+
 };
 
 #endif /* CONSOLA_H_ */
