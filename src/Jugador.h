@@ -111,6 +111,7 @@ class Jugador {
 		 * 		 se elimina la carta jugada
 		 */
 		void jugarCarta(Lista<Jugador*>* jugadores, unsigned int indiceCarta, Jugador* jugador = NULL);
+		//Este metodo tiene el mismo nombre que otro del Juego.h
 };
 
 /*

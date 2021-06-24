@@ -383,27 +383,35 @@ Lista<string>* Consola::generarOpcionesCartas(Lista<Carta*>* cartas) {
 
 Jugador* Consola::preguntarJugadorParaFatality(Lista<Jugador*>* jugadores) {
 	Jugador* jugadorActual = jugadores->obtenerCursor();
-	cout << "Por favor, ingrese el nombre de uno de los siguientes jugadores" << endl;
-	for (int i = 0; i < jugadores->contarElementos(); i++) {
+	string nombreElegido;
+	cout << "Por favor, ingrese el nombre de uno de los jugadores" << endl;
+	cin >> nombreElegido;
+	for(unsigned int i = 0; i < jugadores->contarElementos(); i++){
 		Jugador* jugador = jugadores->obtener(i);
-		if (jugador->obtenerCartas()->contarElementos() != 0 && jugador->obtenerNombre() != jugadorActual -> obtenerNombre()) {
+		if(jugador->obtenerCartas()->contarElementos() != 0 && 
+			jugador->obtenerNombre() != jugadorActual->obtenerNombre()) {
 			cout << jugador->obtenerNombre() << endl;
 		}
 	}
 
-	string nombreElegido;
-	cin >> nombreElegido;
+	/*
+	* No debería permitir que yo me elimine a mi mismo
+	*/
+	
+	//string nombreElegido;
+	//cin >> nombreElegido;
 
 	bool esValido = false;
 	Jugador* jugadorDevolver;
 	while (!esValido) {
-		int j = 0;
-		while (!esValido && j < jugadores->contarElementos()) {
+		unsigned int j = 0;
+		while (!esValido && j < jugadores->contarElementos()){
 			Jugador* jugador = jugadores->obtener(j);
-			if (nombreElegido == jugador->obtenerNombre() && jugador->obtenerCartas()->contarElementos() != 0) {
+			if(nombreElegido == jugador->obtenerNombre() && jugador->obtenerCartas()->contarElementos() != 0) {
 				esValido = true;
 				jugadorDevolver = jugador;
 			}
+			j++; //No se incrementaba nunca j
 		}
 		if (!esValido) {
 			cout << "El nombre ingresado no forma parte de la lista de nombres posibles, intentalo de nuevo" << endl;
@@ -412,8 +420,4 @@ Jugador* Consola::preguntarJugadorParaFatality(Lista<Jugador*>* jugadores) {
 	}
 
 	return jugadorDevolver;
-
 }
-
-
-

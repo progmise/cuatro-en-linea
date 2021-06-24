@@ -602,7 +602,7 @@ bool Juego::hayGanador(Lista<Jugador*>* jugadores) {
 }
 
 unsigned int Juego::jugarCarta(Jugador* jugador, Lista<Jugador*>* jugadores,
-							   Consola consola, unsigned int ronda) {
+							   Consola consola, unsigned int ronda){
 
 	unsigned int opcion = 0;
 	unsigned int tamanio = jugadores->contarElementos();
