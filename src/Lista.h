@@ -69,7 +69,7 @@ class Lista {
          * PRE:  Posición pertenece al intervalo: [1, contarElementos()]
          * POST: Devuelve el elemento de la posición indicada
          */
-        T obtener(unsigned int posicion);
+        T obtener(int posicion);
 
         /*
          * PRE : Posición pertenece al intervalo: [1, contarElementos()]
@@ -194,7 +194,7 @@ template<class T> void Lista<T>::agregar(Lista<T> &lista) {
     }
 }
 
-template<class T> T Lista<T>::obtener(unsigned int posicion) {
+template<class T> T Lista<T>::obtener(int posicion) {
 
     T elemento;
 

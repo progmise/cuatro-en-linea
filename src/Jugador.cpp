@@ -93,7 +93,7 @@ void Jugador::jugarCarta(Lista<Jugador*>* jugadores, unsigned int indiceCarta, J
 			break;
 
 		case 3:
-			//Jugador* jugador;
+
 			carta->borrarCartas(jugador);
 			break;
 

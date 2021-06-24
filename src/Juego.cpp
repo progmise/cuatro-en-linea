@@ -603,24 +603,26 @@ bool Juego::hayGanador(Lista<Jugador*>* jugadores) {
 
 unsigned int Juego::jugarCarta(Jugador* jugador, Lista<Jugador*>* jugadores,
 							   Consola consola, unsigned int ronda){
-
+	unsigned int opcionJugador;
 	unsigned int opcion = 0;
 	unsigned int tamanio = jugadores->contarElementos();
 
-	opcion = consola.ingresarCarta(jugador->obtenerCartas());
+	opcionJugador = consola.ingresarCarta(jugador->obtenerCartas());
+	if (opcionJugador != 0) {
+		opcion = jugador->obtenerCartas()->obtener(opcionJugador)->obtenerId();
+		if (opcion != 3) {
+			jugador->jugarCarta(jugadores, opcion);
+			if (opcion == 2 && jugadores->obtener(tamanio) == jugadores->obtenerCursor()) {
+				ronda++;
+			}
+			jugador->obtenerCartas()->remover(opcion);
 
-	if (opcion != 0 && opcion != 3) {
-		jugador->jugarCarta(jugadores, opcion);
-		if (opcion == 2 && jugadores->obtener(tamanio) == jugadores->obtenerCursor()) {
-			ronda++;
 		}
-		jugador->obtenerCartas()->remover(opcion);
-
-	}
-	else if (opcion == 3) {
-		Jugador* jugador = consola.preguntarJugadorParaFatality(jugadores);
-		jugador->jugarCarta(jugadores, opcion, jugador);
-		jugador->obtenerCartas()->remover(opcion);
+		else if (opcion == 3) {
+			Jugador* jugadorFatality = consola.preguntarJugadorParaFatality(jugadores);
+			jugador->jugarCarta(jugadores, opcion, jugadorFatality);
+			jugador->obtenerCartas()->remover(opcion);
+		}
 	}
 
 	return ronda;

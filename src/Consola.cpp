@@ -383,31 +383,23 @@ Lista<string>* Consola::generarOpcionesCartas(Lista<Carta*>* cartas) {
 
 Jugador* Consola::preguntarJugadorParaFatality(Lista<Jugador*>* jugadores) {
 	Jugador* jugadorActual = jugadores->obtenerCursor();
-	string nombreElegido;
 	cout << "Por favor, ingrese el nombre de uno de los jugadores" << endl;
-	cin >> nombreElegido;
-	for(unsigned int i = 0; i < jugadores->contarElementos(); i++){
-		Jugador* jugador = jugadores->obtener(i);
-		if(jugador->obtenerCartas()->contarElementos() != 0 && 
-			jugador->obtenerNombre() != jugadorActual->obtenerNombre()) {
-			cout << jugador->obtenerNombre() << endl;
+	for(int i = 1; i <= jugadores->contarElementos(); i++){
+		Jugador* jugadorCiclo = jugadores->obtener(i);
+		if(jugadorCiclo->obtenerCartas()->contarElementos() != 0 &&
+				jugadorCiclo->obtenerNombre() != jugadorActual->obtenerNombre()) {
+			cout << jugadorCiclo->obtenerNombre() << endl;
 		}
 	}
-
-	/*
-	* No debería permitir que yo me elimine a mi mismo
-	*/
-	
-	//string nombreElegido;
-	//cin >> nombreElegido;
-
+	string nombreElegido;
+	cin >> nombreElegido;
 	bool esValido = false;
 	Jugador* jugadorDevolver;
 	while (!esValido) {
-		unsigned int j = 0;
-		while (!esValido && j < jugadores->contarElementos()){
+		unsigned int j = 1;
+		while (!esValido && j <= jugadores->contarElementos()){
 			Jugador* jugador = jugadores->obtener(j);
-			if(nombreElegido == jugador->obtenerNombre() && jugador->obtenerCartas()->contarElementos() != 0) {
+			if(nombreElegido == jugador->obtenerNombre() && jugador->obtenerCartas()->contarElementos() != 0 && nombreElegido != jugadorActual->obtenerNombre()) {
 				esValido = true;
 				jugadorDevolver = jugador;
 			}

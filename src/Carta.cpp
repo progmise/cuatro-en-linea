@@ -75,9 +75,11 @@ void Carta::jugarDoble(Lista<Jugador*>* jugadores) {
 }
 
 void Carta::borrarCartas(Jugador* jugador) {
-	int tamanio = jugador->obtenerCartas()->contarElementos();
-	for (int i = 0; i < tamanio; i++) {
-		delete jugador->obtenerCartas()->obtener(i);
+	Lista<Carta*>* cartas = jugador->obtenerCartas();
+	int tamanio = cartas->contarElementos();
+	for (int i = 1; i <= tamanio; i++) {
+		cartas->remover(i);
+		delete cartas->obtener(i);
 	}
 }
 
