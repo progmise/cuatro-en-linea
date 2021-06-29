@@ -75,12 +75,10 @@ void Carta::jugarDoble(Lista<Jugador*>* jugadores) {
 }
 
 void Carta::borrarCartas(Jugador* jugador) {
+
 	Lista<Carta*>* cartas = jugador->obtenerCartas();
-	int tamanio = cartas->contarElementos();
-	for (int i = 1; i <= tamanio; i++) {
-		cartas->remover(i);
-		delete cartas->obtener(i);
-	}
+	cartas->vaciarLista();
+
 }
 
 ostream& operator<<(ostream &strm, const Carta &carta) {

@@ -110,6 +110,13 @@ class Lista {
          */
         T obtenerCursor();
 
+        /*
+         * PRE: No tiene
+         *
+         * POST: Vacía la lista y apunta el puntero de entrada a NULL
+         */
+        void vaciarLista();
+
     private:
 
         /*
@@ -282,6 +289,19 @@ template<class T> Nodo<T>* Lista<T>::obtenerNodo(unsigned int posicion) {
     }
 
     return actual;
+}
+
+template<class T> void Lista<T>::vaciarLista() {
+	Nodo<T>* actual = this->primero;
+	Nodo<T>* aux;
+	for (int i = 0; i < this->tamanio; i++) {
+		aux = actual;
+		actual->obtenerSiguiente();
+		delete aux;
+	}
+	this->primero = NULL;
+	this->tamanio = 0;
+	this->cursor = NULL;
 }
 
 #endif /* LISTA_H_ */
