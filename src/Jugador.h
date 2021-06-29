@@ -110,7 +110,8 @@ class Jugador {
 		 * 		 sobre la lista de jugadores. Finalizada la ejecución,
 		 * 		 se elimina la carta jugada
 		 */
-		void jugarCarta(Lista<Jugador*>* jugadores, unsigned int indiceCarta);
+		void jugarCarta(Lista<Jugador*>* jugadores, unsigned int indiceCarta, Jugador* jugador = NULL);
+		//Este metodo tiene el mismo nombre que otro del Juego.h
 };
 
 /*

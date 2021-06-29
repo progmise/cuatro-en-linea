@@ -79,24 +79,25 @@ Lista<Carta*>* Jugador::obtenerCartas() {
 	return this->cartas;
 }
 
-void Jugador::jugarCarta(Lista<Jugador*>* jugadores, unsigned int indiceCarta) {
+void Jugador::jugarCarta(Lista<Jugador*>* jugadores, unsigned int indiceCarta, Jugador* jugador) {
 
 	Carta* carta = this->cartas->obtener(indiceCarta);
 
-	switch (indiceCarta) {
-
+	switch(indiceCarta){
 		case 1:
-
 			carta->bloquearTurno(jugadores);
 			break;
 
 		case 2:
-
 			carta->jugarDoble(jugadores);
 			break;
 
-		default:
+		case 3:
 
+			carta->borrarCartas(jugador);
+			break;
+
+		default:
 			throw "índice de carta inválido";
 			break;
 	}

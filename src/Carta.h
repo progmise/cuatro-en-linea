@@ -83,6 +83,14 @@ class Carta {
 		 * POST: Mueve el cursor de la lista, al anterior jugador
 		 */
 		void jugarDoble(Lista<Jugador*>* jugadores);
+
+		/*
+		 * PRE: jugador no es nulo
+		 * POST: Borra las cartas del jugador pasado por parametro
+		 *
+		 */
+
+		void borrarCartas(Jugador* jugador);
 };
 
 /*

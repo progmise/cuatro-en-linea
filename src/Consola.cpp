@@ -380,3 +380,36 @@ Lista<string>* Consola::generarOpcionesCartas(Lista<Carta*>* cartas) {
 
 	return opciones;
 }
+
+Jugador* Consola::preguntarJugadorParaFatality(Lista<Jugador*>* jugadores) {
+	Jugador* jugadorActual = jugadores->obtenerCursor();
+	cout << "Por favor, ingrese el nombre de uno de los jugadores" << endl;
+	for(int i = 1; i <= jugadores->contarElementos(); i++){
+		Jugador* jugadorCiclo = jugadores->obtener(i);
+		if(jugadorCiclo->obtenerCartas()->contarElementos() != 0 &&
+				jugadorCiclo->obtenerNombre() != jugadorActual->obtenerNombre()) {
+			cout << jugadorCiclo->obtenerNombre() << endl;
+		}
+	}
+	string nombreElegido;
+	cin >> nombreElegido;
+	bool esValido = false;
+	Jugador* jugadorDevolver;
+	while (!esValido) {
+		unsigned int j = 1;
+		while (!esValido && j <= jugadores->contarElementos()){
+			Jugador* jugador = jugadores->obtener(j);
+			if(nombreElegido == jugador->obtenerNombre() && jugador->obtenerCartas()->contarElementos() != 0 && nombreElegido != jugadorActual->obtenerNombre()) {
+				esValido = true;
+				jugadorDevolver = jugador;
+			}
+			j++; //No se incrementaba nunca j
+		}
+		if (!esValido) {
+			cout << "El nombre ingresado no forma parte de la lista de nombres posibles, intentalo de nuevo" << endl;
+			cin >> nombreElegido;
+		}
+	}
+
+	return jugadorDevolver;
+}

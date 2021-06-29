@@ -602,49 +602,26 @@ bool Juego::hayGanador(Lista<Jugador*>* jugadores) {
 }
 
 unsigned int Juego::jugarCarta(Jugador* jugador, Lista<Jugador*>* jugadores,
-							   Consola consola, unsigned int ronda) {
-
+							   Consola consola, unsigned int ronda){
+	unsigned int opcionJugador;
 	unsigned int opcion = 0;
-	unsigned int tamanio = 0;
+	unsigned int tamanio = jugadores->contarElementos();
 
-	opcion = consola.ingresarCarta(jugador->obtenerCartas());
+	opcionJugador = consola.ingresarCarta(jugador->obtenerCartas());
+	if (opcionJugador != 0) {
+		opcion = jugador->obtenerCartas()->obtener(opcionJugador)->obtenerId();
+		if (opcion != 3) {
+			jugador->jugarCarta(jugadores, opcion);
+			if (opcion == 2 && jugadores->obtener(tamanio) == jugadores->obtenerCursor()) {
+				ronda++;
+			}
+			jugador->obtenerCartas()->remover(opcion);
 
-	if (opcion != 0) {
-
-		Carta* carta = NULL;
-
-		carta = jugador->obtenerCartas()->obtener(opcion);
-
-		tamanio = jugadores->contarElementos();
-
-		switch (carta->obtenerId()) {
-			case 1:
-
-				if (jugadores->obtener(tamanio) == jugadores->obtenerCursor()) {
-
-					ronda++;
-				}
-
-				carta->bloquearTurno(jugadores);
-				jugador->obtenerCartas()->remover(opcion);
-
-				delete carta;
-
-				break;
-
-			case 2:
-
-				carta->jugarDoble(jugadores);
-				jugador->obtenerCartas()->remover(opcion);
-
-				delete carta;
-
-				break;
-
-			default:
-
-				cout << "Opción de carta no válida";
-				break;
+		}
+		else if (opcion == 3) {
+			Jugador* jugadorFatality = consola.preguntarJugadorParaFatality(jugadores);
+			jugador->jugarCarta(jugadores, opcion, jugadorFatality);
+			jugador->obtenerCartas()->remover(opcion);
 		}
 	}
 
