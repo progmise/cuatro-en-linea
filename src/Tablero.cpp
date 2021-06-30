@@ -6,43 +6,53 @@ Tablero::Tablero() {
     this->longitud = 0;
     this->profundidad = 0;
     this->altura = 0;
-    this->casilleros = new Lista<Casillero*>();
+    this->casilleros = new Lista<Lista<Lista<Casillero*>*>*>();
 }
 
 Tablero::Tablero(unsigned int longitud, unsigned int profundidad, unsigned int altura) {
     this->longitud = longitud;
     this->profundidad = profundidad;
     this->altura = altura;
-    this->casilleros = new Lista<Casillero*>();
+    this->casilleros = new Lista<Lista<Lista<Casillero*>*>*>();
 
     Casillero* casillero = NULL;
 
     for (unsigned int i = 0; i < longitud; i++) {
-
+    	Lista<Lista<Casillero*>*>* plano;
         for (unsigned int j = 0; j < profundidad; j++) {
-
+        	Lista<Casillero*>* fila;
             for (unsigned int k = 0; k < altura; k++) {
 
             	casillero = new Casillero(i, j, k);
 
-            	this->casilleros->agregar(casillero);
+            	fila->agregar(casillero);
             }
+            plano->agregar(fila);
         }
+        this->casilleros->agregar(plano);
     }
 }
 
 Tablero::~Tablero() {
 
+	Lista<Lista<Casillero*>*>* plano = NULL;
+	Lista<Casillero*>* fila = NULL;
 	Casillero* casillero = NULL;
-
 	this->casilleros->iniciarCursor();
 
 	while (this->casilleros->avanzarCursor()) {
+			plano = this->casilleros->obtenerCursor();
+			plano->iniciarCursor();
+			while (plano->avanzarCursor()) {
+				fila = plano->obtenerCursor();
+				fila->iniciarCursor();
+				while (fila->avanzarCursor()) {
+					casillero = fila->obtenerCursor();
 
-		casillero = this->casilleros->obtenerCursor();
-
-		delete casillero;
-	}
+					delete casillero;
+				}
+			}
+		}
 
 	delete casilleros;
 }
@@ -77,7 +87,7 @@ void Tablero::asignarAltura(unsigned int altura) {
 	this->altura = altura;
 }
 
-Lista<Casillero*>* Tablero::obtenerCasilleros() {
+Lista<Lista<Lista<Casillero*>*>*>* Tablero::obtenerCasilleros() {
 
 	return this->casilleros;
 }
@@ -476,6 +486,8 @@ Lista<Casillero*>* Tablero::obtenerDiagonalDerechaFrontal(unsigned int longitud,
 
 	return diagonal;
 }
+
+
 
 ostream& operator<<(ostream &strm, const Tablero &tablero) {
 

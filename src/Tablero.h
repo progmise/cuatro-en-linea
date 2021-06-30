@@ -11,7 +11,7 @@ class Tablero {
 		unsigned int longitud;
 		unsigned int profundidad;
 		unsigned int altura;
-		Lista<Casillero*>* casilleros;
+		Lista<Lista<Lista<Casillero*>*>*>* casilleros;
 
 		/*
 		 * A fin de poder sobrescribir el operador '<<', se debe declarar
@@ -83,7 +83,7 @@ class Tablero {
 		 * PRE:  No tiene
 		 * POST: Devuelve el valor de casilleros
 		 */
-		Lista<Casillero*>* obtenerCasilleros();
+		Lista<Lista<Lista<Casillero*>*>*>* obtenerCasilleros();
 
 		Lista<Casillero*>* obtenerRectaEnX(unsigned int profundidad,
 										   unsigned int altura);
@@ -97,6 +97,14 @@ class Tablero {
 													 unsigned int altura);
 
 		void transponerTablero();
+
+		/*
+		 * PRE: El tablero no esta vacío
+		 *
+		 * POST: Devuelve el casillero en la posicion xyz
+		 */
+
+		Casillero* buscarCasillero(int x, int y, int z);
 
 	private:
 
