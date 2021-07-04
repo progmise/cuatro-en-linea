@@ -5,12 +5,12 @@ using namespace std;
 Jugador::Jugador() {
     this->nombre = "";
     this->jugadas = 0;
-    this->ficha = '\0';
+    this->ficha = new Ficha();
     this->flagGanador = false;
     this->cartas = new Lista<Carta*>();
 }
 
-Jugador::Jugador(string nombre, char ficha) {
+Jugador::Jugador(string nombre, Ficha* ficha) {
     this->nombre = nombre;
     this->jugadas = 0;
     this->ficha = ficha;
@@ -32,6 +32,7 @@ Jugador::~Jugador() {
 	}
 
 	delete cartas;
+	delete ficha;
 }
 
 string Jugador::obtenerNombre() {
@@ -54,14 +55,15 @@ void Jugador::asignarJugadas(unsigned int jugadas) {
 	this->jugadas = jugadas;
 }
 
-char Jugador::obtenerFicha() {
+Ficha* Jugador::obtenerFicha() {
 
 	return this->ficha;
 }
 
-void Jugador::asignarFicha(char ficha) {
+void Jugador::asignarFicha(Ficha* ficha) {
 
-	this->ficha = ficha;
+	this->ficha->asignarColor(ficha->obtenerColor());
+	this->ficha->asignarTipoDeFicha(ficha->obtenerTipoDeFicha());
 }
 
 bool Jugador::esGanador() {
@@ -79,36 +81,46 @@ Lista<Carta*>* Jugador::obtenerCartas() {
 	return this->cartas;
 }
 
-void Jugador::jugarCarta(Lista<Jugador*>* jugadores, unsigned int indiceCarta) {
+void Jugador::jugarCarta(Lista<Jugador*>* jugadores, unsigned int indiceCarta, Jugador* jugador) {
 
 	Carta* carta = this->cartas->obtener(indiceCarta);
 
-	switch (indiceCarta) {
-
+	switch (carta->obtenerId()) {
 		case 1:
-
 			carta->bloquearTurno(jugadores);
+			this->cartas->remover(indiceCarta);
+
+			delete carta;
+
 			break;
 
 		case 2:
-
 			carta->jugarDoble(jugadores);
+			this->cartas->remover(indiceCarta);
+
+			delete carta;
+
+			break;
+
+		case 3:
+
+			carta->borrarCartas(jugador);
+			this->cartas->remover(indiceCarta);
+
+			delete carta;
+
 			break;
 
 		default:
-
 			throw "índice de carta inválido";
 			break;
 	}
-
-	this->cartas->remover(indiceCarta);
 }
 
 ostream& operator<<(ostream &strm, const Jugador &jugador) {
 
 	return strm << "Jugador(nombre=" << jugador.nombre
 				<< ", jugadas=" << jugador.jugadas
-				<< ", ficha=" << jugador.ficha
 				<< ", flagGanador=" << jugador.flagGanador
 				<< ", cartas=" << jugador.cartas->contarElementos()
 				<< ")";

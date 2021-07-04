@@ -50,9 +50,10 @@ Lista<Jugador*>* Juego::obtenerJugadores() {
 	return this->jugadores;
 }
 
-void Juego::iniciar(Consola consola) {
+void Juego::iniciar(Consola consola, Imagen imagen) {
 
 	Jugador* jugador = NULL;
+	Lista<Lista<Casillero*>*>* plano = NULL;
 	Casillero* coordenadas = NULL;
 	unsigned int jugadas = 0;
 	bool existeCuatroEnLinea = false;
@@ -79,16 +80,44 @@ void Juego::iniciar(Consola consola) {
 				consola.mostrarLevanteDeCarta(jugador);
 			}
 
-			//Revisar
 			this->ronda = jugarCarta(jugador, this->jugadores, consola, this->ronda);
 
 			coordenadas = ingresarFicha(consola, this->tablero, jugador);
 
-			existeCuatroEnLinea = hayCuatroEnLinea(this->tablero, coordenadas, jugador);
+			plano = this->tablero->obtenerCasilleros()->obtener(
+					coordenadas->obtenerPosicionZ() + 1
+			);
+
+			consola.mostrarPlano(
+					plano,
+					this->tablero->obtenerLongitud(),
+					this->tablero->obtenerProfundidad()
+			);
+
+			existeCuatroEnLinea = hayCuatroEnLinea(
+					this->tablero->obtenerCasilleros(),
+					coordenadas,
+					jugador
+			);
 
 			jugadas = jugador->obtenerJugadas() + 1;
 
 			jugador->asignarJugadas(jugadas);
+		}
+
+		this->tablero->obtenerCasilleros()->iniciarCursor();
+
+		for (unsigned int k = 1; k < this->tablero->obtenerAltura() + 1; k++) {
+
+			plano = this->tablero->obtenerCasilleros()->obtener(k);
+
+			imagen.dibujarTablero(
+					plano,
+					this->tablero->obtenerLongitud(),
+					this->tablero->obtenerProfundidad(),
+					k - 1,
+					this->ronda
+			);
 		}
 
 		this->ronda++;
@@ -102,6 +131,7 @@ void Juego::iniciar(Consola consola) {
 
 		consola.mostrarEmpate(this->jugadores);
 	}
+
 }
 
 unsigned int Juego::validarDimension(unsigned int dimension) {
@@ -124,265 +154,54 @@ unsigned int Juego::validarDimension(unsigned int dimension) {
 	return dimensionValida;
 }
 
-bool Juego::hayCuatroEnLineaEnRecta(Lista<Casillero*>* recta, char ficha) {
+bool Juego::hayCuatroEnLinea(Lista<Lista<Lista<Casillero*>*>*>* tablero,
+		  	  	  	  	  	 Casillero* ultimoCasillero, Jugador* jugador) {
 
-	Casillero* casillero = NULL;
+	Casillero* vecino = NULL;
 	bool existeCuatroEnLinea = false;
-	unsigned int cantFichasAlineadas = 0;
+	unsigned int cantidades[3][3][3];
 
-	if (recta->contarElementos() >= CANT_FICHAS_ALINEADAS) {
+	for (unsigned int i = 0; i < 3; i++) {
 
-		recta->iniciarCursor();
+		for (unsigned int j = 0; j < 3; j++) {
 
-		while (recta->avanzarCursor() && !existeCuatroEnLinea) {
+			for (unsigned int k = 0; k < 3; k++) {
 
-			casillero = recta->obtenerCursor();
-
-			if (casillero->obtenerTipoFicha() == ficha) {
-
-				cantFichasAlineadas++;
-
-			} else {
-
-				cantFichasAlineadas = 0;
-			}
-
-			if (cantFichasAlineadas == 4) {
-
-				existeCuatroEnLinea = true;
+				cantidades[i][j][k] = 0;
 			}
 		}
 	}
 
-	return existeCuatroEnLinea;
-}
+	for (int i = -1; i < 2; i++) {
 
-bool Juego::hayCuatroEnLineaEnDiagonalesDePlano(Lista<Lista<Casillero*>*>* diagonales,
-												char ficha) {
+		for (int j = -1; j < 2; j++) {
 
-	Lista<Casillero*>* diagonal = NULL;
-	bool existeCuatroEnLinea = false;
+			for (int k = -1; k < 2; k++) {
 
-	diagonales->iniciarCursor();
+				vecino = ultimoCasillero->obtenerVecino(i, j, k);
 
-	while (diagonales->avanzarCursor() && !existeCuatroEnLinea) {
+				while (vecino != NULL && vecino->esElMismoJugador(ultimoCasillero)) {
 
-		diagonal = diagonales->obtenerCursor();
-
-		if (hayCuatroEnLineaEnRecta(diagonal, ficha)) {
-
-			existeCuatroEnLinea = true;
-		}
-	}
-
-	return existeCuatroEnLinea;
-}
-
-bool Juego::hayCuatroEnLineaEnDiagonalesDePlanos(Tablero* tablero, Casillero* coordenadas,
-		  	  	  	  	  	  	  	  	  	  	 char ficha) {
-
-	Lista<Lista<Casillero*>*>* diagonales = NULL;
-	Lista<Casillero*>* diagonal = NULL;
-	unsigned int posicionX = coordenadas->obtenerPosicionX();
-	unsigned int posicionY = coordenadas->obtenerPosicionY();
-	unsigned int posicionZ = coordenadas->obtenerPosicionZ();
-	bool existeCuatroEnLinea = false;
-
-	diagonales = tablero->obtenerDiagonalesPlanoXY(posicionX, posicionY, posicionZ);
-
-	if (hayCuatroEnLineaEnDiagonalesDePlano(diagonales, ficha)) {
-
-		existeCuatroEnLinea = true;
-
-	} else {
-
-		/* Se eliminan los punteros */
-		diagonales->iniciarCursor();
-
-		while (diagonales->avanzarCursor()) {
-
-			diagonal = diagonales->obtenerCursor();
-
-			delete diagonal;
-		}
-
-		delete diagonales;
-
-		tablero->transponerTablero();
-
-		diagonales = tablero->obtenerDiagonalesPlanoXY(posicionZ, posicionX, posicionY);
-
-		if (hayCuatroEnLineaEnDiagonalesDePlano(diagonales, ficha)) {
-
-			existeCuatroEnLinea = true;
-
-			tablero->transponerTablero();
-			tablero->transponerTablero();
-
-		} else {
-
-			/* Se eliminan los punteros */
-			diagonales->iniciarCursor();
-
-			while (diagonales->avanzarCursor()) {
-
-				diagonal = diagonales->obtenerCursor();
-
-				delete diagonal;
-			}
-
-			delete diagonales;
-
-			tablero->transponerTablero();
-
-			diagonales = tablero->obtenerDiagonalesPlanoXY(posicionY, posicionZ, posicionX);
-
-			if (hayCuatroEnLineaEnDiagonalesDePlano(diagonales, ficha)) {
-
-				existeCuatroEnLinea = true;
-
-				tablero->transponerTablero();
-
-			} else {
-
-				tablero->transponerTablero();
+					cantidades[i + 1][j + 1][k + 1]++;
+					vecino = vecino->obtenerVecino(i, j, k);
+				}
 			}
 		}
 	}
 
-	/* Se eliminan los punteros */
-	diagonales->iniciarCursor();
+	for (unsigned int i = 0; i < 3; i++) {
 
-	while (diagonales->avanzarCursor()) {
+		for (unsigned int j = 0; j < 3; j++) {
 
-		diagonal = diagonales->obtenerCursor();
+			for (unsigned int k = 0; k < 3; k++) {
 
-		delete diagonal;
-	}
+				if ((cantidades[i][j][k] + cantidades[k][j][i]) + 1 >= CANT_FICHAS_ALINEADAS) {
 
-	delete diagonales;
-
-	return existeCuatroEnLinea;
-}
-
-bool Juego::hayCuatroEnLineaEnDiagonales(Tablero* tablero, Casillero* coordenadas,
-		  	  	  	  	  	  	  	  	 char ficha) {
-
-	Lista<Lista<Casillero*>*>* diagonales = NULL;
-	Lista<Casillero*>* diagonal = NULL;
-	unsigned int posicionX = coordenadas->obtenerPosicionX();
-	unsigned int posicionY = coordenadas->obtenerPosicionY();
-	unsigned int posicionZ = coordenadas->obtenerPosicionZ();
-	bool existeCuatroEnLinea = false;
-
-	diagonales = tablero->obtenerDiagonales(posicionX, posicionY, posicionZ);
-
-	diagonales->iniciarCursor();
-
-	while (diagonales->avanzarCursor() && !existeCuatroEnLinea) {
-
-		diagonal = diagonales->obtenerCursor();
-
-		if (hayCuatroEnLineaEnRecta(diagonal, ficha)) {
-
-			existeCuatroEnLinea = true;
-		}
-	}
-
-	/* Se eliminan los punteros */
-	diagonales->iniciarCursor();
-
-	while (diagonales->avanzarCursor()) {
-
-		diagonal = diagonales->obtenerCursor();
-
-		delete diagonal;
-	}
-
-	delete diagonales;
-
-	return existeCuatroEnLinea;
-}
-
-bool Juego::hayCuatroEnLineaEnRectas(Tablero* tablero, Casillero* coordenadas, char ficha) {
-
-	Lista<Casillero*>* recta = NULL;
-	unsigned int posicionX = coordenadas->obtenerPosicionX();
-	unsigned int posicionY = coordenadas->obtenerPosicionY();
-	unsigned int posicionZ = coordenadas->obtenerPosicionZ();
-	bool existeCuatroEnLinea = false;
-
-	recta = tablero->obtenerRectaEnX(posicionY, posicionZ);
-
-	if (hayCuatroEnLineaEnRecta(recta, ficha)) {
-
-		existeCuatroEnLinea = true;
-
-	} else {
-
-		delete recta;
-
-		tablero->transponerTablero();
-
-		recta = tablero->obtenerRectaEnX(posicionX, posicionY);
-
-		if (hayCuatroEnLineaEnRecta(recta, ficha)) {
-
-			existeCuatroEnLinea = true;
-
-			tablero->transponerTablero();
-			tablero->transponerTablero();
-
-		} else {
-
-			delete recta;
-
-			tablero->transponerTablero();
-
-			recta = tablero->obtenerRectaEnX(posicionZ, posicionX);
-
-			if (hayCuatroEnLineaEnRecta(recta, ficha)) {
-
-			  existeCuatroEnLinea = true;
-
-			  tablero->transponerTablero();
-
-			} else {
-
-			  tablero->transponerTablero();
+					existeCuatroEnLinea = true;
+					jugador->asignarGanador(existeCuatroEnLinea);
+				}
 			}
 		}
-	}
-
-	delete recta;
-
-	return existeCuatroEnLinea;
-}
-
-bool Juego::hayCuatroEnLinea(Tablero* tablero, Casillero* coordenadas, Jugador* jugador) {
-
-	bool existeCuatroEnLinea = false;
-	char ficha = jugador->obtenerFicha();
-
-	existeCuatroEnLinea = hayCuatroEnLineaEnRectas(tablero, coordenadas, ficha);
-
-	if (!existeCuatroEnLinea) {
-
-		existeCuatroEnLinea = hayCuatroEnLineaEnDiagonales(
-			tablero, coordenadas, ficha
-		);
-	}
-
-	if (!existeCuatroEnLinea) {
-
-		existeCuatroEnLinea = hayCuatroEnLineaEnDiagonalesDePlanos(
-			tablero, coordenadas, ficha
-		);
-	}
-
-	if (existeCuatroEnLinea) {
-
-		jugador->asignarGanador(existeCuatroEnLinea);
 	}
 
 	return existeCuatroEnLinea;
@@ -394,30 +213,24 @@ Casillero* Juego::ubicarFichaUltimaPosicionLibre(Tablero* tablero,
 											     unsigned int profundidad) {
 
 	Casillero* casillero = NULL;
-	Lista<Casillero*>* recta = NULL;
 	bool estaPosicionado = false;
-	char ficha = jugador->obtenerFicha();
 
-	tablero->transponerTablero();
+	casillero = tablero->buscarCasillero(tablero->obtenerCasilleros(), longitud, profundidad, 0);
 
-	recta = tablero->obtenerRectaEnX(longitud, profundidad);
-	recta->iniciarCursor();
+	while (!estaPosicionado && casillero != NULL) {
 
-	while (recta->avanzarCursor() && !estaPosicionado) {
+		if (!casillero->estaOcupado()) {
 
-		casillero = recta->obtenerCursor();
-
-		if (casillero->obtenerTipoFicha() == Casillero::CASILLERO_LIBRE) {
-
-			casillero->asignarTipoFicha(ficha);
 			estaPosicionado = true;
+			casillero->obtenerFicha()->asignarTipoDeFicha(jugador->obtenerFicha()->obtenerTipoDeFicha());
+			casillero->obtenerFicha()->asignarColor(jugador->obtenerFicha()->obtenerColor());
+			casillero->asignarOcupado(estaPosicionado);
+
+		} else {
+
+			casillero = casillero->obtenerVecino(0, 0, 1);
 		}
 	}
-
-	tablero->transponerTablero();
-	tablero->transponerTablero();
-
-	delete recta;
 
 	return casillero;
 }
@@ -435,7 +248,7 @@ bool Juego::esFichaValida(Lista<Jugador*>* jugadores, char ficha) {
 
 			jugador = jugadores->obtener(i);
 
-			if (ficha == jugador->obtenerFicha()) {
+			if (ficha == jugador->obtenerFicha()->obtenerTipoDeFicha()) {
 
 				hayFichaRepetida = true;
 			}
@@ -462,40 +275,35 @@ bool Juego::esFichaValida(Lista<Jugador*>* jugadores, char ficha) {
 }
 
 bool Juego::sonPosicionesValidas(Tablero* tablero, unsigned int longitud,
-							     unsigned int profundidad) {
+								 unsigned int profundidad) {
 
 	Casillero* casillero = NULL;
-	Lista<Casillero*>* recta = NULL;
 	bool hayEspacioLibre = false;
 
-	tablero->transponerTablero();
+	casillero = tablero->buscarCasillero(tablero->obtenerCasilleros(), longitud, profundidad, 0);
 
-	recta = tablero->obtenerRectaEnX(longitud, profundidad);
-	recta->iniciarCursor();
+	while (!hayEspacioLibre && casillero != NULL) {
 
-	while (recta->avanzarCursor() && !hayEspacioLibre) {
-
-		casillero = recta->obtenerCursor();
-
-		if (casillero->obtenerTipoFicha() == Casillero::CASILLERO_LIBRE) {
+		if (!casillero->estaOcupado()) {
 
 			hayEspacioLibre = true;
+
+		} else {
+
+			casillero = casillero->obtenerVecino(0, 0, 1);
 		}
 	}
-
-	tablero->transponerTablero();
-	tablero->transponerTablero();
-
-	delete recta;
 
 	return hayEspacioLibre;
 }
 
 void Juego::ingresarJugadores(Consola consola, Lista<Jugador*>* jugadores) {
 
-	Jugador* jugador;
+	Jugador* jugador = NULL;
+	Color* color = NULL;
 	string nombre = "";
-	char ficha = '\0';
+	Ficha* ficha = NULL;
+	char tipoDeFicha = '\0';
 	unsigned int cantJugadores = CANT_MIN_JUGADORES;
 
 	cantJugadores = consola.ingresarCantidadJugadores(CANT_MIN_JUGADORES, CANT_MAX_JUGADORES);
@@ -509,9 +317,14 @@ void Juego::ingresarJugadores(Consola consola, Lista<Jugador*>* jugadores) {
 
 		do {
 
-			ficha = consola.ingresarFicha();
+			tipoDeFicha = consola.ingresarFicha();
 
-		} while (!esFichaValida(jugadores, ficha));
+		} while (!esFichaValida(jugadores, tipoDeFicha));
+
+		color = new Color();
+		color->asignarPixel((i + 1) * 2);
+
+		ficha = new Ficha(color, tipoDeFicha);
 
 		jugador = new Jugador(nombre, ficha);
 
@@ -560,20 +373,33 @@ Casillero* Juego::ingresarFicha(Consola consola, Tablero* tablero,
 bool Juego::hayEmpate(Tablero* tablero) {
 
 	Casillero* casillero = NULL;
-	Lista<Casillero*>* casilleros = NULL;
 	bool esEmpate = true;
+	unsigned int i = 1;
 
-	casilleros = tablero->obtenerCasilleros();
-	casilleros->iniciarCursor();
+	while (i < (tablero->obtenerLongitud() + 1) && esEmpate) {
 
-	while(casilleros->avanzarCursor() && esEmpate) {
+		unsigned int j = 1;
 
-		casillero = casilleros->obtenerCursor();
+		while (j < (tablero->obtenerProfundidad() + 1) && esEmpate) {
 
-		if (casillero->obtenerTipoFicha() == Casillero::CASILLERO_LIBRE) {
+			unsigned int k = 1;
 
-			esEmpate = false;
+			while (k < (tablero->obtenerProfundidad() + 1) && esEmpate) {
+
+				casillero = tablero->buscarCasillero(tablero->obtenerCasilleros(), i, j, k);
+
+				if (casillero->obtenerFicha()->obtenerTipoDeFicha() == Casillero::CASILLERO_LIBRE) {
+
+					esEmpate = false;
+				}
+
+				k++;
+			}
+
+			j++;
 		}
+
+		i++;
 	}
 
 	return esEmpate;
@@ -604,48 +430,27 @@ bool Juego::hayGanador(Lista<Jugador*>* jugadores) {
 unsigned int Juego::jugarCarta(Jugador* jugador, Lista<Jugador*>* jugadores,
 							   Consola consola, unsigned int ronda) {
 
+	Jugador* jugadorFatality = NULL;
 	unsigned int opcion = 0;
-	unsigned int tamanio = 0;
+	unsigned int idCarta = 0;
+	unsigned int tamanio = jugadores->contarElementos();
 
 	opcion = consola.ingresarCarta(jugador->obtenerCartas());
 
 	if (opcion != 0) {
+		idCarta = jugador->obtenerCartas()->obtener(opcion)->obtenerId();
 
-		Carta* carta = NULL;
+		if (idCarta == 1) {
 
-		carta = jugador->obtenerCartas()->obtener(opcion);
-
-		tamanio = jugadores->contarElementos();
-
-		switch (carta->obtenerId()) {
-			case 1:
-
-				if (jugadores->obtener(tamanio) == jugadores->obtenerCursor()) {
-
-					ronda++;
-				}
-
-				carta->bloquearTurno(jugadores);
-				jugador->obtenerCartas()->remover(opcion);
-
-				delete carta;
-
-				break;
-
-			case 2:
-
-				carta->jugarDoble(jugadores);
-				jugador->obtenerCartas()->remover(opcion);
-
-				delete carta;
-
-				break;
-
-			default:
-
-				cout << "Opción de carta no válida";
-				break;
+			if (jugadores->obtener(tamanio) == jugadores->obtenerCursor()) {
+				ronda++;
+			}
 		}
+		else if (idCarta == 3) {
+			jugadorFatality = consola.preguntarJugadorParaFatality(jugadores);
+		}
+
+		jugador->jugarCarta(jugadores, opcion, jugadorFatality);
 	}
 
 	return ronda;

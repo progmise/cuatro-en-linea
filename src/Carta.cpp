@@ -74,6 +74,20 @@ void Carta::jugarDoble(Lista<Jugador*>* jugadores) {
 	}
 }
 
+void Carta::borrarCartas(Jugador* jugador) {
+
+	Lista<Carta*>* cartas = jugador->obtenerCartas();
+	Carta* carta = NULL;
+
+	for (unsigned int i = cartas->contarElementos(); i > 0; i--) {
+
+		carta = cartas->obtener(i);
+		cartas->remover(i);
+
+		delete carta;
+	}
+}
+
 ostream& operator<<(ostream &strm, const Carta &carta) {
 
 	return strm << "Carta(id=" << carta.id

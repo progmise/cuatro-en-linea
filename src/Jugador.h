@@ -1,7 +1,9 @@
 #ifndef JUGADOR_H_
 #define JUGADOR_H_
 #include "Lista.h"
+#include "Color.h"
 #include "Carta.h"
+#include "Ficha.h"
 #include <iostream>
 
 class Carta;
@@ -12,7 +14,7 @@ class Jugador {
 
 		std::string nombre;
 		unsigned int jugadas;
-		char ficha;
+		Ficha* ficha;
 		bool flagGanador;
 		Lista<Carta*>* cartas;
 
@@ -37,10 +39,10 @@ class Jugador {
 
         /*
          * PRE:  No tiene
-         * POST: El jugador resulta inicializado con un nombre
-         * 		 y ficha dadas
+         * POST: El jugador resulta inicializado con un nombre y una
+         * 		 ficha dadas
          */
-		Jugador(std::string nombre, char ficha);
+		Jugador(std::string nombre, Ficha* ficha);
 
 		/*
 		 * PRE:  El jugador debe haber sido creado
@@ -74,15 +76,15 @@ class Jugador {
 
 		/*
 		 * PRE:  No tiene
-		 * POST: Devuelve el valor de ficha
+		 * POST: Devuelve el puntero de ficha
 		 */
-		char obtenerFicha();
+		Ficha* obtenerFicha();
 
 		/*
 		 * PRE:  No tiene
 		 * POST: Asigna el valor de ficha
 		 */
-		void asignarFicha(char ficha);
+		void asignarFicha(Ficha* ficha);
 
 		/*
 		 * PRE:  No tiene
@@ -110,7 +112,7 @@ class Jugador {
 		 * 		 sobre la lista de jugadores. Finalizada la ejecución,
 		 * 		 se elimina la carta jugada
 		 */
-		void jugarCarta(Lista<Jugador*>* jugadores, unsigned int indiceCarta);
+		void jugarCarta(Lista<Jugador*>* jugadores, unsigned int indiceCarta, Jugador* jugador);
 };
 
 /*

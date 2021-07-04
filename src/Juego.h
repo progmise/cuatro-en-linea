@@ -4,6 +4,7 @@
 #include "Jugador.h"
 #include "Mazo.h"
 #include "Consola.h"
+#include "Imagen.h"
 
 class Juego {
 
@@ -34,26 +35,14 @@ class Juego {
 
 		Lista<Jugador*>* obtenerJugadores();
 
-		void iniciar(Consola consola);
+		void iniciar(Consola consola, Imagen imagen);
 
 	private:
 
 		unsigned int validarDimension(unsigned int dimension);
 
-		bool hayCuatroEnLineaEnRecta(Lista<Casillero*>* recta, char ficha);
-
-		bool hayCuatroEnLineaEnDiagonalesDePlano(Lista<Lista<Casillero*>*>* diagonales,
-												 char ficha);
-
-		bool hayCuatroEnLineaEnDiagonalesDePlanos(Tablero* tablero, Casillero* coordenadas,
-												  char ficha);
-
-		bool hayCuatroEnLineaEnDiagonales(Tablero* tablero, Casillero* coordenadas,
-										  char ficha);
-
-		bool hayCuatroEnLineaEnRectas(Tablero* tablero, Casillero* coordenadas, char ficha);
-
-		bool hayCuatroEnLinea(Tablero* tablero, Casillero* coordenadas, Jugador* jugador);
+		bool hayCuatroEnLinea(Lista<Lista<Lista<Casillero*>*>*>* tablero,
+							  Casillero* ultimoCasillero, Jugador* jugador);
 
 		Casillero* ubicarFichaUltimaPosicionLibre(Tablero* tablero,
 												  Jugador* jugador,
@@ -76,6 +65,7 @@ class Juego {
 
 		unsigned int jugarCarta(Jugador* jugador, Lista<Jugador*>* jugadores,
 								Consola consola, unsigned int ronda);
+
 };
 
 /*

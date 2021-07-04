@@ -1,11 +1,15 @@
 #include "TP2.h"
+#include "Imagen.h"
 
 int main() {
 
 	Consola consola = Consola();
-	Juego juego = Juego(10, 10, 10);
+	Imagen imagen = Imagen();
+	Juego* juego = new Juego(10, 10, 10);
 
-	juego.iniciar(consola);
+	juego->iniciar(consola, imagen);
+
+	delete juego;
 
 	return 0;
 }

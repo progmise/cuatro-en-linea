@@ -6,42 +6,109 @@ Tablero::Tablero() {
     this->longitud = 0;
     this->profundidad = 0;
     this->altura = 0;
-    this->casilleros = new Lista<Casillero*>();
+    this->casilleros = new Lista<Lista<Lista<Casillero*>*>*>();
 }
 
 Tablero::Tablero(unsigned int longitud, unsigned int profundidad, unsigned int altura) {
     this->longitud = longitud;
     this->profundidad = profundidad;
     this->altura = altura;
-    this->casilleros = new Lista<Casillero*>();
+    this->casilleros = new Lista<Lista<Lista<Casillero*>*>*>();
 
+    Lista<Lista<Casillero*>*>* fila = NULL;
+    Lista<Casillero*>* columna = NULL;
     Casillero* casillero = NULL;
+    Casillero* casilleroVecino = NULL;
 
-    for (unsigned int i = 0; i < longitud; i++) {
+    for (unsigned int k = 0; k < longitud; k++) {
+
+    	fila = new Lista<Lista<Casillero*>*>();
 
         for (unsigned int j = 0; j < profundidad; j++) {
 
-            for (unsigned int k = 0; k < altura; k++) {
+        	columna = new Lista<Casillero*>();
+
+            for (unsigned int i = 0; i < altura; i++) {
 
             	casillero = new Casillero(i, j, k);
 
-            	this->casilleros->agregar(casillero);
+            	columna->agregar(casillero);
             }
+
+            fila->agregar(columna);
         }
+
+        this->casilleros->agregar(fila);
+    }
+
+
+    for (unsigned int z = 1; z < this->altura + 1; z++) {
+
+    	fila = this->casilleros->obtener(z);
+
+    	for (unsigned int y = 1; y < this->profundidad + 1; y++) {
+
+    		columna = fila->obtener(y);
+
+    		for (unsigned int x = 1; x < this->longitud + 1; x++) {
+
+    			casillero = columna->obtener(x);
+
+    			for (int i = -1; i < 2; i++) {
+
+    				for (int j = -1; j < 2; j++) {
+
+    					for (int k = -1; k < 2; k++) {
+
+    						casilleroVecino = buscarCasillero(
+    								this->casilleros,
+									i + casillero->obtenerPosicionX(),
+									j + casillero->obtenerPosicionY(),
+									k + casillero->obtenerPosicionZ()
+							);
+
+    						casillero->asignarVecino(
+    								casilleroVecino, i, j, k
+							);
+    					}
+    				}
+    			}
+    		}
+    	}
     }
 }
 
 Tablero::~Tablero() {
 
-	Casillero* casillero = NULL;
+    Lista<Lista<Casillero*>*>* fila = NULL;
+    Lista<Casillero*>* columna = NULL;
+    Casillero* casillero = NULL;
 
 	this->casilleros->iniciarCursor();
 
 	while (this->casilleros->avanzarCursor()) {
 
-		casillero = this->casilleros->obtenerCursor();
+		fila = casilleros->obtenerCursor();
 
-		delete casillero;
+		fila->iniciarCursor();
+
+		while (fila->avanzarCursor()) {
+
+			columna = fila->obtenerCursor();
+
+			columna->iniciarCursor();
+
+			while (columna->avanzarCursor()) {
+
+				casillero = columna->obtenerCursor();
+
+				delete casillero;
+			}
+
+			delete columna;
+		}
+
+		delete fila;
 	}
 
 	delete casilleros;
@@ -77,404 +144,46 @@ void Tablero::asignarAltura(unsigned int altura) {
 	this->altura = altura;
 }
 
-Lista<Casillero*>* Tablero::obtenerCasilleros() {
+Lista<Lista<Lista<Casillero*>*>*>* Tablero::obtenerCasilleros() {
 
 	return this->casilleros;
 }
 
-Lista<Casillero*>* Tablero::obtenerRectaEnX(unsigned int profundidad,
-								   	   	    unsigned int altura) {
+Casillero* Tablero::buscarCasillero(Lista<Lista<Lista<Casillero*>*>*>* tablero, unsigned int posicionX,
+									unsigned int posicionY, unsigned int posicionZ) {
 
+	Lista<Lista<Casillero*>*>* fila = NULL;
+	Lista<Casillero*>* columna = NULL;
 	Casillero* casillero = NULL;
-	unsigned int posicionY = 0;
-	unsigned int posicionZ = 0;
-	Lista<Casillero*>* recta = new Lista<Casillero*>();
+	Casillero* resultado = NULL;
 
-	this->casilleros->iniciarCursor();
+	tablero->iniciarCursor();
 
-	while (this->casilleros->avanzarCursor()) {
+	while (tablero->avanzarCursor() && resultado == NULL) {
 
-		casillero = this->casilleros->obtenerCursor();
+		fila = tablero->obtenerCursor();
+		fila->iniciarCursor();
 
-		posicionY = casillero->obtenerPosicionY();
-		posicionZ = casillero->obtenerPosicionZ();
+		while (fila->avanzarCursor() && resultado == NULL) {
 
-		if (posicionY == profundidad && posicionZ == altura) {
+			columna = fila->obtenerCursor();
+			columna->iniciarCursor();
 
-			recta->agregar(casillero);
-		}
-	}
+			while (columna->avanzarCursor() && resultado == NULL) {
 
-	return recta;
-}
+				casillero = columna->obtenerCursor();
 
-Lista<Lista<Casillero*>*>* Tablero::obtenerDiagonalesPlanoXY(unsigned int longitud,
-														  	 unsigned int profundidad,
-															 unsigned int altura) {
+				if (casillero->obtenerPosicionX() == posicionX &&
+					casillero->obtenerPosicionY() == posicionY &&
+					casillero->obtenerPosicionZ() == posicionZ) {
 
-	Lista<Casillero*>* diagonal = NULL;
-	Lista<Casillero*>* plano = NULL;
-	Lista<Lista<Casillero*>*>* diagonales = new Lista<Lista<Casillero*>*>();
-
-	plano = obtenerPlanoXY(altura);
-
-	diagonal = obtenerDiagonalIzquierdaPlanoXY(plano, longitud, profundidad);
-	diagonales->agregar(diagonal);
-
-	diagonal = obtenerDiagonalDerechaPlanoXY(plano, longitud, profundidad);
-	diagonales->agregar(diagonal);
-
-	delete plano;
-
-	return diagonales;
-}
-
-Lista<Lista<Casillero*>*>* Tablero::obtenerDiagonales(unsigned int longitud,
-													  unsigned int profundidad,
-													  unsigned int altura) {
-
-	Lista<Casillero*>* diagonal = NULL;
-	Lista<Lista<Casillero*>*>* diagonales = new Lista<Lista<Casillero*>*>();
-
-	diagonal = obtenerDiagonalIzquierdaTrasera(longitud, profundidad, altura);
-	diagonales->agregar(diagonal);
-
-	diagonal = obtenerDiagonalDerechaTrasera(longitud, profundidad, altura);
-	diagonales->agregar(diagonal);
-
-	diagonal = obtenerDiagonalIzquierdaFrontal(longitud, profundidad, altura);
-	diagonales->agregar(diagonal);
-
-	diagonal = obtenerDiagonalDerechaFrontal(longitud, profundidad, altura);
-	diagonales->agregar(diagonal);
-
-	return diagonales;
-}
-
-void Tablero::transponerTablero() {
-
-	Casillero* casillero = NULL;
-	unsigned int aux = 0;
-
-	this->casilleros->iniciarCursor();
-
-	while (this->casilleros->avanzarCursor()) {
-
-		casillero = this->casilleros->obtenerCursor();
-
-		aux = casillero->obtenerPosicionX();
-
-		casillero->asignarPosicionX(
-			casillero->obtenerPosicionZ()
-		);
-
-		casillero->asignarPosicionZ(
-			casillero->obtenerPosicionY()
-		);
-
-		casillero->asignarPosicionY(
-			aux
-		);
-	}
-
-	aux = this->longitud;
-
-	this->longitud = this->altura;
-	this->altura = this->profundidad;
-	this->profundidad = aux;
-}
-
-Lista<Casillero*>* Tablero::obtenerPlanoXY(unsigned int altura) {
-
-	Casillero* casillero = NULL;
-	unsigned int posicionZ = 0;
-	Lista<Casillero*>* plano = new Lista<Casillero*>();
-
-	this->casilleros->iniciarCursor();
-
-	while (this->casilleros->avanzarCursor()) {
-
-		casillero = this->casilleros->obtenerCursor();
-
-		posicionZ = casillero->obtenerPosicionZ();
-
-		if (posicionZ == altura) {
-
-			plano->agregar(casillero);
-		}
-	}
-
-	return plano;
-}
-
-Lista<Casillero*>* Tablero::obtenerDiagonalIzquierdaPlanoXY(Lista<Casillero*>* plano,
-														    unsigned int columna,
-														    unsigned int fila) {
-
-	Casillero* casillero = NULL;
-	unsigned int posicionX = 0;
-	unsigned int posicionY = 0;
-	Lista<Casillero*>* diagonal = new Lista<Casillero*>();
-
-	if (fila <= columna) {
-
-		fila -= fila;
-		columna -= fila;
-
-	} else {
-
-		fila -= columna;
-		columna -= columna;
-	}
-
-	while (columna < this->longitud && fila < this->profundidad) {
-
-		plano->iniciarCursor();
-
-		while (plano->avanzarCursor()) {
-
-			casillero = plano->obtenerCursor();
-
-			posicionX = casillero->obtenerPosicionX();
-			posicionY = casillero->obtenerPosicionY();
-
-			if (posicionX == columna && posicionY == fila) {
-
-				diagonal->agregar(casillero);
+					resultado = casillero;
+				}
 			}
 		}
-
-		columna++;
-		fila++;
 	}
 
-	return diagonal;
-}
-
-Lista<Casillero*>* Tablero::obtenerDiagonalDerechaPlanoXY(Lista<Casillero*>* plano,
-														  unsigned int columna,
-														  unsigned int fila) {
-	
-	Casillero* casillero = NULL;
-	unsigned int posicionX = 0;
-	unsigned int posicionY = 0;
-	unsigned int profundidad = this->profundidad - 1;
-	Lista<Casillero*>* diagonal = new Lista<Casillero*>();
-
-	if (columna + fila < profundidad) {
-
-		fila -= fila;
-		columna += fila;
-
-	} else {
-
-		fila -= (profundidad - columna);
-		columna += (profundidad - columna);
-	}
-
-	while (columna < this->longitud && fila < this->profundidad) {
-
-		plano->iniciarCursor();
-
-		while (plano->avanzarCursor()) {
-
-			casillero = plano->obtenerCursor();
-
-			posicionX = casillero->obtenerPosicionX();
-			posicionY = casillero->obtenerPosicionY();
-
-			if (posicionX == columna && posicionY == fila) {
-
-				diagonal->agregar(casillero);
-			}
-		}
-
-		columna--;
-		fila++;
-	}
-
-	return diagonal;	
-}
-
-
-Lista<Casillero*>* Tablero::obtenerDiagonalIzquierdaTrasera(unsigned int longitud,
-												   	   	    unsigned int profundidad,
-														    unsigned int altura) {
-
-	Casillero* casillero = NULL;
-	unsigned int posicionX = 0;
-	unsigned int posicionY = 0;
-	unsigned int posicionZ = 0;
-	unsigned int menor = 0;
-	Lista<Casillero*>* diagonal = new Lista<Casillero*>();
-
-	menor = Util::obtenerMenorDeTres(longitud, profundidad, altura);
-
-	longitud -= menor;
-	profundidad -= menor;
-	altura -= menor;
-
-	while (longitud < this->longitud && profundidad < this->profundidad &&
-		   altura < this->altura) {
-
-		this->casilleros->iniciarCursor();
-
-		while (this->casilleros->avanzarCursor()) {
-
-			casillero = this->casilleros->obtenerCursor();
-
-			posicionX = casillero->obtenerPosicionX();
-			posicionY = casillero->obtenerPosicionY();
-			posicionZ = casillero->obtenerPosicionZ();
-
-			if (posicionX == longitud && posicionY == profundidad &&
-				posicionZ == altura) {
-
-				diagonal->agregar(casillero);
-			}
-		}
-
-		longitud++;
-		profundidad++;
-		altura++;
-	}
-
-	return diagonal;
-}
-
-Lista<Casillero*>* Tablero::obtenerDiagonalDerechaTrasera(unsigned int longitud,
-														  unsigned int profundidad,
-														  unsigned int altura) {
-
-	Casillero* casillero = NULL;
-	unsigned int posicionX = 0;
-	unsigned int posicionY = 0;
-	unsigned int posicionZ = 0;
-	unsigned int menor = 0;
-	Lista<Casillero*>* diagonal = new Lista<Casillero*>();
-
-	menor = Util::obtenerMenorDeTres(longitud, profundidad, altura);
-
-	longitud -= menor;
-	profundidad += menor;
-	altura -= menor;
-
-	while (longitud < this->longitud && profundidad < this->profundidad &&
-		   altura < this->altura) {
-
-		this->casilleros->iniciarCursor();
-
-		while (this->casilleros->avanzarCursor()) {
-
-			casillero = this->casilleros->obtenerCursor();
-
-			posicionX = casillero->obtenerPosicionX();
-			posicionY = casillero->obtenerPosicionY();
-			posicionZ = casillero->obtenerPosicionZ();
-
-			if (posicionX == longitud && posicionY == profundidad &&
-				posicionZ == altura) {
-
-				diagonal->agregar(casillero);
-			}
-		}
-
-		longitud++;
-		profundidad--;
-		altura++;
-	}
-
-	return diagonal;
-}
-
-Lista<Casillero*>* Tablero::obtenerDiagonalIzquierdaFrontal(unsigned int longitud,
-													  	    unsigned int profundidad,
-														    unsigned int altura) {
-
-	Casillero* casillero = NULL;
-	unsigned int posicionX = 0;
-	unsigned int posicionY = 0;
-	unsigned int posicionZ = 0;
-	unsigned int menor = 0;
-	Lista<Casillero*>* diagonal = new Lista<Casillero*>();
-
-	menor = Util::obtenerMenorDeTres(longitud, profundidad, altura);
-
-	longitud += menor;
-	profundidad -= menor;
-	altura -= menor;
-
-	while (longitud < this->longitud && profundidad < this->profundidad &&
-		   altura < this->altura) {
-
-		this->casilleros->iniciarCursor();
-
-		while (this->casilleros->avanzarCursor()) {
-
-			casillero = this->casilleros->obtenerCursor();
-
-			posicionX = casillero->obtenerPosicionX();
-			posicionY = casillero->obtenerPosicionY();
-			posicionZ = casillero->obtenerPosicionZ();
-
-			if (posicionX == longitud && posicionY == profundidad &&
-				posicionZ == altura) {
-
-				diagonal->agregar(casillero);
-			}
-		}
-
-		longitud--;
-		profundidad++;
-		altura++;
-	}
-
-	return diagonal;
-}
-
-Lista<Casillero*>* Tablero::obtenerDiagonalDerechaFrontal(unsigned int longitud,
-													  	  unsigned int profundidad,
-														  unsigned int altura) {
-
-	Casillero* casillero = NULL;
-	unsigned int posicionX = 0;
-	unsigned int posicionY = 0;
-	unsigned int posicionZ = 0;
-	unsigned int menor = 0;
-	Lista<Casillero*>* diagonal = new Lista<Casillero*>();
-
-	menor = Util::obtenerMenorDeTres(longitud, profundidad, altura);
-
-	longitud += menor;
-	profundidad += menor;
-	altura -= menor;
-
-	while (longitud < this->longitud && profundidad < this->profundidad &&
-		   altura < this->altura) {
-
-		this->casilleros->iniciarCursor();
-
-		while (this->casilleros->avanzarCursor()) {
-
-			casillero = this->casilleros->obtenerCursor();
-
-			posicionX = casillero->obtenerPosicionX();
-			posicionY = casillero->obtenerPosicionY();
-			posicionZ = casillero->obtenerPosicionZ();
-
-			if (posicionX == longitud && posicionY == profundidad &&
-				posicionZ == altura) {
-
-				diagonal->agregar(casillero);
-			}
-		}
-
-		longitud--;
-		profundidad--;
-		altura++;
-	}
-
-	return diagonal;
+	return resultado;
 }
 
 ostream& operator<<(ostream &strm, const Tablero &tablero) {

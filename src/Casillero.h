@@ -1,5 +1,6 @@
 #ifndef CASILLERO_H_
 #define CASILLERO_H_
+#include "Ficha.h"
 #include <iostream>
 
 class Casillero {
@@ -7,10 +8,13 @@ class Casillero {
 	public:
 
 		static const char CASILLERO_LIBRE = '*';
+		static const unsigned int CANT_VECINOS = 3;
 
 	private:
 
-		char tipoFicha;
+		Ficha* ficha;
+		bool ocupado;
+		Casillero* vecinos[CANT_VECINOS][CANT_VECINOS][CANT_VECINOS];
 		unsigned int posicionX;
 		unsigned int posicionY;
 		unsigned int posicionZ;
@@ -38,16 +42,48 @@ class Casillero {
 		Casillero(unsigned int posicionX, unsigned int posicionY, unsigned int posicionZ);
 
 		/*
-		 * PRE:  No tiene
-		 * POST: Devuelve el valor de tipoFicha
+		 * PRE:  El casillero debe haber sido creado
+		 * POST: Destruye el casillero y todos sus elementos
 		 */
-		char obtenerTipoFicha();
+		~Casillero();
 
 		/*
 		 * PRE:  No tiene
-		 * POST: Asigna el valor de tipoFicha
+		 * POST: Devuelve el puntero de ficha
 		 */
-		void asignarTipoFicha(char tipoFicha);
+		Ficha* obtenerFicha();
+
+		/*
+		 * PRE:  No tiene
+		 * POST: Asigna el valor de ficha
+		 */
+		void asignarFicha(Ficha* ficha);
+
+		/*
+		 * PRE:  No tiene
+		 * POST: Devuelve el valor de ocupado
+		 */
+		bool estaOcupado();
+
+		/*
+		 * PRE:  No tiene
+		 * POST: Asigna el valor de ocupado
+		 */
+		void asignarOcupado(bool ocupado);
+
+		/*
+		 * PRE:  posicionX, posicionY, posicionZ deben tomar valores entre
+		 * 		 -1 y 1
+		 * POST: Devuelve el casillero vecino, de dichas coordenadas
+		 */
+		Casillero* obtenerVecino(int posicionX, int posicionY, int posicionZ);
+
+		/*
+		 * PRE:  posicionX, posicionY, posicionZ deben tomar valores entre
+		 * 		 -1 y 1
+		 * POST: Asigna un casillero a vecinos
+		 */
+		void asignarVecino(Casillero* casillero, int posicionX, int posicionY, int posicionZ);
 
 		/*
 		 * PRE:  No tiene
@@ -86,10 +122,11 @@ class Casillero {
 		void asignarPosicionZ(unsigned int posicionZ);
 
 		/*
-		 * PRE:  No tiene
-		 * POST: Evalua si el casillero, está ocupado por un jugador
+		 * PRE:  El casillero debe estar inicializado
+		 * POST: Evalua si ambos casilleros, tienen el mismo tipo
+		 * 		 de ficha, de un jugador
 		 */
-		bool estaOcupado();
+		bool esElMismoJugador(Casillero* casillero);
 };
 
 /*

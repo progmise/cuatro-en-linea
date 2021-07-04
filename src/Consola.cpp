@@ -1,5 +1,5 @@
 #include "Consola.h"
-
+#include <stdio.h>
 using namespace std;
 
 Consola::Consola() { }
@@ -21,6 +21,7 @@ void Consola::mostrarLevanteDeCarta(Jugador* jugador) {
 
 void Consola::mostrarDatosRonda(Jugador* jugador, unsigned int ronda) {
 
+	cout << endl;
 	cout << "######## RONDA " << ronda << " ########" << endl << endl;
 	cout << "Turno del jugador " << jugador->obtenerNombre() << endl;
 	cout << "Ha hecho " << jugador->obtenerJugadas() << " jugadas" << endl;
@@ -85,6 +86,16 @@ void Consola::mostrarEmpate(Lista<Jugador*>* jugadores) {
 	strStream.clear();
 
 	cout << mensaje;
+}
+
+void Consola::mostrarPlano(Lista<Lista<Casillero*>*>* plano, unsigned int longitud,
+						   unsigned int profundidad) {
+
+	std::string planoFormateado = "";
+
+	planoFormateado = crearPlano(plano, longitud, profundidad);
+
+	std::cout << std::endl << planoFormateado;
 }
 
 unsigned int Consola::ingresarPosicion(string dimension, unsigned int minValor,
@@ -187,6 +198,166 @@ unsigned int Consola::ingresarCarta(Lista<Carta*>* cartas) {
 	delete opciones;
 
 	return opcion;
+}
+
+unsigned int Consola::navegarPorNiveles(Tablero* tablero) {
+
+	Lista<Lista<Casillero*>*>* plano = NULL;
+	unsigned int nivel = 1;
+	char caracter = '\0';
+
+	do {
+		cout << "Nivel " << setfill('0') << setw(3) << nivel - 1 << endl;
+
+		plano = tablero->obtenerCasilleros()->obtener(nivel);
+		mostrarPlano(plano, tablero->obtenerLongitud(), tablero->obtenerProfundidad());
+
+		cout << "Puede navegar por los distintos niveles del tablero" << endl;
+	    cout << "1 - Siguiente nivel" << endl;
+	    cout << "2 - Anterior nivel" << endl;
+
+		cout << endl << "0 - Salir del modo visualización" << endl;
+
+		cin >> caracter;
+
+		switch (caracter) {
+
+			case '0':
+				break;
+
+			case '1':
+
+				nivel++;
+
+				if (nivel == tablero->obtenerAltura() + 1) {
+
+					nivel = 1;
+				}
+
+				break;
+
+			case '2':
+
+				if (nivel == 1) {
+
+					nivel = tablero->obtenerAltura();
+
+				} else {
+
+					nivel--;
+				}
+
+				break;
+
+			default:
+
+				cout << "¡Se ingresó una tecla inválida!" << endl;
+				break;
+		}
+
+	} while(caracter != '0');
+
+	return nivel;
+}
+
+Jugador* Consola::preguntarJugadorParaFatality(Lista<Jugador*>* jugadores) {
+	Jugador* jugadorActual = jugadores->obtenerCursor();
+	cout << "Por favor, ingrese el nombre de uno de los jugadores" << endl;
+	for(unsigned int i = 1; i <= jugadores->contarElementos(); i++){
+		Jugador* jugadorCiclo = jugadores->obtener(i);
+		if(jugadorCiclo->obtenerCartas()->contarElementos() != 0 &&
+				jugadorCiclo->obtenerNombre() != jugadorActual->obtenerNombre()) {
+			cout << jugadorCiclo->obtenerNombre() << endl;
+		}
+	}
+	string nombreElegido;
+	cin >> nombreElegido;
+	bool esValido = false;
+	Jugador* jugadorDevolver;
+	while (!esValido) {
+		unsigned int j = 1;
+		while (!esValido && j <= jugadores->contarElementos()){
+			Jugador* jugador = jugadores->obtener(j);
+			if(nombreElegido == jugador->obtenerNombre() && jugador->obtenerCartas()->contarElementos() != 0 && nombreElegido != jugadorActual->obtenerNombre()) {
+				esValido = true;
+				jugadorDevolver = jugador;
+			}
+			j++; //No se incrementaba nunca j
+		}
+		if (!esValido) {
+			cout << "El nombre ingresado no forma parte de la lista de nombres posibles, intentalo de nuevo" << endl;
+			cin >> nombreElegido;
+		}
+	}
+
+	return jugadorDevolver;
+}
+
+string Consola::crearEncabezado(unsigned int longitud) {
+
+	string encabezado = "";
+	stringstream strStream;
+
+	strStream << ' ';
+
+	for (unsigned int i = 1; i < longitud + 1; i++) {
+
+		strStream << setfill('0') << setw(3) << i << ' ';
+	}
+
+	encabezado = strStream.str();
+	strStream.clear();
+
+	return encabezado;
+}
+
+string Consola::crearFila(Lista<Casillero*>* fila, unsigned int longitud) {
+
+	Ficha* ficha = NULL;
+	string filaFormateada = "";
+	stringstream strStream;
+
+	for (unsigned int i = 1; i < longitud + 1; i++) {
+
+		ficha = fila->obtener(i)->obtenerFicha();
+
+		strStream << '|' << ' ' << ficha->obtenerTipoDeFicha() << ' ';
+	}
+
+	strStream << '|';
+
+	filaFormateada = strStream.str();
+	strStream.clear();
+
+	return filaFormateada;
+}
+
+string Consola::crearPlano(Lista<Lista<Casillero*>*>* plano, unsigned int longitud,
+		  	  	  	  	   unsigned int profundidad) {
+
+	string planoFormateado = "";
+	string fila = "";
+	string encabezado = "";
+	stringstream strStream;
+
+	encabezado = crearEncabezado(longitud);
+
+	strStream << string(4, ' ') << encabezado << endl;
+	strStream << string(4, ' ') << string(encabezado.length(), '-') << endl;
+
+	for (unsigned int j = 1; j < profundidad + 1; j++) {
+
+		fila = crearFila(plano->obtener(j), longitud);
+
+		strStream << setfill('0') << setw(3) << j << ' ' << fila << endl;
+	}
+
+	strStream << string(4, ' ') << string(encabezado.length(), '-') << endl;
+
+	planoFormateado = strStream.str();
+	strStream.clear();
+
+	return planoFormateado;
 }
 
 string Consola::validarNombre(string entrada) {

@@ -2,7 +2,10 @@
 #define CONSOLA_H_
 #include "Util.h"
 #include "Jugador.h"
+#include "Tablero.h"
+#include "Casillero.h"
 #include <sstream>
+#include <iomanip>
 
 class Consola {
 
@@ -49,6 +52,13 @@ class Consola {
 		void mostrarEmpate(Lista<Jugador*>* jugadores);
 
 		/*
+		 * PRE:  Los elementos del plano, deben estar inicializados
+		 * POST: Imprime por consola, el plano en donde cayó la ficha
+		 */
+		void mostrarPlano(Lista<Lista<Casillero*>*>* plano, unsigned int longitud,
+						  unsigned int profundidad);
+
+		/*
 		 * PRE:  minValor y maxValor, deben ser números mayores o iguales a 0,
 		 * 		 y minValor puede ser menor o igual a maxValor
 		 * POST: Solicita al usuario ingresar un número, el cual se validará
@@ -89,7 +99,46 @@ class Consola {
 		 */
 		unsigned int ingresarCarta(Lista<Carta*>* cartas);
 
+		/*
+		 * PRE:  Los elementos del tablero, deben estar inicializados
+		 * POST: Muestra al jugador los distintos niveles del tablero y
+		 * 		 de acuerdo al nivel en el que se encuentra, se devolverá
+		 * 		 dicho valor
+		 */
+		unsigned int navegarPorNiveles(Tablero* tablero);
+
+		/*
+		 * PRE: jugadores no esta vacía
+		 * POST: Devuelve el índice del jugador
+		 */
+
+		Jugador* preguntarJugadorParaFatality(Lista<Jugador*>* jugadores);
+
 	private:
+
+		/*
+		 * PRE:  No tiene
+		 * POST: Devuelve un string, que representa al encabezado del plano,
+		 * 		 de acuerdo a la cantidad de columnas dada. El mismo es formateado
+		 */
+		std::string crearEncabezado(unsigned int longitud);
+
+		/*
+		 * PRE:  Los elementos de la fila, deben estar inicializados
+		 * POST: Devuelve un string, que representa a una fila, la cual es creada
+		 * 		 a partir de los caracteres almacenados en cada casillero de la
+		 * 		 fila del plano. El mismo es formateado
+		 */
+		std::string crearFila(Lista<Casillero*>* fila, unsigned int longitud);
+
+		/*
+		 * PRE:  Los elementos del plano, deben estar inicializados
+		 * POST: Devuelve un string, que representa a un plano, el cual es creado
+		 * 		 a partir de los caracteres almacenados en cada casillero del plano
+		 * 		 dado. El mismo es formateado
+		 */
+		std::string crearPlano(Lista<Lista<Casillero*>*>* plano, unsigned int longitud,
+				  	  	  	   unsigned int profundidad);
 
 		/*
 		 * PRE:  No tiene
