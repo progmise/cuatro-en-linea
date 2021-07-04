@@ -1,7 +1,7 @@
 #include "TP2.h"
 #include "Imagen.h"
 
-int main() {
+ int main() {
 
 	Consola consola = Consola();
 	Imagen imagen = Imagen();

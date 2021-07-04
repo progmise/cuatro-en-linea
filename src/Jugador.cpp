@@ -103,12 +103,10 @@ void Jugador::jugarCarta(Lista<Jugador*>* jugadores, unsigned int indiceCarta, J
 			break;
 
 		case 3:
-
 			carta->borrarCartas(jugador);
 			this->cartas->remover(indiceCarta);
 
 			delete carta;
-
 			break;
 
 		default:

@@ -203,6 +203,8 @@ class Consola {
 		 * POST: Devuelve una lista, con cartas como opciones
 		 */
 		Lista<std::string>* generarOpcionesCartas(Lista<Carta*>* cartas);
+
+
 };
 
 #endif /* CONSOLA_H_ */
