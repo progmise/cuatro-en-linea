@@ -114,7 +114,14 @@ class Consola {
 
 		Jugador* preguntarJugadorParaFatality(Lista<Jugador*>* jugadores);
 
-		Casillero* preguntarCasilleroParaUsurpar();
+		/*
+		 * PRE: Jugadores no esta vacío, y la lista de casilleros jugados del cursor de jugadores
+		 * no esta vacía
+		 * POST: Devuelve un casillero valido para usurpar, o NULL en caso de que no exista tal
+		 *
+		 */
+
+		Casillero* preguntarCasilleroParaUsurpar(Lista<Jugador*>* jugadores);
 
 	private:
 

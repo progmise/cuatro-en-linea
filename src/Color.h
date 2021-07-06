@@ -1,6 +1,6 @@
 #ifndef COLOR_H_
 #define COLOR_H_
-#include "EasyBMP.h"
+#include "lib/EasyBMP.h"
 
 class Color {
 

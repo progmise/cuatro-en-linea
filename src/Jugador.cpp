@@ -8,6 +8,8 @@ Jugador::Jugador() {
     this->ficha = new Ficha();
     this->flagGanador = false;
     this->cartas = new Lista<Carta*>();
+    this->casilleros = new Lista<Casillero*>();
+
 }
 
 Jugador::Jugador(string nombre, Ficha* ficha) {
@@ -16,6 +18,8 @@ Jugador::Jugador(string nombre, Ficha* ficha) {
     this->ficha = ficha;
     this->flagGanador = false;
     this->cartas = new Lista<Carta*>();
+    this->casilleros = new Lista<Casillero*>();
+
 }
 
 Jugador::~Jugador() {
@@ -30,7 +34,17 @@ Jugador::~Jugador() {
 
 		delete carta;
 	}
+	Casillero* casillero = NULL;
+	this->casilleros->iniciarCursor();
 
+		while (this->casilleros->avanzarCursor()) {
+
+			casillero = this->casilleros->obtenerCursor();
+
+			delete casillero;
+		}
+
+	delete casilleros;
 	delete cartas;
 	delete ficha;
 }
@@ -81,7 +95,7 @@ Lista<Carta*>* Jugador::obtenerCartas() {
 	return this->cartas;
 }
 
-Lista<Casilleros*>* Jugador::obtenerCasilleros(){
+Lista<Casillero*>* Jugador::obtenerCasilleros(){
 	return this->casilleros;
 }
 

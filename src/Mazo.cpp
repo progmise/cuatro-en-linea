@@ -63,9 +63,9 @@ Carta* Mazo::generarAzarmenteCarta() {
 
 	numero = (rand() % CANT_TIPOS_CARTAS) + 1;
 
-	if(numero == 4 && this->cartasLevantadas < 10){
+	/*if(numero == 4 && this->cartasLevantadas < 2){
 		numero = (rand() % 3) + 1;
-	}
+	}*/
 
 	switch (numero) {
 

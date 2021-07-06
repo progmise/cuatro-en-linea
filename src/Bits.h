@@ -1,6 +1,6 @@
 #ifndef BITS_H_
 #define BITS_H_
-#include "EasyBMP.h"
+#include "lib/EasyBMP.h"
 #include "Color.h"
 #include <string>
 #include <sstream>
