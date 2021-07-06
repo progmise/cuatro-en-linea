@@ -25,8 +25,18 @@ class Jugador {
 		 */
 		friend std::ostream& operator<<(std::ostream&, const Jugador&);
 
+		/*
+		 * A fin de poder sobrescribir el operador '==', se debe declarar
+		 * la función 'friend', de modo que pueda acceder a los atributos
+		 * privados o protegidos, de la clase
+		 */
 		friend bool operator==(const Jugador &lhs, const Jugador &rhs);
 
+		/*
+		 * A fin de poder sobrescribir el operador '!=', se debe declarar
+		 * la función 'friend', de modo que pueda acceder a los atributos
+		 * privados o protegidos, de la clase
+		 */
 		friend bool operator!=(const Jugador &lhs, const Jugador &rhs);
 
 	public:

@@ -4,6 +4,7 @@ using namespace std;
 
 Mazo::Mazo() {
 	this->cartas = new Cola<Carta*>();
+	this->cartasLevantadas = 0;
 }
 
 Mazo::~Mazo() {
@@ -47,6 +48,7 @@ void Mazo::levantarCartaTope(Jugador* jugador) {
 	if (cantCartas < MAX_CARTAS_JUGADOR) {
 
 		carta = this->cartas->desacolar();
+		this->cartasLevantadas++;
 		jugador->obtenerCartas()->agregar(carta);
 
 		carta = generarAzarmenteCarta();
@@ -60,6 +62,10 @@ Carta* Mazo::generarAzarmenteCarta() {
 	Carta* carta = NULL;
 
 	numero = (rand() % CANT_TIPOS_CARTAS) + 1;
+
+	if(numero == 4 && this->cartasLevantadas < 10){
+		numero = (rand() % 3) + 1;
+	}
 
 	switch (numero) {
 
@@ -85,6 +91,14 @@ Carta* Mazo::generarAzarmenteCarta() {
 					"Carta Fatality",
 					"Permite al jugador borrar las cartas de otro jugador seleccionado"
 			);
+			break;
+
+		case 4:
+			carta = new Carta(
+					numero,
+					"Carta usurpadora",
+					"Permite al jugador usurpar una ficha adyacente al jugador"
+					);
 			break;
 
 		default:

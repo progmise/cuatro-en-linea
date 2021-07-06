@@ -36,7 +36,7 @@ class Imagen {
 		Imagen();
 
 		/*
-		 * PRE:  El tablero debe contar con elementos. longitud, profundidad y ronda
+		 * PRE:  El tablero debe contar con elementos. Longitud, profundidad y ronda
 		 * 		 deben ser números enteros no negativos
 		 * POST: Crea una imagen de un tablero y la guarda como formato .bmp
 		 */

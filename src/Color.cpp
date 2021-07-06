@@ -1,5 +1,5 @@
 #include "Color.h"
-#include "lib/EasyBMP.h"
+#include "EasyBMP.h"
 
 Color::Color() {
 	this->bmp = new BMP();

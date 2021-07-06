@@ -111,7 +111,6 @@ class Consola {
 		 * PRE: jugadores no esta vacía
 		 * POST: Devuelve el índice del jugador
 		 */
-
 		Jugador* preguntarJugadorParaFatality(Lista<Jugador*>* jugadores);
 
 	private:
