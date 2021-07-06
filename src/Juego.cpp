@@ -367,6 +367,8 @@ Casillero* Juego::ingresarFicha(Consola consola, Tablero* tablero,
 
 	coordenadas = ubicarFichaUltimaPosicionLibre(tablero, jugador, posicionX, posicionY);
 
+	jugador->obtenerCasilleros()->agregar(coordenadas);
+
 	return coordenadas;
 }
 
@@ -431,6 +433,7 @@ unsigned int Juego::jugarCarta(Jugador* jugador, Lista<Jugador*>* jugadores,
 							   Consola consola, unsigned int ronda) {
 
 	Jugador* jugadorFatality = NULL;
+	Casillero* casillero = NULL;
 	unsigned int opcion = 0;
 	unsigned int idCarta = 0;
 	unsigned int tamanio = jugadores->contarElementos();
@@ -450,7 +453,11 @@ unsigned int Juego::jugarCarta(Jugador* jugador, Lista<Jugador*>* jugadores,
 			jugadorFatality = consola.preguntarJugadorParaFatality(jugadores);
 		}
 
-		jugador->jugarCarta(jugadores, opcion, jugadorFatality);
+		else if(idCarta == 4){
+			casillero = consola.preguntarCasilleroParaUsurpar(jugadores);
+		}
+
+		jugador->jugarCarta(jugadores, opcion, jugadorFatality, casillero);
 	}
 
 	return ronda;

@@ -551,3 +551,52 @@ Lista<string>* Consola::generarOpcionesCartas(Lista<Carta*>* cartas) {
 
 	return opciones;
 }
+
+Casillero* Consola::preguntarCasilleroParaUsurpar(Lista<Jugador*> jugadores){
+	Jugador* jugadorActual = jugadores->obtenerCursor();
+	Lista<Casillero*>* casilleros = jugadorActual->obtenerCasilleros();
+	Lista<Casillero*>* casillerosValidos = new Lista<Casillero*>();
+	Casillero* casilleroDevolver = NULL;
+
+	for(int i = 0; i < casilleros->contarElementos(); i++){
+		Casillero* casilleroActual = casilleros->obtener(i);
+		for(int x = -1; x < 2; x++){
+			for(int y = -1; y < 2; y++){
+				for(int z = -1; z < 2; z++){
+					Casillero* casilleroVecino = casilleroActual->obtenerVecino(x,y,z);
+					if(casilleroVecino->obtenerFicha() != casillero::CASILLERO_LIBRE &&
+						casilleroVecino->obtenerFicha() != jugadorActual->obtenerFicha()){
+						casillerosValidos->agregar(casilleroVecino);
+					}
+				}	
+			}
+		}
+	}
+
+	if(casillerosValidos->contarElementos() == 0){
+		cout << "No hay casillero valido para usurpar" << endl;
+	}
+	else{
+		for(int i = 0; i < casillerosValidos->contarElementos(); i++){
+			cout << i << casillerosValidos << endl;
+		}
+
+		int opcion;
+		cout << "Que numero de casillero queres usurpar?" << endl;
+		bool esValido = false;
+		while(!esValido){
+			cin >> opcion;
+			
+			if(opcion >= 0 && opcion < casillerosValidos->contarElementos()){
+				casilleroDevolver = casillerosValidos->obtener(opcion);
+				esValido = true;
+			}
+
+			else{
+				cout << "Por favor elegi un numero valido" << endl;
+			}
+		}
+	}
+
+	return casilleroDevolver;
+}

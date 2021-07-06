@@ -81,7 +81,12 @@ Lista<Carta*>* Jugador::obtenerCartas() {
 	return this->cartas;
 }
 
-void Jugador::jugarCarta(Lista<Jugador*>* jugadores, unsigned int indiceCarta, Jugador* jugador) {
+Lista<Casilleros*>* Jugador::obtenerCasilleros(){
+	return this->casilleros;
+}
+
+void Jugador::jugarCarta(Lista<Jugador*>* jugadores, unsigned int indiceCarta, Jugador* jugador,
+						 Casillero* casillero) {
 
 	Carta* carta = this->cartas->obtener(indiceCarta);
 
@@ -108,6 +113,15 @@ void Jugador::jugarCarta(Lista<Jugador*>* jugadores, unsigned int indiceCarta, J
 			this->cartas->remover(indiceCarta);
 
 			delete carta;
+
+			break;
+
+		case 4:
+			if(casillero != NULL){
+				carta->usurpar(jugadores, casillero);
+				this->cartas->remover(indiceCarta);
+				delete carta;
+			}
 
 			break;
 

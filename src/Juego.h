@@ -21,11 +21,6 @@ class Juego {
 		Lista<Jugador*>* jugadores;
 		Mazo* mazo;
 
-		/*
-		 * A fin de poder sobrescribir el operador '<<', se debe declarar
-		 * la función 'friend', de modo que pueda acceder a los atributos
-		 * privados o protegidos, de la clase
-		 */
 		friend std::ostream& operator<<(std::ostream&, const Juego&);
 
 	public:

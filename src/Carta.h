@@ -2,7 +2,6 @@
 #define CARTA_H_
 #include "Lista.h"
 #include "Jugador.h"
-#include "Casillero.h"
 #include <iostream>
 
 class Jugador;
@@ -88,10 +87,10 @@ class Carta {
 		/*
 		 * PRE: jugador no es nulo
 		 * POST: Borra las cartas del jugador pasado por parametro
+		 *
 		 */
-		void borrarCartas(Jugador* jugador);
 
-		void usurpar(Lista<Jugador*>* jugadores, Casillero* casillero);
+		void borrarCartas(Jugador* jugador);
 };
 
 /*
