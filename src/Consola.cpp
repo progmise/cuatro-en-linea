@@ -562,6 +562,65 @@ Lista<string>* Consola::generarOpciones(Lista<string>* items) {
 	return opciones;
 }
 
+
+Casillero* Consola::preguntarCasilleroParaUsurpar(Lista<Jugador*>* jugadores){
+	Jugador* jugadorActual = jugadores->obtenerCursor();
+	Lista<Casillero*>* casilleros = jugadorActual->obtenerCasilleros();
+	Lista<Casillero*>* casillerosValidos = new Lista<Casillero*>();
+	Casillero* casilleroDevolver = NULL;
+
+	for(unsigned int i = 1; i <= casilleros->contarElementos(); i++){
+		Casillero* casilleroActual = casilleros->obtener(i);
+		for(int x = -1; x < 2; x++){
+			for(int y = -1; y < 2; y++){
+				for(int z = -1; z < 2; z++){
+					Casillero* casilleroVecino = casilleroActual->obtenerVecino(x,y,z);
+					if (casilleroVecino != NULL) {
+						if(casilleroVecino->estaOcupado() && casilleroVecino->obtenerFicha() != jugadorActual->obtenerFicha()){
+							casillerosValidos->agregar(casilleroVecino);
+						}
+					}
+				}	
+			}
+		}
+	}
+
+	if(casillerosValidos->contarElementos() == 0){
+		cout << "No hay casillero valido para usurpar" << endl;
+	}
+	else{
+		string casilleroImprimir;
+		for(unsigned int i = 1; i < casillerosValidos->contarElementos(); i++){
+			Casillero* casilleroValidoActual = casillerosValidos->obtener(i);
+			cout << i << " - " << "x = " << casilleroValidoActual->obtenerPosicionX()
+				 << ", y = " << casilleroValidoActual->obtenerPosicionY()
+				 << ", z = " << casilleroValidoActual->obtenerPosicionZ()
+				 << ", y tiene la ficha " << casilleroValidoActual->obtenerFicha()->obtenerTipoDeFicha()
+				 << endl;
+		}
+
+		int opcion;
+		cout << "Que numero de casillero queres usurpar?" << endl;
+		bool esValido = false;
+		while(!esValido){
+			cin >> opcion;
+			
+			if(opcion > 0 && opcion <= casillerosValidos->contarElementos()){
+				casilleroDevolver = casillerosValidos->obtener(opcion);
+				esValido = true;
+			}
+
+			else{
+				cout << "Por favor elegi un numero valido" << endl;
+			}
+		}
+	}
+
+	delete casillerosValidos;
+
+	return casilleroDevolver;
+}
+
 Jugador* Consola::preguntarJugadorParaFatality(Lista<Jugador*>* jugadores) {
 	Jugador* jugadorActual = jugadores->obtenerCursor();
 	cout << "Por favor, ingrese el nombre de uno de los jugadores" << endl;

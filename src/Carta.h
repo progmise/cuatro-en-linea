@@ -2,6 +2,7 @@
 #define CARTA_H_
 #include "Lista.h"
 #include "Jugador.h"
+#include "Casillero.h"
 #include <iostream>
 
 class Jugador;
@@ -91,6 +92,9 @@ class Carta {
 		 */
 
 		void borrarCartas(Jugador* jugador);
+
+		void usurpar(Lista<Jugador*>* jugadores, Casillero* casillero);
+
 };
 
 /*

@@ -1,5 +1,4 @@
 #include "TP2.h"
-#include "Imagen.h"
 
  int main() {
 

@@ -93,6 +93,32 @@ void Carta::borrarCartas(Jugador* jugador) {
 	}
 }
 
+void Carta::usurpar(Lista<Jugador*>* jugadores, Casillero* casillero){
+	Jugador* jugadorUsurpar = NULL;
+	Jugador* jugador = jugadores->obtenerCursor();
+	char ficha = casillero->obtenerFicha()->obtenerTipoDeFicha();
+
+	for(unsigned int i = 1; i <= jugadores->contarElementos(); i++){
+		Jugador* jugadorActual = jugadores->obtener(i);
+		if(jugadorActual->obtenerFicha()->obtenerTipoDeFicha() == ficha && jugador->obtenerFicha()->obtenerTipoDeFicha() != ficha){
+			jugadorUsurpar = jugadorActual;
+		}
+	}
+
+	Lista<Casillero*>* casilleros = jugadorUsurpar->obtenerCasilleros();
+	bool seguir = true;
+	unsigned int contador = 1;
+	while(seguir && contador <= casilleros->contarElementos()){
+		if(casilleros->obtener(contador) == casillero){
+			casilleros->remover(contador);
+			seguir = false;
+		}
+		contador++;
+	}
+	casillero->asignarFicha(jugador->obtenerFicha());
+	jugador->obtenerCasilleros()->agregar(casillero);
+}
+
 ostream& operator<<(ostream &strm, const Carta &carta) {
 
 	return strm << "Carta(id=" << carta.id
