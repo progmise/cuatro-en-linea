@@ -14,8 +14,9 @@ class Mazo {
 	private:
 
 		static const int MAX_CARTAS_MAZO = 20;
-		static const int CANT_TIPOS_CARTAS = 3;
+		static const int CANT_TIPOS_CARTAS = 4;
 		Cola<Carta*>* cartas;
+		int cartasLevantadas;
 
 		/*
 		 * A fin de poder sobrescribir el operador '<<', se debe declarar

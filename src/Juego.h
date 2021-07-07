@@ -6,10 +6,8 @@
 #include "Consola.h"
 #include "Imagen.h"
 
-class Juego {
-
+class Juego{
 	private:
-
 		static const unsigned int COORDENADA_VALOR_MINIMO = 0;
 		static const unsigned int CANT_MIN_JUGADORES = 2;
 		static const unsigned int CANT_MAX_JUGADORES = 6;
@@ -65,7 +63,6 @@ class Juego {
 
 		unsigned int jugarCarta(Jugador* jugador, Lista<Jugador*>* jugadores,
 								Consola consola, unsigned int ronda);
-
 };
 
 /*

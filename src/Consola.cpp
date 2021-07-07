@@ -562,6 +562,96 @@ Lista<string>* Consola::generarOpciones(Lista<string>* items) {
 	return opciones;
 }
 
+Casillero* Consola::preguntarCasilleroParaUsurpar(Lista<Jugador*>* jugadores){
+	Jugador* jugadorActual = jugadores->obtenerCursor();
+	Lista<Casillero*>* casilleros = jugadorActual->obtenerCasilleros();
+	Lista<Casillero*>* casillerosValidos = new Lista<Casillero*>();
+	Casillero* casilleroDevolver = NULL;
+
+	for(unsigned int i = 1; i <= casilleros->contarElementos(); i++){
+		Casillero* casilleroActual = casilleros->obtener(i);
+		for(int x = -1; x < 2; x++){
+			for(int y = -1; y < 2; y++){
+				for(int z = -1; z < 2; z++){
+					Casillero* casilleroVecino = casilleroActual->obtenerVecino(x,y,z);
+					if (casilleroVecino != NULL) {
+						if(casilleroVecino->estaOcupado() && casilleroVecino->obtenerFicha() != jugadorActual->obtenerFicha()){
+							casillerosValidos->agregar(casilleroVecino);
+						}
+					}
+				}	
+			}
+		}
+	}
+
+	if(casillerosValidos->contarElementos() == 0){
+		cout << "No hay casillero valido para usurpar" << endl;
+	}
+	else{
+		string casilleroImprimir;
+		for(unsigned int i = 1; i < casillerosValidos->contarElementos(); i++){
+			Casillero* casilleroValidoActual = casillerosValidos->obtener(i);
+			cout << i << " - " << "x = " << casilleroValidoActual->obtenerPosicionX()
+				 << ", y = " << casilleroValidoActual->obtenerPosicionY()
+				 << ", z = " << casilleroValidoActual->obtenerPosicionZ()
+				 << ", y tiene la ficha " << casilleroValidoActual->obtenerFicha()->obtenerTipoDeFicha()
+				 << endl;
+		}
+
+		int opcion;
+		cout << "Que numero de casillero queres usurpar?" << endl;
+		bool esValido = false;
+		while(!esValido){
+			cin >> opcion;
+			
+			if(opcion > 0 && opcion <= casillerosValidos->contarElementos()){
+				casilleroDevolver = casillerosValidos->obtener(opcion);
+				esValido = true;
+			}
+
+			else{
+				cout << "Por favor elegi un numero valido" << endl;
+			}
+		}
+	}
+
+	delete casillerosValidos;
+
+	return casilleroDevolver;
+}
+
+Jugador* Consola::preguntarJugadorParaFatality(Lista<Jugador*>* jugadores) {
+	Jugador* jugadorActual = jugadores->obtenerCursor();
+	cout << "Por favor, ingrese el nombre de uno de los jugadores" << endl;
+	for(int i = 1; i <= jugadores->contarElementos(); i++){
+		Jugador* jugadorCiclo = jugadores->obtener(i);
+		if(jugadorCiclo->obtenerCartas()->contarElementos() != 0 &&
+				jugadorCiclo->obtenerNombre() != jugadorActual->obtenerNombre()) {
+			cout << jugadorCiclo->obtenerNombre() << endl;
+		}
+	}
+	string nombreElegido;
+	cin >> nombreElegido;
+	bool esValido = false;
+	Jugador* jugadorDevolver;
+	while (!esValido) {
+		unsigned int j = 1;
+		while (!esValido && j <= jugadores->contarElementos()){
+			Jugador* jugador = jugadores->obtener(j);
+			if(nombreElegido == jugador->obtenerNombre() && jugador->obtenerCartas()->contarElementos() != 0 && nombreElegido != jugadorActual->obtenerNombre()) {
+				esValido = true;
+				jugadorDevolver = jugador;
+			}
+			j++; //No se incrementaba nunca j
+		}
+		if (!esValido) {
+			cout << "El nombre ingresado no forma parte de la lista de nombres posibles, intentalo de nuevo" << endl;
+			cin >> nombreElegido;
+		}
+	}
+
+	return jugadorDevolver;
+
 int Consola::preguntarDimensionesDelTablero() {
 	int dimension = 0;
 	cout << "Cuantos casilleros de ancho queres que tenga el tablero?" << endl << "(Debe ser un numero entero entre 4 y 15 para formar un tablero cúbico)" << endl;

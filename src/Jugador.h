@@ -4,6 +4,7 @@
 #include "Color.h"
 #include "Carta.h"
 #include "Ficha.h"
+#include "Casillero.h"
 #include <iostream>
 
 class Carta;
@@ -17,6 +18,7 @@ class Jugador {
 		Ficha* ficha;
 		bool flagGanador;
 		Lista<Carta*>* cartas;
+		Lista<Casillero*>* casilleros; 
 
 		/*
 		 * A fin de poder sobrescribir el operador '<<', se debe declarar
@@ -105,6 +107,12 @@ class Jugador {
 		Lista<Carta*>* obtenerCartas();
 
 		/*
+		* PRE: No tiene
+		* POST: Devuelve una lista de casilleros
+		*/		
+		Lista<Casillero*>* obtenerCasilleros();
+
+		/*
 		 * PRE:  La lista de jugadores, no debe estar vacía e
 		 * 		 indiceCarta, debe corresponderse a una posición
 		 * 		 existente, dentro de lista cartas
@@ -112,7 +120,8 @@ class Jugador {
 		 * 		 sobre la lista de jugadores. Finalizada la ejecución,
 		 * 		 se elimina la carta jugada
 		 */
-		void jugarCarta(Lista<Jugador*>* jugadores, unsigned int indiceCarta, Jugador* jugador);
+		void jugarCarta(Lista<Jugador*>* jugadores, unsigned int indiceCarta, Jugador* jugador,
+						Casillero* casillero);
 };
 
 /*
