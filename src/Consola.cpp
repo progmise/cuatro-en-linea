@@ -589,9 +589,13 @@ Casillero* Consola::preguntarCasilleroParaUsurpar(Lista<Jugador*>* jugadores){
 	}
 	else{
 		string casilleroImprimir;
-		for(int i = 1; i < casillerosValidos->contarElementos(); i++){
+		for(unsigned int i = 1; i < casillerosValidos->contarElementos(); i++){
 			Casillero* casilleroValidoActual = casillerosValidos->obtener(i);
-			cout << i << " - " << "x = " << casilleroValidoActual->obtenerPosicionX() << ", y = " << casilleroValidoActual->obtenerPosicionY() << ", z = " << casilleroValidoActual->obtenerPosicionZ() << ", y tiene la ficha " << casilleroValidoActual->obtenerFicha()->obtenerTipoDeFicha() << endl;
+			cout << i << " - " << "x = " << casilleroValidoActual->obtenerPosicionX()
+				 << ", y = " << casilleroValidoActual->obtenerPosicionY()
+				 << ", z = " << casilleroValidoActual->obtenerPosicionZ()
+				 << ", y tiene la ficha " << casilleroValidoActual->obtenerFicha()->obtenerTipoDeFicha()
+				 << endl;
 		}
 
 		int opcion;
@@ -610,6 +614,8 @@ Casillero* Consola::preguntarCasilleroParaUsurpar(Lista<Jugador*>* jugadores){
 			}
 		}
 	}
+
+	delete casillerosValidos;
 
 	return casilleroDevolver;
 }

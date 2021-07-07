@@ -107,7 +107,7 @@ void Carta::usurpar(Lista<Jugador*>* jugadores, Casillero* casillero){
 
 	Lista<Casillero*>* casilleros = jugadorUsurpar->obtenerCasilleros();
 	bool seguir = true;
-	int contador = 1;
+	unsigned int contador = 1;
 	while(seguir && contador <= casilleros->contarElementos()){
 		if(casilleros->obtener(contador) == casillero){
 			casilleros->remover(contador);
