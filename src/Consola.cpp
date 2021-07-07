@@ -4,11 +4,11 @@ using namespace std;
 
 Consola::Consola() { }
 
-void Consola::mostrarBienvenida() {
+void Consola::mostrarBienvenida(unsigned int nFichas) {
 
-	cout << "Algoritmos y Programacion II - T.P. Nro. 2 - Cuatro en línea" << endl;
+	cout << "Algoritmos y Programacion II - T.P. Nro. 2 - N en línea" << endl;
 	cout << "##### Bienvenidos #####" << endl << endl;
-	cout << "El objetivo del juego, es el de alinear 4 fichas consecutivas "
+	cout << "El objetivo del juego, es el de alinear " << nFichas <<  " fichas consecutivas "
 		 << "del mismo tipo" << endl;
 	cout << "¡Exitos!" << endl << endl;
 }
@@ -562,7 +562,6 @@ Lista<string>* Consola::generarOpciones(Lista<string>* items) {
 	return opciones;
 }
 
-
 Casillero* Consola::preguntarCasilleroParaUsurpar(Lista<Jugador*>* jugadores){
 	Jugador* jugadorActual = jugadores->obtenerCursor();
 	Lista<Casillero*>* casilleros = jugadorActual->obtenerCasilleros();
@@ -652,4 +651,29 @@ Jugador* Consola::preguntarJugadorParaFatality(Lista<Jugador*>* jugadores) {
 	}
 
 	return jugadorDevolver;
+
+int Consola::preguntarDimensionesDelTablero() {
+	int dimension = 0;
+	cout << "Cuantos casilleros de ancho queres que tenga el tablero?" << endl << "(Debe ser un numero entero entre 4 y 15 para formar un tablero cúbico)" << endl;
+	cin >> dimension;
+	while (dimension < 4 || dimension > 15) {
+		cout << "El numero que ingresaste no es valido, intenta de vuelta" << endl;
+		cout << "Tene en cuenta que debe ser un numero entero entre 4 y 15 para formar un tablero cúbico" << endl;
+		cin >> dimension;
+	}
+	return dimension;
+}
+
+int Consola::preguntarNFichasAlineadas(int dimensionTablero) {
+	int n = 0;
+
+	cout << "Elegí la cantidad de fichas que hay que alinear para ganar(Debe ser un entero entre 2 y " << dimensionTablero << ")" << endl;
+	cin >> n;
+
+	while (n < 2 || n > dimensionTablero) {
+		cout << "El numero que ingresaste no es valido, intenta de vuelta" << endl;
+		cout << "Tene en cuenta que debe ser un entero entre 2 y " << dimensionTablero << ")" << endl;
+		cin >> n;
+	}
+	return n;
 }
