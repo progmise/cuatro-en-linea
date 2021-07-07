@@ -1,4 +1,5 @@
 #include "Mazo.h"
+#include <cstdlib> //rand() MAX_RAND
 
 using namespace std;
 
@@ -63,12 +64,7 @@ Carta* Mazo::generarAzarmenteCarta() {
 
 	numero = (rand() % CANT_TIPOS_CARTAS) + 1;
 
-	/*if(numero == 4 && this->cartasLevantadas < 2){
-		numero = (rand() % 3) + 1;
-	}*/
-
-	switch (numero) {
-
+	switch(numero){
 		case 1:
 			carta = new Carta(
 				numero,
@@ -96,13 +92,12 @@ Carta* Mazo::generarAzarmenteCarta() {
 		case 4:
 			carta = new Carta(
 					numero,
-					"Carta usurpadora",
+					"Carta Usurpadora",
 					"Permite al jugador usurpar una ficha adyacente al jugador"
 					);
 			break;
 
 		default:
-
 			throw "Número al azar inválido";
 			break;
 	}
