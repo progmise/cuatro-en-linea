@@ -61,15 +61,20 @@ void Carta::bloquearTurno(Lista<Jugador*>* jugadores) {
 
 void Carta::jugarDoble(Lista<Jugador*>* jugadores) {
 
+	Jugador* jugador = NULL;
 	unsigned int tamanio = jugadores->contarElementos();
 
-	for (unsigned int i = 1; i < tamanio; i++) {
+	for (unsigned int i = 1; i < tamanio + 1; i++) {
 
-		jugadores->avanzarCursor();
+		jugador = jugadores->obtenerCursor();
 
-		if (jugadores->obtener(tamanio) == jugadores->obtenerCursor()) {
+		if (jugador == jugadores->obtener(tamanio)) {
 
 			jugadores->iniciarCursor();
+
+		} else {
+
+			jugadores->avanzarCursor();
 		}
 	}
 }
