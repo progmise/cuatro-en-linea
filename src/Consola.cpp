@@ -174,28 +174,21 @@ unsigned int Consola::ingresarCantidadJugadores(unsigned int minCantJug,
 
 unsigned int Consola::ingresarCarta(Lista<Carta*>* cartas) {
 
-	stringstream strStream;
-	string entrada = "";
-	Lista<string>* opciones = generarOpcionesCartas(cartas);
+	Lista<string>* nombresDeCartas = new Lista<string>();
+	Carta* carta = NULL;
 	unsigned int opcion = 0;
-	bool flagEsValido = false;
 
-	do {
+	cartas->iniciarCursor();
 
-		entrada = solicitarOpcion(opciones);
+	while (cartas->avanzarCursor()) {
 
-		if(esNumeroValido(entrada, 0, cartas->contarElementos())) {
+		carta = cartas->obtenerCursor();
+		nombresDeCartas->agregar(carta->obtenerNombre());
+	}
 
-			flagEsValido = true;
-		}
+	opcion = validarOpcion(nombresDeCartas, 0, cartas->contarElementos());
 
-	} while (!flagEsValido);
-
-	strStream << entrada;
-	strStream >> opcion;
-	strStream.clear();
-
-	delete opciones;
+	delete nombresDeCartas;
 
 	return opcion;
 }
@@ -203,8 +196,12 @@ unsigned int Consola::ingresarCarta(Lista<Carta*>* cartas) {
 unsigned int Consola::navegarPorNiveles(Tablero* tablero) {
 
 	Lista<Lista<Casillero*>*>* plano = NULL;
+	Lista<string>* items = new Lista<string>();
+	unsigned int opcion = 0;
 	unsigned int nivel = 1;
-	char caracter = '\0';
+
+	items->agregar("Siguiente nivel");
+	items->agregar("Anterior nivel");
 
 	do {
 		cout << "Nivel " << setfill('0') << setw(3) << nivel - 1 << endl;
@@ -212,50 +209,32 @@ unsigned int Consola::navegarPorNiveles(Tablero* tablero) {
 		plano = tablero->obtenerCasilleros()->obtener(nivel);
 		mostrarPlano(plano, tablero->obtenerLongitud(), tablero->obtenerProfundidad());
 
-		cout << "Puede navegar por los distintos niveles del tablero" << endl;
-	    cout << "1 - Siguiente nivel" << endl;
-	    cout << "2 - Anterior nivel" << endl;
+		opcion = validarOpcion(items, 0, items->contarElementos());
 
-		cout << endl << "0 - Salir del modo visualización" << endl;
+		if (opcion == 1) {
 
-		cin >> caracter;
+			nivel++;
 
-		switch (caracter) {
+			if (nivel == tablero->obtenerAltura() + 1) {
 
-			case '0':
-				break;
+				nivel = 1;
+			}
+		}
+		else if (opcion == 2) {
 
-			case '1':
+			if (nivel == 1) {
 
-				nivel++;
+				nivel = tablero->obtenerAltura();
 
-				if (nivel == tablero->obtenerAltura() + 1) {
+			} else {
 
-					nivel = 1;
-				}
-
-				break;
-
-			case '2':
-
-				if (nivel == 1) {
-
-					nivel = tablero->obtenerAltura();
-
-				} else {
-
-					nivel--;
-				}
-
-				break;
-
-			default:
-
-				cout << "¡Se ingresó una tecla inválida!" << endl;
-				break;
+				nivel--;
+			}
 		}
 
-	} while(caracter != '0');
+	} while(opcion != 0);
+
+	delete items;
 
 	return nivel;
 }
@@ -358,6 +337,37 @@ string Consola::crearPlano(Lista<Lista<Casillero*>*>* plano, unsigned int longit
 	strStream.clear();
 
 	return planoFormateado;
+}
+
+unsigned int Consola::validarOpcion(Lista<string>* items, unsigned int minimaOpcion,
+									unsigned int maximaOpcion) {
+
+	stringstream strStream;
+	string entrada = "";
+	Lista<string>* opciones = NULL;
+	unsigned int opcion = 0;
+	bool flagEsValido = false;
+
+	opciones = generarOpciones(items);
+
+	do {
+
+		entrada = solicitarOpcion(opciones);
+
+		if(esNumeroValido(entrada, minimaOpcion, maximaOpcion)) {
+
+			flagEsValido = true;
+		}
+
+	} while (!flagEsValido);
+
+	strStream << entrada;
+	strStream >> opcion;
+	strStream.clear();
+
+	delete opciones;
+
+	return opcion;
 }
 
 string Consola::validarNombre(string entrada) {
@@ -521,16 +531,16 @@ bool Consola::esNumeroValido(std::string entrada, unsigned int minValor,
 	return flagEsValido;
 }
 
-Lista<string>* Consola::generarOpcionesCartas(Lista<Carta*>* cartas) {
+Lista<string>* Consola::generarOpciones(Lista<string>* items) {
 
 	Lista<string>* opciones = new Lista<string>();
 	stringstream strStream;
 	string opcion;
-	unsigned int tamanio = cartas->contarElementos();
+	unsigned int tamanio = items->contarElementos();
 
 	for (unsigned int i = 1; i < tamanio + 1; i++) {
 
-		strStream << i << " - " << cartas->obtener(i)->obtenerNombre() << endl;
+		strStream << i << " - " << items->obtener(i) << endl;
 
 		opcion = string(strStream.str());
 
