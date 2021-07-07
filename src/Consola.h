@@ -21,7 +21,7 @@ class Consola {
 		 * PRE:  No tiene
 		 * POST: Imprime por consola, un mensaje de bienvenida
 		 */
-		void mostrarBienvenida();
+		void mostrarBienvenida(unsigned int nFichas);
 
 		/*
 		 * PRE:  No tiene
@@ -109,10 +109,27 @@ class Consola {
 
 		/*
 		 * PRE: jugadores no esta vacía
-		 * POST: Devuelve el índice del jugador
+		 * POST: Devuelve un puntero al jugador seleccionado
 		 */
 
 		Jugador* preguntarJugadorParaFatality(Lista<Jugador*>* jugadores);
+
+		/*
+		 *PRE: No tiene
+		 *POST: Devuelve el tamaño de una dimensión para formar
+		 *un tablero cúbico
+		 */
+		int preguntarDimensionesDelTablero();
+
+		/*
+		 * PRE: No tiene
+		 * POST: Devuelve un entero <= dimensionTablero
+		 */
+
+		int preguntarNFichasAlineadas(int dimensionTablero);
+
+
+
 
 	private:
 

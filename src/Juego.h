@@ -13,9 +13,9 @@ class Juego {
 		static const unsigned int COORDENADA_VALOR_MINIMO = 0;
 		static const unsigned int CANT_MIN_JUGADORES = 2;
 		static const unsigned int CANT_MAX_JUGADORES = 6;
-		static const unsigned int CANT_FICHAS_ALINEADAS = 4;
 		static const unsigned int MIN_DIMENSION = 1;
 		static const unsigned int MAX_DIMENSION = 10;
+		unsigned int CANT_FICHAS_ALINEADAS;
 		unsigned int ronda;
 		Tablero* tablero;
 		Lista<Jugador*>* jugadores;
@@ -27,7 +27,7 @@ class Juego {
 
 		Juego();
 
-		Juego(unsigned int longitud, unsigned int profundidad, unsigned int altura);
+		Juego(unsigned int longitud, unsigned int profundidad, unsigned int altura, int nFichas);
 
 		~Juego();
 

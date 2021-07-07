@@ -7,9 +7,10 @@ Juego::Juego() {
 	this->tablero = new Tablero(MAX_DIMENSION, MAX_DIMENSION, MAX_DIMENSION);
 	this->jugadores = new Lista<Jugador*>();
 	this->mazo = new Mazo();
+	this->CANT_FICHAS_ALINEADAS = 4;
 }
 
-Juego::Juego(unsigned int longitud, unsigned int profundidad, unsigned int altura) {
+Juego::Juego(unsigned int longitud, unsigned int profundidad, unsigned int altura, int nFichas) {
 	this->ronda = 1;
 
 	longitud = validarDimension(longitud);
@@ -19,6 +20,7 @@ Juego::Juego(unsigned int longitud, unsigned int profundidad, unsigned int altur
 	this->tablero = new Tablero(longitud, profundidad, altura);
 	this->jugadores = new Lista<Jugador*>();
 	this->mazo = new Mazo();
+	this->CANT_FICHAS_ALINEADAS = nFichas;
 }
 
 Juego::~Juego() {
@@ -57,8 +59,7 @@ void Juego::iniciar(Consola consola, Imagen imagen) {
 	Casillero* coordenadas = NULL;
 	unsigned int jugadas = 0;
 	bool existeCuatroEnLinea = false;
-
-	consola.mostrarBienvenida();
+	consola.mostrarBienvenida(this->CANT_FICHAS_ALINEADAS);
 
 	ingresarJugadores(consola, this->jugadores);
 

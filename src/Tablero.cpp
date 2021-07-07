@@ -186,6 +186,7 @@ Casillero* Tablero::buscarCasillero(Lista<Lista<Lista<Casillero*>*>*>* tablero, 
 	return resultado;
 }
 
+
 ostream& operator<<(ostream &strm, const Tablero &tablero) {
 
 	return strm << "Tablero(longitud=" << tablero.longitud
