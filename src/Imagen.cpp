@@ -89,21 +89,97 @@ void Imagen::dibujarLineasHorizontales(Bits *imagen, unsigned int ancho, unsigne
 void Imagen::dibujarUnaFicha(Color* colorDeFicha, Bits* imagen, unsigned int pixelX,
 							 unsigned int pixelY) {
 
-    unsigned int hastaX = pixelX + this->tamanioDeUnaFicha - 2;
-    unsigned int hastaY = pixelY + this->tamanioDeUnaFicha - 2;
+    //unsigned int hastaX = pixelX + this->tamanioDeUnaFicha - 2;
+    //unsigned int hastaY = pixelY + this->tamanioDeUnaFicha - 2;
 
-    dibujarEnAnchoYenAlto(colorDeFicha, imagen, pixelX, hastaX, pixelY, hastaY);
+    //dibujarEnAnchoYenAlto(colorDeFicha, imagen, pixelX, hastaX, pixelY, hastaY);
+	unsigned int radio = (this->tamanioDeUnaFicha - 2) / 2;
+
+	dibujarEnAnchoYenAlto(colorDeFicha, imagen, pixelX, pixelY, radio);
 }
 
 void Imagen::dibujarEnAnchoYenAlto(Color* color, Bits* imagen, unsigned int desdeX,
-								   unsigned int hastaX, unsigned int desdeY, unsigned int hastaY) {
+								   unsigned int desdeY, unsigned int radio) {
 
+	/*
     for (unsigned int x = desdeX; x <= hastaX; x++) {
 
         for (unsigned int y = desdeY; y <= hastaY; y++) {
 
             imagen->asignar(x, y, color);
         }
+    }
+    */
+
+	int xCentro = desdeX + radio;
+	int yCentro = desdeY + radio;
+    int x = 0;
+    int y = radio;
+    int p = (5 - (int)radio * 4) / 4;
+
+    rellenarCirculo(color, imagen, xCentro, yCentro, x, y);
+
+    while (x < y) {
+
+        x++;
+
+        if (p < 0) {
+
+            p += 2 * x + 1;
+
+        } else {
+
+            y--;
+            p += 2 * (x - y) + 1;
+        }
+
+        rellenarCirculo(color, imagen, xCentro, yCentro, x, y);
+    }
+}
+
+void Imagen::rellenarCirculo(Color* color, Bits* imagen, int cx, int cy, int x, int y) {
+
+    if (x == 0) {
+
+    	for (int j = 0; j <= y; j++) {
+
+        	imagen->asignar(cx, cy + j, color);
+        	imagen->asignar(cx, cy - j, color);
+        	imagen->asignar(cx + j, cy, color);
+        	imagen->asignar(cx - j, cy, color);
+    	}
+
+    } else
+    if (x == y) {
+
+    	for (int j = 0; j <= y; j++) {
+
+    		for (int i = 0; i <= x; i ++) {
+
+				imagen->asignar(cx + i, cy + j, color);
+				imagen->asignar(cx - i, cy + j, color);
+				imagen->asignar(cx + i, cy - j, color);
+				imagen->asignar(cx - i, cy - j, color);
+    		}
+    	}
+
+    } else
+    if (x < y) {
+
+    	for (int j = 0; j <= y; j++) {
+
+    		for (int i = 0; i <= x; i++) {
+
+    	    	imagen->asignar(cx + i, cy + j, color);
+    	    	imagen->asignar(cx - i, cy + j, color);
+    	    	imagen->asignar(cx + i, cy - j, color);
+    	    	imagen->asignar(cx - i, cy - j, color);
+    	    	imagen->asignar(cx + j, cy + i, color);
+    	    	imagen->asignar(cx - j, cy + i, color);
+    	    	imagen->asignar(cx + j, cy - i, color);
+    	    	imagen->asignar(cx - j, cy - i, color);
+    		}
+    	}
     }
 }
 

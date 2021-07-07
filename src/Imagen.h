@@ -81,8 +81,23 @@ class Imagen {
 		 * 		 desdeY debe ser menor o igual a hastaY
 		 * POST: Dibuja una seccion rectangular en la imagen determinada
 		 */
+		/*
 		void dibujarEnAnchoYenAlto(Color* color, Bits* imagen, unsigned int desdeX,
 								   unsigned int hastaX, unsigned int desdeY, unsigned int hastaY);
+	    */
+
+		/*
+		 * PRE:  desdeX y desdeY deben ser números enteros positivos
+		 * POST: Dibuja una seccion circular en la imagen determinada
+		 */
+		void dibujarEnAnchoYenAlto(Color* color, Bits* imagen, unsigned int desdeX,
+								   unsigned int desdeY, unsigned int radio);
+
+		/*
+		 * PRE:  cx, cy, x, e y deben ser números enteros positivos
+		 * POST: Dibuja y rellena una sección circular
+		 */
+		void rellenarCirculo(Color* color, Bits* imagen, int cx, int cy, int x, int y);
 };
 
 #endif /* IMAGEN_H_ */
