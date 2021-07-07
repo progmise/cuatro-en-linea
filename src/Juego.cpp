@@ -194,7 +194,7 @@ bool Juego::hayCuatroEnLinea(Lista<Lista<Lista<Casillero*>*>*>* tablero,
 
 			for (unsigned int k = 0; k < 3; k++) {
 
-				if ((cantidades[i][j][k] + cantidades[k][j][i]) + 1 >= CANT_FICHAS_ALINEADAS) {
+				if ((cantidades[i][j][k] + cantidades[2 - k][2 - j][2 - i]) + 1 >= CANT_FICHAS_ALINEADAS) {
 
 					existeCuatroEnLinea = true;
 					jugador->asignarGanador(existeCuatroEnLinea);
