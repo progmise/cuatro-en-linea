@@ -115,8 +115,7 @@ void Juego::iniciar(Consola consola, Imagen imagen) {
 					plano,
 					this->tablero->obtenerLongitud(),
 					this->tablero->obtenerProfundidad(),
-					k - 1,
-					this->ronda
+					k - 1
 			);
 		}
 

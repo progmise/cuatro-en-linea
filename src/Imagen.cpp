@@ -8,7 +8,7 @@ Imagen::Imagen() {
 }
 
 void Imagen::dibujarTablero(Lista<Lista<Casillero*>*>* tablero, unsigned int longitud,
-							unsigned int profundidad, unsigned int nivel, unsigned int ronda) {
+							unsigned int profundidad, unsigned int nivel) {
 
 	Bits* imagen = NULL;
 	stringstream strStream;
@@ -21,8 +21,7 @@ void Imagen::dibujarTablero(Lista<Lista<Casillero*>*>* tablero, unsigned int lon
     dibujarCuadricula(imagen, ancho, alto);
     dibujarContenidoDelTablero(tablero, longitud, profundidad, imagen);
 
-    strStream << "estado_tablero_ronda" << setfill('0') << setw(3) << ronda
-    		  << "_nivel" << setfill('0') << setw(3) << nivel;
+    strStream << "estado_tablero_nivel" << setfill('0') << setw(3) << nivel;
 
     nombreDeArchivo = string(strStream.str());
 
@@ -39,14 +38,14 @@ void Imagen::dibujarContenidoDelTablero(Lista<Lista<Casillero*>*>* tablero, unsi
 
 	Color* colorDeUnaFicha = NULL;
 
-    for (unsigned int columna = 0; columna < longitud; columna++) {
+    for (unsigned int fila = 0; fila < profundidad; fila++) {
 
-        for (unsigned int fila = 0; fila < profundidad; fila++) {
+        for (unsigned int columna = 0; columna < longitud; columna++) {
 
             unsigned int desdeX = columna * this->tamanioDeUnaFicha;
             unsigned int desdeY = fila * this->tamanioDeUnaFicha;
 
-            colorDeUnaFicha = tablero->obtener(columna + 1)->obtener(fila + 1)->obtenerFicha()->obtenerColor();
+            colorDeUnaFicha = tablero->obtener(fila + 1)->obtener(columna + 1)->obtenerFicha()->obtenerColor();
 
             dibujarUnaFicha(colorDeUnaFicha, imagen, desdeX, desdeY);
         }

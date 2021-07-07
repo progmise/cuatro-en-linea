@@ -140,6 +140,9 @@ class Consola {
 		std::string crearPlano(Lista<Lista<Casillero*>*>* plano, unsigned int longitud,
 				  	  	  	   unsigned int profundidad);
 
+		unsigned int validarOpcion(Lista<std::string>* items, unsigned int minimaOpcion,
+								   unsigned int maximaOpcion);
+
 		/*
 		 * PRE:  No tiene
 		 * POST: Devuelve y valida un string el cual, dada una entrada,
@@ -199,12 +202,10 @@ class Consola {
 						    unsigned int maxValor);
 
 		/*
-		 * PRE:  Cartas no debe ser una lista vacía
-		 * POST: Devuelve una lista, con cartas como opciones
+		 * PRE:  items no debe ser una lista vacía
+		 * POST: Devuelve una lista, con los items como opciones
 		 */
-		Lista<std::string>* generarOpcionesCartas(Lista<Carta*>* cartas);
-
-
+		Lista<std::string>* generarOpciones(Lista<std::string>* items);
 };
 
 #endif /* CONSOLA_H_ */

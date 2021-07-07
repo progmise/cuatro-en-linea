@@ -36,12 +36,12 @@ class Imagen {
 		Imagen();
 
 		/*
-		 * PRE:  El tablero debe contar con elementos. longitud, profundidad y ronda
+		 * PRE:  El tablero debe contar con elementos. longitud y profundidad 
 		 * 		 deben ser números enteros no negativos
 		 * POST: Crea una imagen de un tablero y la guarda como formato .bmp
 		 */
 		void dibujarTablero(Lista<Lista<Casillero*>*>* tablero, unsigned int longitud,
-							unsigned int profundidad, unsigned int nivel, unsigned int ronda);
+							unsigned int profundidad, unsigned int nivel);
 
 	private:
 
