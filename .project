@@ -24,11 +24,4 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>a.out</name>
-			<type>1</type>
-			<location>/home/valu/eclipse-workspace/TP2/src/a.out</location>
-		</link>
-	</linkedResources>
 </projectDescription>
