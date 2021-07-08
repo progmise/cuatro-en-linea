@@ -163,6 +163,11 @@ class Consola {
 		std::string crearPlano(Lista<Lista<Casillero*>*>* plano, unsigned int longitud,
 				  	  	  	   unsigned int profundidad);
 
+		/*
+		 * PRE:  minimaOpcion y maximaOpcion, deben ser números enteros positivos
+		 * POST: Devuelve un int, que representa a una de las opciones, que
+		 *		 el usuario eligió y que ha sido validada
+		 */
 		unsigned int validarOpcion(Lista<std::string>* items, unsigned int minimaOpcion,
 								   unsigned int maximaOpcion);
 

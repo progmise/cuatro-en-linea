@@ -3,14 +3,15 @@
 using namespace std;
 
 Juego::Juego() {
+	this->cantidadDeFichasAlineadas = 4;
 	this->ronda = 1;
 	this->tablero = new Tablero(MAX_DIMENSION, MAX_DIMENSION, MAX_DIMENSION);
 	this->jugadores = new Lista<Jugador*>();
 	this->mazo = new Mazo();
-	this->CANT_FICHAS_ALINEADAS = 4;
 }
 
 Juego::Juego(unsigned int longitud, unsigned int profundidad, unsigned int altura, int nFichas) {
+	this->cantidadDeFichasAlineadas = nFichas;
 	this->ronda = 1;
 
 	longitud = validarDimension(longitud);
@@ -20,7 +21,6 @@ Juego::Juego(unsigned int longitud, unsigned int profundidad, unsigned int altur
 	this->tablero = new Tablero(longitud, profundidad, altura);
 	this->jugadores = new Lista<Jugador*>();
 	this->mazo = new Mazo();
-	this->CANT_FICHAS_ALINEADAS = nFichas;
 }
 
 Juego::~Juego() {
@@ -42,6 +42,16 @@ Juego::~Juego() {
 	delete this->mazo;
 }
 
+int Juego::obtenerCantidadDeFichasAlineadas() {
+
+	return this->cantidadDeFichasAlineadas;
+}
+
+void Juego::asignarCantidadDeFichasAlineadas(int cantidadDeFichasAlineadas) {
+
+	this->cantidadDeFichasAlineadas = cantidadDeFichasAlineadas;
+}
+
 Tablero* Juego::obtenerTablero() {
 
 	return this->tablero;
@@ -59,7 +69,7 @@ void Juego::iniciar(Consola consola, Imagen imagen) {
 	Casillero* coordenadas = NULL;
 	unsigned int jugadas = 0;
 	bool existeCuatroEnLinea = false;
-	consola.mostrarBienvenida(this->CANT_FICHAS_ALINEADAS);
+	consola.mostrarBienvenida(this->cantidadDeFichasAlineadas);
 
 	ingresarJugadores(consola, this->jugadores);
 
@@ -195,7 +205,7 @@ bool Juego::hayCuatroEnLinea(Lista<Lista<Lista<Casillero*>*>*>* tablero,
 
 			for (unsigned int k = 0; k < 3; k++) {
 
-				if ((cantidades[i][j][k] + cantidades[2 - k][2 - j][2 - i]) + 1 >= CANT_FICHAS_ALINEADAS) {
+				if ((cantidades[i][j][k] + cantidades[2 - k][2 - j][2 - i]) + 1 >= cantidadDeFichasAlineadas) {
 
 					existeCuatroEnLinea = true;
 					jugador->asignarGanador(existeCuatroEnLinea);

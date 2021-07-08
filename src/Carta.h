@@ -93,6 +93,12 @@ class Carta {
 
 		void borrarCartas(Jugador* jugador);
 
+		/*
+		 * PRE:  La lista de jugadores no debe estar vacía y el casillero
+		 * 		 debe estar inicializado
+		 * POST: El jugador actual toma posesión del casillero, ingresando
+		 * 		 la ficha que posee
+		 */
 		void usurpar(Lista<Jugador*>* jugadores, Casillero* casillero);
 
 };

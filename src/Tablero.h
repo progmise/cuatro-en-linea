@@ -85,9 +85,14 @@ class Tablero {
 		 */
 		Lista<Lista<Lista<Casillero*>*>*>* obtenerCasilleros();
 
+		/*
+		 * PRE:  tablero debe contar con elementos. posicionX, posicionY y
+		 * 		 posicionZ deben ser números enteros positivos
+		 * POST: Devuelve el casillero, que se encuentra en las coordenadas
+		 * 		 dadas
+		 */
 		Casillero* buscarCasillero(Lista<Lista<Lista<Casillero*>*>*>* tablero, unsigned int posicionX,
 								   unsigned int posicionY, unsigned int posicionZ);
-
 };
 
 /*

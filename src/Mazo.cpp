@@ -1,11 +1,9 @@
 #include "Mazo.h"
-#include <cstdlib> //rand() MAX_RAND
 
 using namespace std;
 
 Mazo::Mazo() {
 	this->cartas = new Cola<Carta*>();
-	this->cartasLevantadas = 0;
 }
 
 Mazo::~Mazo() {
@@ -49,7 +47,6 @@ void Mazo::levantarCartaTope(Jugador* jugador) {
 	if (cantCartas < MAX_CARTAS_JUGADOR) {
 
 		carta = this->cartas->desacolar();
-		this->cartasLevantadas++;
 		jugador->obtenerCartas()->agregar(carta);
 
 		carta = generarAzarmenteCarta();

@@ -3,8 +3,10 @@
  int main() {
 
 	Consola consola = Consola();
+
 	int dimensionTablero = consola.preguntarDimensionesDelTablero();
 	int nFichas = consola.preguntarNFichasAlineadas(dimensionTablero);
+
 	Imagen imagen = Imagen();
 	Juego* juego = new Juego(dimensionTablero, dimensionTablero, dimensionTablero, nFichas);
 
